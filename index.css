@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .cosmic-glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+  
+  .glass-reflection {
+    @apply relative overflow-hidden;
+  }
+  
+  .glass-reflection::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 transition-opacity duration-500;
+  }
+  
+  .glass-reflection:hover::before {
+    @apply opacity-100;
+  }
+
+  .shimmer-text {
+    background: linear-gradient(
+      to right,
+      #ffffff 20%,
+      #22d3ee 30%,
+      #8b5cf6 70%,
+      #ffffff 80%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+    background-size: 500% auto;
+    animation: textShimmer 4s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes textShimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+body {
+  @apply bg-[#010103] text-white;
+}
