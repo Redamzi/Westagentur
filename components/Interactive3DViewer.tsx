@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
-import * as THREE from 'https://esm.sh/three@0.160.0';
-import { OrbitControls } from 'https://esm.sh/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 export type AnimationType = 'quantum' | 'neural' | 'shield';
 
@@ -74,7 +74,7 @@ const Interactive3DViewer: React.FC<Props> = ({ type = 'quantum' }) => {
       }
       const pointsGeom = new THREE.BufferGeometry();
       pointsGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-      
+
       const pointsMat = new THREE.PointsMaterial({ color: 0x00f2ff, size: 0.08 });
       const points = new THREE.Points(pointsGeom, pointsMat);
       group.add(points);

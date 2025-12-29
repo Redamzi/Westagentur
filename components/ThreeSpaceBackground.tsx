@@ -1,11 +1,11 @@
 
 import React, { useEffect, useRef } from 'react';
-import * as THREE from 'https://esm.sh/three@0.160.0';
+import * as THREE from 'three';
 
 const ThreeSpaceBackground: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mouse = useRef({ x: 0, y: 0 });
-  const viewBounds = useRef({ width: 500, height: 400 }); 
+  const viewBounds = useRef({ width: 500, height: 400 });
   const trailPositions = useRef<THREE.Vector3[]>([]);
   const MAX_TRAIL_POINTS = 12;
 
@@ -15,19 +15,19 @@ const ThreeSpaceBackground: React.FC = () => {
     // 1. Scene & Camera Setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
-    const renderer = new THREE.WebGLRenderer({ 
-      antialias: true, 
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
       alpha: true,
-      powerPreference: "high-performance" 
+      powerPreference: "high-performance"
     });
-    
+
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0x000000, 1); 
+    renderer.setClearColor(0x000000, 1);
     containerRef.current.appendChild(renderer.domElement);
 
     // 2. Cinematic Lighting
-    const ambientLight = new THREE.AmbientLight(0x404040, 1.5); 
+    const ambientLight = new THREE.AmbientLight(0x404040, 1.5);
     scene.add(ambientLight);
 
     const diskLight = new THREE.PointLight(0xffaa00, 60, 1500);
@@ -48,9 +48,9 @@ const ThreeSpaceBackground: React.FC = () => {
     blackHoleGroup.add(singularity);
 
     const horizonGeom = new THREE.SphereGeometry(25, 64, 64);
-    const horizonMat = new THREE.MeshBasicMaterial({ 
-      color: 0x8b5cf6, 
-      transparent: true, 
+    const horizonMat = new THREE.MeshBasicMaterial({
+      color: 0x8b5cf6,
+      transparent: true,
       opacity: 0.3,
       side: THREE.BackSide
     });
@@ -78,7 +78,7 @@ const ThreeSpaceBackground: React.FC = () => {
     const trailRings: THREE.Mesh[] = [];
     const trailCount = MAX_TRAIL_POINTS;
     const ringGeom = new THREE.TorusGeometry(58, 1, 2, 60);
-    
+
     for (let i = 0; i < trailCount; i++) {
       const rMat = new THREE.MeshBasicMaterial({
         color: i % 2 === 0 ? 0x00f2ff : 0xbc13fe,
@@ -96,12 +96,12 @@ const ThreeSpaceBackground: React.FC = () => {
     const starGeometry = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
     const starVelocities = new Float32Array(starCount);
-    
+
     for (let i = 0; i < starCount; i++) {
       starPositions[i * 3] = (Math.random() - 0.5) * 4500;
       starPositions[i * 3 + 1] = (Math.random() - 0.5) * 3500;
       starPositions[i * 3 + 2] = (Math.random() * -6000);
-      starVelocities[i] = Math.random() * 2.5 + 1.0; 
+      starVelocities[i] = Math.random() * 2.5 + 1.0;
     }
 
     starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
@@ -124,7 +124,7 @@ const ThreeSpaceBackground: React.FC = () => {
 
     const updateBounds = () => {
       const aspect = window.innerWidth / window.innerHeight;
-      const visibleHeight = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * 600; 
+      const visibleHeight = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * 600;
       const visibleWidth = visibleHeight * aspect;
       viewBounds.current = { width: visibleWidth, height: visibleHeight };
     };
@@ -142,14 +142,14 @@ const ThreeSpaceBackground: React.FC = () => {
       const mouseTargetY = (mouse.current.y * viewBounds.current.height) * 0.45;
       const driftX = Math.sin(time * 0.5) * 30;
       const driftY = Math.cos(time * 0.4) * 20;
-      
+
       const targetX = mouseTargetX + driftX;
       const targetY = mouseTargetY + driftY;
-      
+
       const oldPos = blackHoleGroup.position.clone();
       blackHoleGroup.position.x += (targetX - blackHoleGroup.position.x) * 0.08;
       blackHoleGroup.position.y += (targetY - blackHoleGroup.position.y) * 0.08;
-      
+
       // Calculate Velocity for effects
       const velocity = blackHoleGroup.position.distanceTo(oldPos);
 
@@ -165,16 +165,16 @@ const ThreeSpaceBackground: React.FC = () => {
         const pointIdx = idx * 3;
         const pos = trailPositions.current[pointIdx] || blackHoleGroup.position;
         ring.position.copy(pos);
-        
+
         // Funnel scaling: rings get larger or smaller? 
         // Let's make them shrink and fade out for a tunnel look
         const factor = 1 - (idx / trailCount);
-        ring.scale.setScalar(factor * (1 + velocity * 0.2)); 
-        
+        ring.scale.setScalar(factor * (1 + velocity * 0.2));
+
         // Orient ring to face the movement (roughly lookAt next point)
         const nextPos = trailPositions.current[pointIdx + 1] || blackHoleGroup.position;
         ring.lookAt(nextPos);
-        
+
         // Opacity tied to velocity - trail appears when moving
         const alpha = (idx === 0) ? 0 : factor * Math.min(velocity * 0.4, 0.6);
         (ring.material as THREE.MeshBasicMaterial).opacity = alpha;
@@ -182,13 +182,13 @@ const ThreeSpaceBackground: React.FC = () => {
 
       // ZOOM PULSATION
       const scaleBase = 1.15;
-      const scaleZoom = Math.sin(time * 1.8) * 0.25; 
+      const scaleZoom = Math.sin(time * 1.8) * 0.25;
       blackHoleGroup.scale.setScalar(scaleBase + scaleZoom + (velocity * 0.05));
 
       // Accretion disk High-Speed Spin
-      accretionDisk.rotation.z += 0.06; 
+      accretionDisk.rotation.z += 0.06;
       accretionDisk.rotation.x = Math.PI / 2.05 + Math.sin(time * 1.2) * 0.15;
-      
+
       diskLight.position.copy(blackHoleGroup.position);
 
       // Starfield - Velocity Stretching Simulation
@@ -230,10 +230,10 @@ const ThreeSpaceBackground: React.FC = () => {
   }, []);
 
   return (
-    <div 
-      ref={containerRef} 
-      className="fixed inset-0 z-[0] pointer-events-none" 
-      style={{ background: '#000' }} 
+    <div
+      ref={containerRef}
+      className="fixed inset-0 z-[0] pointer-events-none"
+      style={{ background: '#000' }}
     />
   );
 };
