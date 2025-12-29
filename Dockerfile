@@ -1,20 +1,21 @@
+# Build Stage
 FROM node:20-alpine AS builder
+
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM caddy:2-alpine
-COPY --from=builder /app/dist /srv
-COPY Caddyfile /etc/caddy/Caddyfile
-```
+# Production Stage
+FROM nginx:alpine
 
-**`Caddyfile`:**
-```
-:80 {
-    root * /srv
-    encode gzip
-    file_server
-    try_files {path} /index.html
-}
+# Copy built assets from builder stage
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy custom nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
