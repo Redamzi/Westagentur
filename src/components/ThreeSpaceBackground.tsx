@@ -7,7 +7,7 @@ const ThreeSpaceBackground: React.FC = () => {
     const mouse = useRef({ x: 0, y: 0 });
     const viewBounds = useRef({ width: 500, height: 400 });
     const trailPositions = useRef<THREE.Vector3[]>([]);
-    const MAX_TRAIL_POINTS = 25; // Longer trail
+    const MAX_TRAIL_POINTS = 40; // Even longer trail for the light streak
 
     useEffect(() => {
         if (!containerRef.current) return;
@@ -27,110 +27,59 @@ const ThreeSpaceBackground: React.FC = () => {
         containerRef.current.appendChild(renderer.domElement);
 
         // 2. Cinematic Lighting
-        const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
         scene.add(ambientLight);
 
-        // Intense core light (Vanguard Star)
-        const starLight = new THREE.PointLight(0x00f2ff, 100, 2000);
-        scene.add(starLight);
+        // Super intense light for the shooting star
+        const meteorLight = new THREE.PointLight(0xffffff, 150, 2500);
+        scene.add(meteorLight);
 
-        const secondaryLight = new THREE.PointLight(0xbc13fe, 50, 1500);
-        secondaryLight.position.set(-200, 100, -300);
-        scene.add(secondaryLight);
+        // 3. The Meteor (Shooting Star Core)
+        const meteorGroup = new THREE.Group();
+        meteorGroup.position.set(0, 0, -350);
+        scene.add(meteorGroup);
 
-        // 3. The Vanguard Star (Crystal)
-        const starGroup = new THREE.Group();
-        starGroup.position.set(0, 0, -350);
-        scene.add(starGroup);
+        // Bright Point Core
+        const coreGeom = new THREE.SphereGeometry(6, 16, 16);
+        const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const core = new THREE.Mesh(coreGeom, coreMat);
+        meteorGroup.add(core);
 
-        // Core Crystal
-        const crystalGeom = new THREE.IcosahedronGeometry(20, 0); // Sharp edges
-        const crystalMat = new THREE.MeshStandardMaterial({
-            color: 0x00f2ff,
-            emissive: 0x00f2ff,
-            emissiveIntensity: 10,
-            wireframe: false,
-            metalness: 0.9,
-            roughness: 0.1,
-            transparent: true,
-            opacity: 0.95
-        });
-        const crystal = new THREE.Mesh(crystalGeom, crystalMat);
-        starGroup.add(crystal);
-
-        // Outer Wireframe
-        const wireGeom = new THREE.IcosahedronGeometry(25, 0);
-        const wireMat = new THREE.MeshBasicMaterial({
-            color: 0xbc13fe,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.4
-        });
-        const wireframe = new THREE.Mesh(wireGeom, wireMat);
-        starGroup.add(wireframe);
-
-        // Glow Aura
-        const auraGeom = new THREE.SphereGeometry(35, 32, 32);
-        const auraMat = new THREE.ShaderMaterial({
-            uniforms: {
-                c: { value: 0.1 },
-                p: { value: 4.5 },
-                glowColor: { value: new THREE.Color(0x00f2ff) },
-                viewVector: { value: camera.position }
-            },
-            vertexShader: `
-                uniform vec3 viewVector;
-                varying float intensity;
-                void main() {
-                    vec3 vNormal = normalize( normalMatrix * normal );
-                    vec3 vNormel = normalize( normalMatrix * viewVector );
-                    intensity = pow( c - dot(vNormal, vNormel), p );
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-                }
-            `,
-            fragmentShader: `
-                uniform vec3 glowColor;
-                varying float intensity;
-                void main() {
-                    vec3 glow = glowColor * intensity;
-                    gl_FragColor = vec4( glow, 1.0 );
-                }
-            `,
-            side: THREE.BackSide,
-            blending: THREE.AdditiveBlending,
-            transparent: true
-        });
-        // Simplified fallback for glow if shader is complex for user
-        const simpleAuraMat = new THREE.MeshBasicMaterial({
+        // Outer Glow Sphere
+        const glowGeom = new THREE.SphereGeometry(15, 32, 32);
+        const glowMat = new THREE.MeshBasicMaterial({
             color: 0x00f2ff,
             transparent: true,
-            opacity: 0.1,
+            opacity: 0.6,
             blending: THREE.AdditiveBlending
         });
-        const aura = new THREE.Mesh(auraGeom, simpleAuraMat);
-        starGroup.add(aura);
+        const glow = new THREE.Mesh(glowGeom, glowMat);
+        meteorGroup.add(glow);
 
-        // 4. Digital Flow Trail
+        // 4. Shooting Star Streak (Trail)
         const trailGroup = new THREE.Group();
         scene.add(trailGroup);
 
-        const trailRings: THREE.Mesh[] = [];
+        const trailMeshes: THREE.Mesh[] = [];
         const trailCount = MAX_TRAIL_POINTS;
-        const ringGeom = new THREE.TorusGeometry(20, 0.5, 4, 32);
+
+        // We use slightly tapered spheres or cylinders for a smooth streak
+        const streakGeom = new THREE.SphereGeometry(8, 16, 16);
 
         for (let i = 0; i < trailCount; i++) {
-            const rMat = new THREE.MeshBasicMaterial({
-                color: i % 2 === 0 ? 0x00f2ff : 0xbc13fe,
+            const opacity = 1.0 - (i / trailCount);
+            const tMat = new THREE.MeshBasicMaterial({
+                color: i < 5 ? 0xffffff : 0x00f2ff, // Fade from white to cyan
                 transparent: true,
                 opacity: 0,
-                wireframe: true
+                blending: THREE.AdditiveBlending
             });
-            const ring = new THREE.Mesh(ringGeom, rMat);
-            trailRings.push(ring);
-            trailGroup.add(ring);
+            const mesh = new THREE.Mesh(streakGeom, tMat);
+            trailMeshes.push(mesh);
+            trailGroup.add(mesh);
         }
 
-        // 5. Dynamic Starfield
+        // 5. Starfield
         const starCount = 8000;
         const starGeometry = new THREE.BufferGeometry();
         const starPositions = new Float32Array(starCount * 3);
@@ -140,12 +89,12 @@ const ThreeSpaceBackground: React.FC = () => {
             starPositions[i * 3] = (Math.random() - 0.5) * 4500;
             starPositions[i * 3 + 1] = (Math.random() - 0.5) * 3500;
             starPositions[i * 3 + 2] = (Math.random() * -6000);
-            starVelocities[i] = Math.random() * 3.5 + 1.0;
+            starVelocities[i] = Math.random() * 4.0 + 1.5;
         }
 
         starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
         const starMaterial = new THREE.PointsMaterial({
-            size: 1.2,
+            size: 1.3,
             color: 0xffffff,
             transparent: true,
             opacity: 0.8,
@@ -176,66 +125,61 @@ const ThreeSpaceBackground: React.FC = () => {
         const animate = () => {
             time += 0.02;
 
-            // Tracking & Drift
+            // Tracking
             const mouseTargetX = (mouse.current.x * viewBounds.current.width) * 0.45;
             const mouseTargetY = (mouse.current.y * viewBounds.current.height) * 0.45;
-            const driftX = Math.sin(time * 0.8) * 15;
-            const driftY = Math.cos(time * 0.7) * 10;
 
-            const targetX = mouseTargetX + driftX;
-            const targetY = mouseTargetY + driftY;
+            // Random tiny jitter for meteor look
+            const jitterX = Math.random() * 2;
+            const jitterY = Math.random() * 2;
 
-            const oldPos = starGroup.position.clone();
-            starGroup.position.x += (targetX - starGroup.position.x) * 0.1;
-            starGroup.position.y += (targetY - starGroup.position.y) * 0.1;
+            const targetX = mouseTargetX + jitterX;
+            const targetY = mouseTargetY + jitterY;
 
-            const velocity = starGroup.position.distanceTo(oldPos);
+            const oldPos = meteorGroup.position.clone();
+            meteorGroup.position.x += (targetX - meteorGroup.position.x) * 0.12;
+            meteorGroup.position.y += (targetY - meteorGroup.position.y) * 0.12;
 
-            // Rotate Crystal
-            crystal.rotation.y += 0.04 + velocity * 0.02;
-            crystal.rotation.z += 0.02;
-            wireframe.rotation.y -= 0.02;
-            wireframe.rotation.z -= 0.01;
+            const velocity = meteorGroup.position.distanceTo(oldPos);
 
-            // Pulsate Aura
-            aura.scale.setScalar(1 + Math.sin(time * 4) * 0.1 + velocity * 0.1);
+            // Pulsate Glow
+            glow.scale.setScalar(1.0 + Math.sin(time * 10) * 0.2 + velocity * 0.1);
 
-            // Update Trail
-            trailPositions.current.unshift(starGroup.position.clone());
-            if (trailPositions.current.length > trailCount * 4) {
+            // Update Trail (Light Streak)
+            trailPositions.current.unshift(meteorGroup.position.clone());
+            if (trailPositions.current.length > trailCount * 2) {
                 trailPositions.current.pop();
             }
 
-            trailRings.forEach((ring, idx) => {
-                const pointIdx = idx * 2;
-                const pos = trailPositions.current[pointIdx] || starGroup.position;
-                ring.position.copy(pos);
+            trailMeshes.forEach((mesh, idx) => {
+                const pos = trailPositions.current[idx] || meteorGroup.position;
+                mesh.position.copy(pos);
 
-                const factor = 1 - (idx / trailCount);
-                ring.scale.setScalar(factor * (0.8 + velocity * 0.5));
+                const factor = 1.0 - (idx / trailCount);
+                // Streak becomes thinner towards the end
+                const scale = factor * (0.8 + velocity * 0.4);
+                mesh.scale.setScalar(scale);
 
-                const nextPos = trailPositions.current[pointIdx + 1] || starGroup.position;
-                ring.lookAt(nextPos);
-
-                const alpha = factor * Math.min(velocity * 0.8, 0.9);
-                (ring.material as THREE.MeshBasicMaterial).opacity = alpha;
+                // Opacity logic
+                const alpha = factor * 0.8 * Math.min(velocity * 0.5, 1.0);
+                (mesh.material as THREE.MeshBasicMaterial).opacity = alpha;
             });
 
             // Starfield
             const positions = starGeometry.attributes.position.array as Float32Array;
             for (let i = 0; i < starCount; i++) {
-                positions[i * 3 + 2] += starVelocities[i] * (2.0 + velocity * 1.5);
+                positions[i * 3 + 2] += starVelocities[i] * (2.5 + velocity * 2.0);
                 if (positions[i * 3 + 2] > 500) {
                     positions[i * 3 + 2] = -5500;
                 }
             }
             starGeometry.attributes.position.needsUpdate = true;
 
-            starLight.position.copy(starGroup.position);
+            meteorLight.position.copy(meteorGroup.position);
 
-            // Camera Motion
-            camera.position.x += (mouse.current.x * 15 - camera.position.x) * 0.05;
-            camera.position.y += (mouse.current.y * 12 - camera.position.y) * 0.05;
+            // Camera Parallax
+            camera.position.x += (mouse.current.x * 20 - camera.position.x) * 0.05;
+            camera.position.y += (mouse.current.y * 15 - camera.position.y) * 0.05;
             camera.lookAt(0, 0, -500);
 
             renderer.render(scene, camera);
