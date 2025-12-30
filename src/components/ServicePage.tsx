@@ -103,7 +103,7 @@ const MailScoutIcon: React.FC<{ className?: string; idSuffix?: string }> = ({ cl
 };
 
 const ServicePage: React.FC<ServicePageProps> = ({ data, onBack }) => {
-    const isAutomation = data.title.toLowerCase().includes('automatisierung') || data.title.toLowerCase().includes('automation');
+    const isAutomation = data.title.toLowerCase().includes('automatisierung') || data.title.toLowerCase().includes('automation') || data.title.toLowerCase().includes('ki');
 
     return (
         <div className="pt-24 md:pt-40 pb-16 md:pb-24 px-4 md:px-6 min-h-screen relative z-10">
