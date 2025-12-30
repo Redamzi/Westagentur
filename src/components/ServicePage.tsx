@@ -102,8 +102,11 @@ const MailScoutIcon: React.FC<{ className?: string; idSuffix?: string }> = ({ cl
     );
 };
 
+import AudioShowcase from './AudioShowcase';
+
 const ServicePage: React.FC<ServicePageProps> = ({ data, onBack }) => {
     const isAutomation = data.title.toLowerCase().includes('automatisierung') || data.title.toLowerCase().includes('automation') || data.title.toLowerCase().includes('ki');
+    const isTelephony = data.title.toLowerCase().includes('telefonie');
 
     return (
         <div className="pt-24 md:pt-40 pb-16 md:pb-24 px-4 md:px-6 min-h-screen relative z-10">
@@ -131,6 +134,9 @@ const ServicePage: React.FC<ServicePageProps> = ({ data, onBack }) => {
                 <p className="text-lg md:text-2xl text-neutral-100 font-body font-light italic mb-12 md:mb-16 leading-relaxed max-w-4xl opacity-80">
                     {data.heroText}
                 </p>
+
+                {isTelephony && <AudioShowcase />}
+
 
                 {/* Referenz Spotlight */}
                 {isAutomation && (
