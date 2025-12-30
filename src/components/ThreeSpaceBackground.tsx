@@ -1,140 +1,215 @@
 
-import React, { useEffect, useRef, useState } from 'react';
-
-const RunningManSVG = () => (
-    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-2xl">
-        <g transform="translate(0, 20)">
-            {/* Body/Suit */}
-            <path d="M150,220 C130,220 120,240 110,280 C100,320 120,380 180,400 C240,420 320,400 350,350 C380,300 360,240 330,220 Z" fill="#4B3621" />
-
-            {/* Vest (Round Belly) */}
-            <path d="M160,230 C160,230 140,300 180,350 C220,400 300,380 320,330 C340,280 320,230 320,230 Z" fill="#D2691E" />
-
-            {/* White Shirt */}
-            <path d="M210,230 L240,280 L270,230 Z" fill="#FFFFFF" />
-
-            {/* Bow Tie */}
-            <path d="M220,235 L260,235 L270,225 L210,225 Z" fill="#8B0000" />
-            <circle cx="240" cy="235" r="5" fill="#8B0000" />
-
-            {/* Head */}
-            <circle cx="240" cy="160" r="50" fill="#FFCC99" />
-
-            {/* Face details */}
-            <circle cx="260" cy="150" r="5" fill="#000" /> {/* Eye */}
-            <path d="M230,150 Q240,140 250,150" fill="none" stroke="#000" strokeWidth="2" /> {/* Eyebrow */}
-            <path d="M240,180 Q260,190 280,170" fill="none" stroke="#000" strokeWidth="3" /> {/* Smile */}
-            <path d="M260,165 L290,165" fill="none" stroke="#333" strokeWidth="4" /> {/* Moustache */}
-
-            {/* Top Hat */}
-            <rect x="190" y="110" width="100" height="20" fill="#222" /> {/* Brim */}
-            <rect x="200" y="50" width="80" height="70" fill="#222" /> {/* Top */}
-            <rect x="200" y="100" width="80" height="10" fill="#8B0000" /> {/* Ribbon */}
-
-            {/* Arms (Running motion) */}
-            {/* Back Arm */}
-            <path d="M300,240 Q350,260 380,220" fill="none" stroke="#4B3621" strokeWidth="30" strokeLinecap="round" />
-            <circle cx="380" cy="220" r="15" fill="#FFCC99" /> {/* Hand */}
-
-            {/* Front Arm */}
-            <path d="M160,250 Q100,280 80,240" fill="none" stroke="#4B3621" strokeWidth="30" strokeLinecap="round" />
-            <circle cx="80" cy="240" r="15" fill="#FFCC99" /> {/* Hand */}
-
-            {/* Legs (Running motion) */}
-            {/* Back Leg */}
-            <path d="M220,380 Q180,450 140,440" fill="none" stroke="#2F1F10" strokeWidth="35" strokeLinecap="round" />
-            <path d="M140,440 L120,480 L160,480" fill="#000" /> {/* Shoe */}
-
-            {/* Front Leg */}
-            <path d="M280,380 Q340,420 380,380" fill="none" stroke="#2F1F10" strokeWidth="35" strokeLinecap="round" />
-            <path d="M380,380 L420,360 L410,400" fill="#000" /> {/* Shoe */}
-        </g>
-    </svg>
-);
+import React, { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 
 const ThreeSpaceBackground: React.FC = () => {
-    const [position, setPosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-    const [direction, setDirection] = useState(1); // 1 = right, -1 = left
-    const [isMoving, setIsMoving] = useState(false);
-
-    // Refs for animation loop to avoid dependency cycles
-    const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-    const currentPos = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-    const frameId = useRef<number>(0);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const mouse = useRef({ x: 0, y: 0 });
+    const viewBounds = useRef({ width: 500, height: 400 });
+    const trailPositions = useRef<THREE.Vector3[]>([]);
+    const MAX_TRAIL_POINTS = 40; // Even longer trail for the light streak
 
     useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            mouse.current = { x: e.clientX, y: e.clientY };
-        };
+        if (!containerRef.current) return;
 
+        // 1. Scene & Camera Setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true,
+            powerPreference: "high-performance"
+        });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setClearColor(0x000000, 1);
+        containerRef.current.appendChild(renderer.domElement);
+
+        // 2. Cinematic Lighting
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
+        scene.add(ambientLight);
+
+        // Super intense light for the shooting star
+        const meteorLight = new THREE.PointLight(0xffffff, 150, 2500);
+        scene.add(meteorLight);
+
+        // 3. The Meteor (Shooting Star Core)
+        const meteorGroup = new THREE.Group();
+        meteorGroup.position.set(0, 0, -350);
+        scene.add(meteorGroup);
+
+        // Bright Point Core
+        const coreGeom = new THREE.SphereGeometry(6, 16, 16);
+        const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const core = new THREE.Mesh(coreGeom, coreMat);
+        meteorGroup.add(core);
+
+        // Outer Glow Sphere
+        const glowGeom = new THREE.SphereGeometry(15, 32, 32);
+        const glowMat = new THREE.MeshBasicMaterial({
+            color: 0x00f2ff,
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
+        });
+        const glow = new THREE.Mesh(glowGeom, glowMat);
+        meteorGroup.add(glow);
+
+        // 4. Shooting Star Streak (Trail)
+        const trailGroup = new THREE.Group();
+        scene.add(trailGroup);
+
+        const trailMeshes: THREE.Mesh[] = [];
+        const trailCount = MAX_TRAIL_POINTS;
+
+        // We use slightly tapered spheres or cylinders for a smooth streak
+        const streakGeom = new THREE.SphereGeometry(8, 16, 16);
+
+        for (let i = 0; i < trailCount; i++) {
+            const opacity = 1.0 - (i / trailCount);
+            const tMat = new THREE.MeshBasicMaterial({
+                color: i < 5 ? 0xffffff : 0x00f2ff, // Fade from white to cyan
+                transparent: true,
+                opacity: 0,
+                blending: THREE.AdditiveBlending
+            });
+            const mesh = new THREE.Mesh(streakGeom, tMat);
+            trailMeshes.push(mesh);
+            trailGroup.add(mesh);
+        }
+
+        // 5. Starfield
+        const starCount = 8000;
+        const starGeometry = new THREE.BufferGeometry();
+        const starPositions = new Float32Array(starCount * 3);
+        const starVelocities = new Float32Array(starCount);
+
+        for (let i = 0; i < starCount; i++) {
+            starPositions[i * 3] = (Math.random() - 0.5) * 4500;
+            starPositions[i * 3 + 1] = (Math.random() - 0.5) * 3500;
+            starPositions[i * 3 + 2] = (Math.random() * -6000);
+            starVelocities[i] = Math.random() * 4.0 + 1.5;
+        }
+
+        starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+        const starMaterial = new THREE.PointsMaterial({
+            size: 1.3,
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        });
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+
+        // 6. Interaction
+        const handleMouseMove = (event: MouseEvent) => {
+            mouse.current.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        };
         window.addEventListener('mousemove', handleMouseMove);
 
+        const updateBounds = () => {
+            const aspect = window.innerWidth / window.innerHeight;
+            const visibleHeight = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * 600;
+            const visibleWidth = visibleHeight * aspect;
+            viewBounds.current = { width: visibleWidth, height: visibleHeight };
+        };
+        updateBounds();
+
+        // 7. Animation Loop
+        let time = 0;
+        camera.position.z = 250;
+
         const animate = () => {
-            // Calculate distance
-            const dx = mouse.current.x - currentPos.current.x;
-            const dy = mouse.current.y - currentPos.current.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
+            time += 0.02;
 
-            if (dist > 5) { // Threshold to stop jittering
-                setIsMoving(true);
+            // Tracking
+            const mouseTargetX = (mouse.current.x * viewBounds.current.width) * 0.45;
+            const mouseTargetY = (mouse.current.y * viewBounds.current.height) * 0.45;
 
-                // Lerp factor - speed of following
-                const speed = 0.08;
+            // Random tiny jitter for meteor look
+            const jitterX = Math.random() * 2;
+            const jitterY = Math.random() * 2;
 
-                currentPos.current.x += dx * speed;
-                currentPos.current.y += dy * speed;
+            const targetX = mouseTargetX + jitterX;
+            const targetY = mouseTargetY + jitterY;
 
-                // Determine direction based on movement
-                if (Math.abs(dx) > 1) {
-                    setDirection(dx > 0 ? -1 : 1); // Flip logic depending on original image orientation
-                }
+            const oldPos = meteorGroup.position.clone();
+            meteorGroup.position.x += (targetX - meteorGroup.position.x) * 0.12;
+            meteorGroup.position.y += (targetY - meteorGroup.position.y) * 0.12;
 
-                setPosition({ ...currentPos.current });
-            } else {
-                setIsMoving(false);
+            const velocity = meteorGroup.position.distanceTo(oldPos);
+
+            // Pulsate Glow
+            glow.scale.setScalar(1.0 + Math.sin(time * 10) * 0.2 + velocity * 0.1);
+
+            // Update Trail (Light Streak)
+            trailPositions.current.unshift(meteorGroup.position.clone());
+            if (trailPositions.current.length > trailCount * 2) {
+                trailPositions.current.pop();
             }
 
-            frameId.current = requestAnimationFrame(animate);
+            trailMeshes.forEach((mesh, idx) => {
+                const pos = trailPositions.current[idx] || meteorGroup.position;
+                mesh.position.copy(pos);
+
+                const factor = 1.0 - (idx / trailCount);
+                // Streak becomes thinner towards the end
+                const scale = factor * (0.8 + velocity * 0.4);
+                mesh.scale.setScalar(scale);
+
+                // Opacity logic
+                const alpha = factor * 0.8 * Math.min(velocity * 0.5, 1.0);
+                (mesh.material as THREE.MeshBasicMaterial).opacity = alpha;
+            });
+
+            // Starfield
+            const positions = starGeometry.attributes.position.array as Float32Array;
+            for (let i = 0; i < starCount; i++) {
+                positions[i * 3 + 2] += starVelocities[i] * (2.5 + velocity * 2.0);
+                if (positions[i * 3 + 2] > 500) {
+                    positions[i * 3 + 2] = -5500;
+                }
+            }
+            starGeometry.attributes.position.needsUpdate = true;
+
+            meteorLight.position.copy(meteorGroup.position);
+
+            // Camera Parallax
+            camera.position.x += (mouse.current.x * 20 - camera.position.x) * 0.05;
+            camera.position.y += (mouse.current.y * 15 - camera.position.y) * 0.05;
+            camera.lookAt(0, 0, -500);
+
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
         };
 
-        frameId.current = requestAnimationFrame(animate);
+        animate();
+
+        const handleResize = () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            updateBounds();
+        };
+        window.addEventListener('resize', handleResize);
 
         return () => {
+            window.removeEventListener('resize', handleResize);
             window.removeEventListener('mousemove', handleMouseMove);
-            cancelAnimationFrame(frameId.current);
+            if (containerRef.current) containerRef.current.removeChild(renderer.domElement);
+            renderer.dispose();
         };
     }, []);
 
     return (
-        <div className="fixed inset-0 z-[0] pointer-events-none overflow-hidden bg-black">
-            <div
-                style={{
-                    position: 'absolute',
-                    left: 0,
-                    top: 0,
-                    transform: `translate(${position.x - 75}px, ${position.y - 75}px) scaleX(${direction})`,
-                    willChange: 'transform',
-                    width: '150px',
-                    height: '150px',
-                    pointerEvents: 'none'
-                }}
-            >
-                <div className={`w-full h-full ${isMoving ? 'animate-bounce-fast' : ''}`}>
-                    <RunningManSVG />
-                </div>
-            </div>
-            <style>{`
-                @keyframes bounceRun {
-                    0%, 100% { transform: translateY(0); rotate(0deg); }
-                    25% { transform: translateY(-10px) rotate(5deg); }
-                    50% { transform: translateY(0) rotate(0deg); }
-                    75% { transform: translateY(-10px) rotate(-5deg); }
-                }
-                .animate-bounce-fast {
-                    animation: bounceRun 0.4s infinite linear;
-                }
-            `}</style>
-        </div>
+        <div
+            ref={containerRef}
+            className="fixed inset-0 z-[0] pointer-events-none"
+            style={{ background: '#000' }}
+        />
     );
 };
 
