@@ -277,7 +277,7 @@ const App: React.FC = () => {
                                 key={i}
                                 onClick={() => setView(f.link as ViewState)}
                                 style={{ animationDelay: `${i * 150}ms` }}
-                                className={`group p-8 md:p-10 cosmic-glass glass-reflection rounded-[2rem] md:rounded-[2.5rem] border-white/5 relative overflow-hidden cursor-pointer animate-float ${isVisible ? 'animate-entrance' : 'opacity-0'}`}
+                                className={`group p-8 md:p-10 cosmic-glass glass-reflection rounded-[2rem] md:rounded-[2.5rem] border-white/5 relative overflow-hidden cursor-pointer animate-float ${isVisible ? 'opacity-100 animate-entrance' : 'opacity-0'}`}
                             >
                                 <div className="text-[8px] md:text-[9px] font-technical text-cyan-400 mb-6 md:mb-8 tracking-[0.1em] font-bold opacity-60 uppercase">{f.label}</div>
                                 <h3 className="text-lg md:text-2xl font-vanguard font-black mb-4 md:mb-6 uppercase italic text-white tracking-[0.1em] group-hover:text-cyan-400 transition-all leading-tight">{f.title}</h3>
@@ -299,7 +299,7 @@ const App: React.FC = () => {
                                 key={i + 3}
                                 onClick={() => setView(card.link)}
                                 style={{ animationDelay: `${(i + 3) * 150}ms`, animationDuration: `${8 + i}s` }}
-                                className={`group p-8 md:p-10 cosmic-glass glass-reflection rounded-[2rem] md:rounded-[2.5rem] border-cyan-500/20 relative overflow-hidden flex flex-col cursor-pointer animate-float ${isVisible ? 'animate-entrance' : 'opacity-0'}`}
+                                className={`group p-8 md:p-10 cosmic-glass glass-reflection rounded-[2rem] md:rounded-[2.5rem] border-cyan-500/20 relative overflow-hidden flex flex-col cursor-pointer animate-float ${isVisible ? 'opacity-100 animate-entrance' : 'opacity-0'}`}
                             >
                                 <div className="text-[8px] md:text-[9px] font-technical text-cyan-400 mb-6 tracking-[0.1em] font-bold opacity-60 uppercase">{card.label}</div>
                                 <h3 className="text-lg md:text-2xl font-vanguard font-black mb-4 md:mb-6 uppercase italic text-white tracking-[0.1em] group-hover:text-cyan-400 transition-all leading-tight">{card.title}</h3>
