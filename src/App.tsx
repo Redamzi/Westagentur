@@ -246,7 +246,7 @@ const App: React.FC = () => {
 
                     <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-10 w-full max-w-3xl px-4">
                         <button
-                            onClick={() => setView('webdesign')}
+                            onClick={() => setView('contact')}
                             className="flex-1 px-8 py-5 md:px-12 md:py-7 bg-white text-black font-technical font-black rounded-xl transition-all hover:shadow-[0_0_60px_rgba(255,255,255,0.4)] uppercase tracking-[0.1em] md:tracking-[0.15em] text-[11px] md:text-[13px] active:scale-95"
                         >
                             Projekt anfragen
@@ -277,7 +277,7 @@ const App: React.FC = () => {
                                 key={i}
                                 onClick={() => setView(f.link as ViewState)}
                                 style={{ animationDelay: `${i * 150}ms` }}
-                                className={`group p-8 md:p-10 cosmic-glass glass-reflection rounded-[2rem] md:rounded-[2.5rem] border-white/5 relative overflow-hidden cursor-pointer animate-float ${isVisible ? 'animate-entrance opacity-100' : 'opacity-0'}`}
+                                className={`group p-8 md:p-10 cosmic-glass glass-reflection rounded-[2rem] md:rounded-[2.5rem] border-white/5 relative overflow-hidden cursor-pointer animate-float ${isVisible ? 'animate-entrance' : 'opacity-0'}`}
                             >
                                 <div className="text-[8px] md:text-[9px] font-technical text-cyan-400 mb-6 md:mb-8 tracking-[0.1em] font-bold opacity-60 uppercase">{f.label}</div>
                                 <h3 className="text-lg md:text-2xl font-vanguard font-black mb-4 md:mb-6 uppercase italic text-white tracking-[0.1em] group-hover:text-cyan-400 transition-all leading-tight">{f.title}</h3>
@@ -299,7 +299,7 @@ const App: React.FC = () => {
                                 key={i + 3}
                                 onClick={() => setView(card.link)}
                                 style={{ animationDelay: `${(i + 3) * 150}ms`, animationDuration: `${8 + i}s` }}
-                                className={`group p-8 md:p-10 cosmic-glass glass-reflection rounded-[2rem] md:rounded-[2.5rem] border-cyan-500/20 relative overflow-hidden flex flex-col cursor-pointer animate-float ${isVisible ? 'animate-entrance opacity-100' : 'opacity-0'}`}
+                                className={`group p-8 md:p-10 cosmic-glass glass-reflection rounded-[2rem] md:rounded-[2.5rem] border-cyan-500/20 relative overflow-hidden flex flex-col cursor-pointer animate-float ${isVisible ? 'animate-entrance' : 'opacity-0'}`}
                             >
                                 <div className="text-[8px] md:text-[9px] font-technical text-cyan-400 mb-6 tracking-[0.1em] font-bold opacity-60 uppercase">{card.label}</div>
                                 <h3 className="text-lg md:text-2xl font-vanguard font-black mb-4 md:mb-6 uppercase italic text-white tracking-[0.1em] group-hover:text-cyan-400 transition-all leading-tight">{card.title}</h3>
@@ -363,10 +363,10 @@ const App: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Preise */}
-            <section id="investment" className="py-20 md:py-32 relative">
+            < section id="investment" className="py-20 md:py-32 relative" >
                 <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
                     <SectionHeading subtitle="Investition" title="Paket-Übersicht" />
                     <div className="grid lg:grid-cols-3 gap-10 md:gap-12 lg:gap-16 items-stretch">
@@ -392,7 +392,13 @@ const App: React.FC = () => {
                                             </li>
                                         ))}
                                     </ul>
-                                    <button className={`w-full py-5 md:py-6 rounded-2xl text-[10px] md:text-[11px] font-technical font-black uppercase tracking-[0.15em] transition-all active:scale-95 ${pkg.recommended ? 'bg-cyan-500 text-black shadow-lg hover:shadow-cyan-500/40' : 'bg-white/10 text-white hover:bg-white/20'}`}>
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setView('contact');
+                                        }}
+                                        className={`w-full py-5 md:py-6 rounded-2xl text-[10px] md:text-[11px] font-technical font-black uppercase tracking-[0.15em] transition-all active:scale-95 ${pkg.recommended ? 'bg-cyan-500 text-black shadow-lg hover:shadow-cyan-500/40' : 'bg-white/10 text-white hover:bg-white/20'}`}
+                                    >
                                         Jetzt anfragen
                                     </button>
                                 </div>
@@ -400,7 +406,7 @@ const App: React.FC = () => {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section >
 
             <FaqSection />
         </>

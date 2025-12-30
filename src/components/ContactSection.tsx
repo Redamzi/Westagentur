@@ -53,12 +53,15 @@ const ContactSection: React.FC<ContactSectionProps> = ({ isDedicatedPage = false
                         </p>
 
                         <div className="flex justify-center mb-16 md:mb-24 w-full px-2">
-                            <button className="w-full sm:w-auto px-8 md:px-12 py-5 md:py-6 rounded-2xl bg-gradient-to-r from-[#8b5cf6] via-[#7c3aed] to-[#06b6d4] text-white font-technical font-black uppercase tracking-[0.15em] md:tracking-[0.2em] text-[10px] md:text-xs hover:shadow-[0_0_50px_rgba(6,182,212,0.4)] transition-all active:scale-95 flex items-center justify-center gap-4 group">
+                            <a
+                                href="mailto:mail@westagentur.de"
+                                className="w-full sm:w-auto px-8 md:px-12 py-5 md:py-6 rounded-2xl bg-gradient-to-r from-[#8b5cf6] via-[#7c3aed] to-[#06b6d4] text-white font-technical font-black uppercase tracking-[0.15em] md:tracking-[0.2em] text-[10px] md:text-xs hover:shadow-[0_0_50px_rgba(6,182,212,0.4)] transition-all active:scale-95 flex items-center justify-center gap-4 group"
+                            >
                                 Kostenlose Beratung anfordern
                                 <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                                 </svg>
-                            </button>
+                            </a>
                         </div>
 
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-16 md:mb-20 w-full">

@@ -7,7 +7,7 @@ const ThreeSpaceBackground: React.FC = () => {
     const mouse = useRef({ x: 0, y: 0 });
     const viewBounds = useRef({ width: 500, height: 400 });
     const trailPositions = useRef<THREE.Vector3[]>([]);
-    const MAX_TRAIL_POINTS = 12;
+    const MAX_TRAIL_POINTS = 25; // Longer trail
 
     useEffect(() => {
         if (!containerRef.current) return;
@@ -27,57 +27,96 @@ const ThreeSpaceBackground: React.FC = () => {
         containerRef.current.appendChild(renderer.domElement);
 
         // 2. Cinematic Lighting
-        const ambientLight = new THREE.AmbientLight(0x404040, 1.5);
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
         scene.add(ambientLight);
 
-        const diskLight = new THREE.PointLight(0xffaa00, 60, 1500);
-        scene.add(diskLight);
+        // Intense core light (Vanguard Star)
+        const starLight = new THREE.PointLight(0x00f2ff, 100, 2000);
+        scene.add(starLight);
 
-        const cyanLight = new THREE.PointLight(0x00f2ff, 40, 1800);
-        cyanLight.position.set(-200, 100, -300);
-        scene.add(cyanLight);
+        const secondaryLight = new THREE.PointLight(0xbc13fe, 50, 1500);
+        secondaryLight.position.set(-200, 100, -300);
+        scene.add(secondaryLight);
 
-        // 3. The Black Hole Construction
-        const blackHoleGroup = new THREE.Group();
-        blackHoleGroup.position.set(0, 0, -350);
-        scene.add(blackHoleGroup);
+        // 3. The Vanguard Star (Crystal)
+        const starGroup = new THREE.Group();
+        starGroup.position.set(0, 0, -350);
+        scene.add(starGroup);
 
-        const singularityGeom = new THREE.SphereGeometry(22, 64, 64);
-        const singularityMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
-        const singularity = new THREE.Mesh(singularityGeom, singularityMat);
-        blackHoleGroup.add(singularity);
-
-        const horizonGeom = new THREE.SphereGeometry(25, 64, 64);
-        const horizonMat = new THREE.MeshBasicMaterial({
-            color: 0x8b5cf6,
+        // Core Crystal
+        const crystalGeom = new THREE.IcosahedronGeometry(20, 0); // Sharp edges
+        const crystalMat = new THREE.MeshStandardMaterial({
+            color: 0x00f2ff,
+            emissive: 0x00f2ff,
+            emissiveIntensity: 10,
+            wireframe: false,
+            metalness: 0.9,
+            roughness: 0.1,
             transparent: true,
-            opacity: 0.3,
-            side: THREE.BackSide
+            opacity: 0.95
         });
-        const horizon = new THREE.Mesh(horizonGeom, horizonMat);
-        blackHoleGroup.add(horizon);
+        const crystal = new THREE.Mesh(crystalGeom, crystalMat);
+        starGroup.add(crystal);
 
-        const diskGeom = new THREE.TorusGeometry(60, 8, 2, 200);
-        const diskMat = new THREE.MeshStandardMaterial({
-            color: 0xffaa00,
-            emissive: 0xff4400,
-            emissiveIntensity: 5,
-            transparent: true,
-            opacity: 0.85,
+        // Outer Wireframe
+        const wireGeom = new THREE.IcosahedronGeometry(25, 0);
+        const wireMat = new THREE.MeshBasicMaterial({
+            color: 0xbc13fe,
             wireframe: true,
-            side: THREE.DoubleSide
+            transparent: true,
+            opacity: 0.4
         });
-        const accretionDisk = new THREE.Mesh(diskGeom, diskMat);
-        accretionDisk.rotation.x = Math.PI / 2.05;
-        blackHoleGroup.add(accretionDisk);
+        const wireframe = new THREE.Mesh(wireGeom, wireMat);
+        starGroup.add(wireframe);
 
-        // 4. Warp Tunnel Trail (The "Funnel" Effect)
+        // Glow Aura
+        const auraGeom = new THREE.SphereGeometry(35, 32, 32);
+        const auraMat = new THREE.ShaderMaterial({
+            uniforms: {
+                c: { value: 0.1 },
+                p: { value: 4.5 },
+                glowColor: { value: new THREE.Color(0x00f2ff) },
+                viewVector: { value: camera.position }
+            },
+            vertexShader: `
+                uniform vec3 viewVector;
+                varying float intensity;
+                void main() {
+                    vec3 vNormal = normalize( normalMatrix * normal );
+                    vec3 vNormel = normalize( normalMatrix * viewVector );
+                    intensity = pow( c - dot(vNormal, vNormel), p );
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+                }
+            `,
+            fragmentShader: `
+                uniform vec3 glowColor;
+                varying float intensity;
+                void main() {
+                    vec3 glow = glowColor * intensity;
+                    gl_FragColor = vec4( glow, 1.0 );
+                }
+            `,
+            side: THREE.BackSide,
+            blending: THREE.AdditiveBlending,
+            transparent: true
+        });
+        // Simplified fallback for glow if shader is complex for user
+        const simpleAuraMat = new THREE.MeshBasicMaterial({
+            color: 0x00f2ff,
+            transparent: true,
+            opacity: 0.1,
+            blending: THREE.AdditiveBlending
+        });
+        const aura = new THREE.Mesh(auraGeom, simpleAuraMat);
+        starGroup.add(aura);
+
+        // 4. Digital Flow Trail
         const trailGroup = new THREE.Group();
         scene.add(trailGroup);
 
         const trailRings: THREE.Mesh[] = [];
         const trailCount = MAX_TRAIL_POINTS;
-        const ringGeom = new THREE.TorusGeometry(58, 1, 2, 60);
+        const ringGeom = new THREE.TorusGeometry(20, 0.5, 4, 32);
 
         for (let i = 0; i < trailCount; i++) {
             const rMat = new THREE.MeshBasicMaterial({
@@ -91,8 +130,8 @@ const ThreeSpaceBackground: React.FC = () => {
             trailGroup.add(ring);
         }
 
-        // 5. Starfield (Higher speed for travel feel)
-        const starCount = 6000;
+        // 5. Dynamic Starfield
+        const starCount = 8000;
         const starGeometry = new THREE.BufferGeometry();
         const starPositions = new Float32Array(starCount * 3);
         const starVelocities = new Float32Array(starCount);
@@ -101,21 +140,21 @@ const ThreeSpaceBackground: React.FC = () => {
             starPositions[i * 3] = (Math.random() - 0.5) * 4500;
             starPositions[i * 3 + 1] = (Math.random() - 0.5) * 3500;
             starPositions[i * 3 + 2] = (Math.random() * -6000);
-            starVelocities[i] = Math.random() * 2.5 + 1.0;
+            starVelocities[i] = Math.random() * 3.5 + 1.0;
         }
 
         starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
         const starMaterial = new THREE.PointsMaterial({
-            size: 1.1,
+            size: 1.2,
             color: 0xffffff,
             transparent: true,
-            opacity: 0.6,
+            opacity: 0.8,
             blending: THREE.AdditiveBlending
         });
         const stars = new THREE.Points(starGeometry, starMaterial);
         scene.add(stars);
 
-        // 6. Interaction & Dynamic Positioning
+        // 6. Interaction
         const handleMouseMove = (event: MouseEvent) => {
             mouse.current.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -135,76 +174,68 @@ const ThreeSpaceBackground: React.FC = () => {
         camera.position.z = 250;
 
         const animate = () => {
-            time += 0.025; // Even faster time
+            time += 0.02;
 
-            // MOUSE TRACKING & DRIFT
+            // Tracking & Drift
             const mouseTargetX = (mouse.current.x * viewBounds.current.width) * 0.45;
             const mouseTargetY = (mouse.current.y * viewBounds.current.height) * 0.45;
-            const driftX = Math.sin(time * 0.5) * 30;
-            const driftY = Math.cos(time * 0.4) * 20;
+            const driftX = Math.sin(time * 0.8) * 15;
+            const driftY = Math.cos(time * 0.7) * 10;
 
             const targetX = mouseTargetX + driftX;
             const targetY = mouseTargetY + driftY;
 
-            const oldPos = blackHoleGroup.position.clone();
-            blackHoleGroup.position.x += (targetX - blackHoleGroup.position.x) * 0.08;
-            blackHoleGroup.position.y += (targetY - blackHoleGroup.position.y) * 0.08;
+            const oldPos = starGroup.position.clone();
+            starGroup.position.x += (targetX - starGroup.position.x) * 0.1;
+            starGroup.position.y += (targetY - starGroup.position.y) * 0.1;
 
-            // Calculate Velocity for effects
-            const velocity = blackHoleGroup.position.distanceTo(oldPos);
+            const velocity = starGroup.position.distanceTo(oldPos);
 
-            // UPDATE TRAIL (Funnel Effect)
-            // Store current position at the beginning of the trail
-            trailPositions.current.unshift(blackHoleGroup.position.clone());
+            // Rotate Crystal
+            crystal.rotation.y += 0.04 + velocity * 0.02;
+            crystal.rotation.z += 0.02;
+            wireframe.rotation.y -= 0.02;
+            wireframe.rotation.z -= 0.01;
+
+            // Pulsate Aura
+            aura.scale.setScalar(1 + Math.sin(time * 4) * 0.1 + velocity * 0.1);
+
+            // Update Trail
+            trailPositions.current.unshift(starGroup.position.clone());
             if (trailPositions.current.length > trailCount * 4) {
                 trailPositions.current.pop();
             }
 
-            // Position the trailing rings with lag
             trailRings.forEach((ring, idx) => {
-                const pointIdx = idx * 3;
-                const pos = trailPositions.current[pointIdx] || blackHoleGroup.position;
+                const pointIdx = idx * 2;
+                const pos = trailPositions.current[pointIdx] || starGroup.position;
                 ring.position.copy(pos);
 
-                // Funnel scaling: rings get larger or smaller? 
-                // Let's make them shrink and fade out for a tunnel look
                 const factor = 1 - (idx / trailCount);
-                ring.scale.setScalar(factor * (1 + velocity * 0.2));
+                ring.scale.setScalar(factor * (0.8 + velocity * 0.5));
 
-                // Orient ring to face the movement (roughly lookAt next point)
-                const nextPos = trailPositions.current[pointIdx + 1] || blackHoleGroup.position;
+                const nextPos = trailPositions.current[pointIdx + 1] || starGroup.position;
                 ring.lookAt(nextPos);
 
-                // Opacity tied to velocity - trail appears when moving
-                const alpha = (idx === 0) ? 0 : factor * Math.min(velocity * 0.4, 0.6);
+                const alpha = factor * Math.min(velocity * 0.8, 0.9);
                 (ring.material as THREE.MeshBasicMaterial).opacity = alpha;
             });
 
-            // ZOOM PULSATION
-            const scaleBase = 1.15;
-            const scaleZoom = Math.sin(time * 1.8) * 0.25;
-            blackHoleGroup.scale.setScalar(scaleBase + scaleZoom + (velocity * 0.05));
-
-            // Accretion disk High-Speed Spin
-            accretionDisk.rotation.z += 0.06;
-            accretionDisk.rotation.x = Math.PI / 2.05 + Math.sin(time * 1.2) * 0.15;
-
-            diskLight.position.copy(blackHoleGroup.position);
-
-            // Starfield - Velocity Stretching Simulation
+            // Starfield
             const positions = starGeometry.attributes.position.array as Float32Array;
             for (let i = 0; i < starCount; i++) {
-                // Stars move faster based on black hole velocity
-                positions[i * 3 + 2] += starVelocities[i] * (1.5 + velocity * 0.5);
+                positions[i * 3 + 2] += starVelocities[i] * (2.0 + velocity * 1.5);
                 if (positions[i * 3 + 2] > 500) {
                     positions[i * 3 + 2] = -5500;
                 }
             }
             starGeometry.attributes.position.needsUpdate = true;
 
-            // Camera Response
-            camera.position.x += (mouse.current.x * 12 - camera.position.x) * 0.02;
-            camera.position.y += (mouse.current.y * 10 - camera.position.y) * 0.02;
+            starLight.position.copy(starGroup.position);
+
+            // Camera Motion
+            camera.position.x += (mouse.current.x * 15 - camera.position.x) * 0.05;
+            camera.position.y += (mouse.current.y * 12 - camera.position.y) * 0.05;
             camera.lookAt(0, 0, -500);
 
             renderer.render(scene, camera);
