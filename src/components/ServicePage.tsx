@@ -102,7 +102,7 @@ const MailScoutIcon: React.FC<{ className?: string; idSuffix?: string }> = ({ cl
     );
 };
 
-import AudioShowcase from './AudioShowcase';
+import VapiAssistant from './VapiAssistant';
 
 const ServicePage: React.FC<ServicePageProps> = ({ data, onBack }) => {
     const isAutomation = data.title.toLowerCase().includes('automatisierung') || data.title.toLowerCase().includes('automation') || data.title.toLowerCase().includes('ki');
@@ -135,7 +135,7 @@ const ServicePage: React.FC<ServicePageProps> = ({ data, onBack }) => {
                     {data.heroText}
                 </p>
 
-                {isTelephony && <AudioShowcase />}
+                {isTelephony && <VapiAssistant />}
 
 
                 {/* Referenz Spotlight */}
