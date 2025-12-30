@@ -1,19 +1,25 @@
 
+// Types definitions
 export interface FAQItem {
+  category: string;
   question: string;
   answer: string;
-  category: string;
 }
 
 export interface PricingPackage {
   name: string;
   price: string;
-  features: string[];
   recommended?: boolean;
+  features: string[];
 }
 
-export interface Step {
+export interface ServiceData {
   title: string;
-  description: string;
-  phase: string;
+  subtitle: string;
+  heroText: string;
+  content: string;
+  features: { title: string; desc: string }[];
 }
+
+// Navigation Steps (optional, generic)
+export type Step = 'home' | 'details' | 'contact' | 'success';
