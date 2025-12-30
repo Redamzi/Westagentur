@@ -66,7 +66,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                         </h4>
                         <ul className="space-y-4 text-neutral-500 font-body text-sm">
                             <li><button onClick={(e) => handleNav(e, 'webdesign')} className="hover:text-cyan-400 transition-colors text-left">Webdesign</button></li>
-                            <li><button onClick={(e) => handleNav(e, 'seo')} className="hover:text-cyan-400 transition-colors text-left">SEO-Optimierung</button></li>
+                            <li><button onClick={(e) => handleNav(e, 'telephony')} className="hover:text-cyan-400 transition-colors text-left">KI-Telefonie</button></li>
                             <li><button onClick={(e) => handleNav(e, '3d')} className="hover:text-cyan-400 transition-colors text-left">3D Webdesign</button></li>
                             <li><button onClick={(e) => handleNav(e, 'automation')} className="hover:text-cyan-400 transition-colors text-left">Automatisierung</button></li>
                             <li><button onClick={(e) => handleNav(e, 'ai')} className="hover:text-cyan-400 transition-colors text-left">KI-Lösungen</button></li>

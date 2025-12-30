@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 import ServicePage from './components/ServicePage';
 import LegalPage from './components/LegalPage';
 
-export type ViewState = 'home' | 'webdesign' | 'seo' | '3d' | 'automation' | 'ai' | 'security' | 'about' | 'contact' | 'imprint' | 'privacy' | 'tos';
+export type ViewState = 'home' | 'webdesign' | 'telephony' | '3d' | 'automation' | 'ai' | 'security' | 'about' | 'contact' | 'imprint' | 'privacy' | 'tos';
 
 // Hook für Scroll-Sichtbarkeit mit Fallback
 const useVisible = () => {
@@ -270,7 +270,7 @@ const App: React.FC = () => {
                         {/* Standard Service Cards */}
                         {[
                             { label: 'STRATEGIE', title: 'Modernes Webdesign', desc: 'Wir gestalten nutzerzentrierte Websites, die Ihre Markenidentität stärken und Besucher in Kunden verwandeln.', link: 'webdesign' },
-                            { label: 'REICHWEITE', title: 'SEO-Optimierung', desc: 'Sichtbarkeit ist alles. Wir optimieren Ihre Präsenz für Spitzen-Rankings bei Google und Co.', link: 'seo' },
+                            { label: '24/7 SERVICE', title: 'KI-Telefonie', desc: 'Verpassen Sie nie wieder einen Kunden. Intelligente Telefonie, die rund um die Uhr für Sie arbeitet.', link: 'telephony' },
                             { label: 'EFFIZIENZ', title: 'Automatisierung', desc: 'Sparen Sie wertvolle Zeit durch intelligente Workflows und nahtlose Software-Integrationen.', link: 'automation' }
                         ].map((f, i) => (
                             <div
@@ -428,7 +428,7 @@ const App: React.FC = () => {
                     <div className="hidden lg:flex space-x-10 text-[12px] md:text-[13px] font-technical font-bold tracking-[0.1em] text-neutral-300 uppercase items-center">
                         <button onClick={() => setView('about')} className={`hover:text-cyan-400 transition-all ${view === 'about' ? 'text-cyan-400' : ''}`}>Über uns</button>
                         <button onClick={() => setView('webdesign')} className={`hover:text-cyan-400 transition-all ${view === 'webdesign' ? 'text-cyan-400' : ''}`}>Webdesign</button>
-                        <button onClick={() => setView('seo')} className={`hover:text-cyan-400 transition-all ${view === 'seo' ? 'text-cyan-400' : ''}`}>SEO</button>
+                        <button onClick={() => setView('telephony')} className={`hover:text-cyan-400 transition-all ${view === 'telephony' ? 'text-cyan-400' : ''}`}>KI-Telefonie</button>
                         <button onClick={() => setView('3d')} className={`hover:text-cyan-400 transition-all ${view === '3d' ? 'text-cyan-400' : ''}`}>3D Design</button>
                         <button onClick={() => setView('automation')} className={`hover:text-cyan-400 transition-all ${view === 'automation' ? 'text-cyan-400' : ''}`}>Automatisierung</button>
                     </div>
@@ -447,7 +447,7 @@ const App: React.FC = () => {
                         <ContactSection isDedicatedPage={true} onBack={() => setView('home')} />
                     </div>
                 )}
-                {['webdesign', 'seo', '3d', 'automation', 'ai', 'security'].includes(view) && (
+                {['webdesign', 'telephony', '3d', 'automation', 'ai', 'security'].includes(view) && (
                     <ServicePage
                         data={SERVICE_DATA[view as keyof typeof SERVICE_DATA] || SERVICE_DATA['webdesign']}
                         onBack={() => setView('home')}

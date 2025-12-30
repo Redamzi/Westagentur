@@ -107,15 +107,15 @@ export const SERVICE_DATA: Record<string, ServiceData> = {
             { title: "Individuelles UI", desc: "Keine Vorlagen – wir bauen Ihre Marke von Grund auf neu." }
         ]
     },
-    seo: {
-        title: "SEO-Optimierung",
-        subtitle: "SEO Reichweite",
-        heroText: "Dominieren Sie die Suchergebnisse durch strategische Optimierung.",
-        content: "Eine Website ohne Besucher ist wertlos. Unser SEO-Webdesign-Ansatz stellt sicher, dass Ihre Online-Präsenz von Anfang an technisch perfekt auf Google vorbereitet ist. Wir kombinieren technisches SEO (Ladezeiten, Struktur) mit einer tiefgehenden Keyword-Analyse und autoritativem Content-Marketing. So steigern wir nachhaltig Ihre organische Reichweite und sorgen für qualifizierte Leads.",
+    telephony: {
+        title: "KI-Telefonie",
+        subtitle: "24/7 Erreichbarkeit",
+        heroText: "Verpassen Sie nie wieder einen Kundenanruf – dank intelligenter KI-Telefonie.",
+        content: "Unsere KI-Telefonie-Lösungen revolutionieren Ihren Kundenservice. Ihre digitale Telefonzentrale ist rund um die Uhr besetzt, nimmt Anrufe entgegen, beantwortet Fragen und qualifiziert Leads – völlig automatisch. Das entlastet Ihr Team von Routineaufgaben und stellt sicher, dass kein potenzieller Kunde in der Warteschleife verloren geht. Integrieren Sie modernste Sprachtechnologie für einen Wettbewerbsvorteil, der hörbar ist.",
         features: [
-            { title: "Keyword Strategie", desc: "Targeting von Keywords mit hoher Kaufabsicht." },
-            { title: "Technisches SEO", desc: "Optimierung für Spitzen-Rankings." },
-            { title: "Local SEO", desc: "Präsenz in Ihrer Region für gezielte Kundenansprache." }
+            { title: "24/7 Service", desc: "Immer erreichbar, auch an Wochenenden und Feiertagen." },
+            { title: "Intelligente Dialoge", desc: "Natürliche Gespräche und direkte Terminbuchung." },
+            { title: "Team Entlastung", desc: "Fokus auf komplexe Aufgaben statt Telefon-Routine." }
         ]
     },
     '3d': {
@@ -170,7 +170,7 @@ export const LEGAL_CONTENT = {
         sections: [
             {
                 heading: "Angaben gemäß § 5 TMG",
-                body: "Westagentur Digital Solutions GmbH\nMusterstraße 123\n12345 Musterstadt"
+                body: "Westagentur Digital Solutions GmbH\nKielstraße 28\n44145 Dortmund"
             },
             {
                 heading: "Vertreten durch",
@@ -178,7 +178,7 @@ export const LEGAL_CONTENT = {
             },
             {
                 heading: "Kontakt",
-                body: "Telefon: +49 (0) 123 456789\nE-Mail: mail@westagentur.de"
+                body: "Telefon: +49 152 27506958\nE-Mail: mail@westagentur.de"
             },
             {
                 heading: "Registereintrag",
