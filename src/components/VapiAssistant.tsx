@@ -14,43 +14,62 @@ const VapiAssistant: React.FC = () => {
     const [errorMsg, setErrorMsg] = useState('');
 
     useEffect(() => {
-        // Event Listeners
-        vapi.on('call-start', () => {
+        // Event Listeners definieren
+        const onCallStart = () => {
+            console.log("Call started");
             setStatus('connected');
             setErrorMsg('');
-        });
+        };
 
-        vapi.on('call-end', () => {
+        const onCallEnd = () => {
+            console.log("Call ended");
             setStatus('finished');
             setIsSpeaking(false);
             setVolume(0);
-        });
+        };
 
-        vapi.on('speech-start', () => setIsSpeaking(true));
-        vapi.on('speech-end', () => setIsSpeaking(false));
+        const onSpeechStart = () => setIsSpeaking(true);
+        const onSpeechEnd = () => setIsSpeaking(false);
+        const onVolumeLevel = (vol: number) => setVolume(vol);
 
-        vapi.on('volume-level', (vol) => {
-            // Normalisieren des Volumens für die Visualisierung (0-1)
-            setVolume(vol);
-        });
-
-        vapi.on('error', (e: any) => {
+        const onError = (e: any) => {
             console.error("Vapi Error:", e);
+            // Ignoriere typische 'Call ended' Fehler, falls sie als Error kommen
+            if (e.error?.message?.includes("ended") || e.message?.includes("ended")) {
+                setStatus('finished');
+                return;
+            }
             setStatus('error');
             setErrorMsg(e.error?.message || "Verbindungsfehler");
-        });
+        };
 
-        // Cleanup beim Unmount (Anruf beenden)
+        // Attach Listeners
+        vapi.on('call-start', onCallStart);
+        vapi.on('call-end', onCallEnd);
+        vapi.on('speech-start', onSpeechStart);
+        vapi.on('speech-end', onSpeechEnd);
+        vapi.on('volume-level', onVolumeLevel);
+        vapi.on('error', onError);
+
+        // Cleanup beim Unmount
         return () => {
-            if (status === 'connected') {
-                vapi.stop();
-            }
+            vapi.off('call-start', onCallStart);
+            vapi.off('call-end', onCallEnd);
+            vapi.off('speech-start', onSpeechStart);
+            vapi.off('speech-end', onSpeechEnd);
+            vapi.off('volume-level', onVolumeLevel);
+            vapi.off('error', onError);
+            // Stoppe den Call nur wenn wirklich unmounted wird, um Seiteneffekte zu vermeiden
+            try {
+                // vapi.stop() hier weglassen, da es manchmal Redirects triggert wenn zu oft gerufen
+            } catch (e) { }
         };
     }, []);
 
     const toggleCall = async () => {
         if (status === 'idle' || status === 'error' || status === 'finished') {
             setStatus('connecting');
+            setErrorMsg('');
             try {
                 await vapi.start(VAPI_ASSISTANT_ID);
             } catch (err) {
@@ -58,7 +77,13 @@ const VapiAssistant: React.FC = () => {
                 setStatus('error');
             }
         } else {
-            vapi.stop();
+            // Kontrolliertes Stoppen
+            try {
+                vapi.stop();
+                setStatus('finished'); // Manuell schon mal setzen für schnelles Feedback
+            } catch (e) {
+                console.error("Error stopping call", e);
+            }
         }
     };
 
