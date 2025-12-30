@@ -178,7 +178,7 @@ export const LEGAL_CONTENT = {
             },
             {
                 heading: "Kontakt",
-                body: "Telefon: +49 (0) 123 456789\nE-Mail: info@westagentur.de"
+                body: "Telefon: +49 (0) 123 456789\nE-Mail: mail@westagentur.de"
             },
             {
                 heading: "Registereintrag",

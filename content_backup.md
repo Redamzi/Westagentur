@@ -58,7 +58,7 @@
 
 ## Contact Section
 - CTA: Digitales Wachstum / Jetzt unverbindlich beraten lassen
-- Info: info@westagentur.de, Standort Deutschland, Reaktionszeit 24 Stunden
+- Info: mail@westagentur.de, Standort Deutschland, Reaktionszeit 24 Stunden
 
 ## Footer
 - Text: © 2026 WESTAGENTUR — IHRE AGENTUR FÜR DIGITALE LÖSUNGEN
