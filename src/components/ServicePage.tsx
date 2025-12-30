@@ -102,7 +102,7 @@ const MailScoutIcon: React.FC<{ className?: string; idSuffix?: string }> = ({ cl
     );
 };
 
-import VapiAssistant from './VapiAssistant';
+const VapiAssistant = React.lazy(() => import('./VapiAssistant'));
 
 const ServicePage: React.FC<ServicePageProps> = ({ data, onBack }) => {
     const isAutomation = data.title.toLowerCase().includes('automatisierung') || data.title.toLowerCase().includes('automation') || data.title.toLowerCase().includes('ki');
@@ -135,7 +135,11 @@ const ServicePage: React.FC<ServicePageProps> = ({ data, onBack }) => {
                     {data.heroText}
                 </p>
 
-                {isTelephony && <VapiAssistant />}
+                {isTelephony && (
+                    <React.Suspense fallback={<div className="h-64 flex items-center justify-center text-cyan-400 font-technical animate-pulse">LADE ASSISTENT...</div>}>
+                        <VapiAssistant />
+                    </React.Suspense>
+                )}
 
 
                 {/* Referenz Spotlight */}
