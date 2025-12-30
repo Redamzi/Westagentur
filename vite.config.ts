@@ -6,6 +6,16 @@ export default defineConfig({
   base: '/',
   build: {
     outDir: 'dist',
-    assetsDir: 'assets'
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          three: ['three', 'three/examples/jsm/controls/OrbitControls.js'],
+          vapi: ['@vapi-ai/web']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000
   }
 })

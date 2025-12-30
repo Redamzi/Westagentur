@@ -112,7 +112,7 @@ const ThreeSpaceBackground: React.FC = () => {
     }, []);
 
     return (
-        <div className="fixed inset-0 z-[0] pointer-events-none bg-black overflow-hidden">
+        <div className="fixed inset-0 z-[0] pointer-events-none bg-transparent overflow-hidden">
             {/* 3D Starfield layer */}
             <div ref={containerRef} className="absolute inset-0" />
 

@@ -1,13 +1,16 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { PRICING, SERVICE_DATA } from './constants';
 import ThreeSpaceBackground from './components/ThreeSpaceBackground';
 import FaqSection from './components/FaqSection';
 import Interactive3DViewer, { AnimationType } from './components/Interactive3DViewer';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
-import ServicePage from './components/ServicePage';
-import LegalPage from './components/LegalPage';
+
+// Lazy Load Pages for Performance
+const ServicePage = React.lazy(() => import('./components/ServicePage'));
+const LegalPage = React.lazy(() => import('./components/LegalPage'));
+const VoiceAssistantWidget = React.lazy(() => import('./components/VoiceAssistantWidget'));
 
 export type ViewState = 'home' | 'webdesign' | 'telephony' | '3d' | 'automation' | 'ai' | 'security' | 'about' | 'contact' | 'imprint' | 'privacy' | 'tos';
 
@@ -39,6 +42,15 @@ const useVisible = () => {
 
     return { ref, isVisible };
 };
+
+const LoadingSpinner = () => (
+    <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="relative w-20 h-20">
+            <div className="absolute inset-0 rounded-full border-t-2 border-cyan-400 animate-spin"></div>
+            <div className="absolute inset-3 rounded-full border-r-2 border-violet-500 animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}></div>
+        </div>
+    </div>
+);
 
 const HUDDataPoint: React.FC<{ label: string; value: string; color?: string }> = ({ label, value, color = "text-cyan-400" }) => (
     <div className="flex flex-col gap-1 font-technical text-center min-w-[80px] md:min-w-[120px]">
@@ -180,6 +192,7 @@ const MailScoutIcon: React.FC<{ className?: string; idSuffix?: string }> = ({ cl
 
 const App: React.FC = () => {
     const [view, setView] = useState<ViewState>('home');
+    const [isVoiceWidgetOpen, setIsVoiceWidgetOpen] = useState(false);
     const { ref: sectionRef, isVisible } = useVisible();
 
     useEffect(() => {
@@ -433,9 +446,21 @@ const App: React.FC = () => {
                         <button onClick={() => setView('automation')} className={`hover:text-cyan-400 transition-all ${view === 'automation' ? 'text-cyan-400' : ''}`}>Automatisierung</button>
                     </div>
 
-                    <button onClick={() => setView('contact')} className={`px-4 py-2 md:px-8 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-[13px] font-technical font-bold uppercase tracking-[0.1em] transition-all active:scale-95 shrink-0 ${view === 'contact' ? 'bg-cyan-400 text-black' : 'bg-white text-black hover:bg-cyan-400'}`}>
-                        Kontakt
-                    </button>
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={() => setIsVoiceWidgetOpen(true)}
+                            className="bg-white/10 p-2 md:p-3 rounded-full md:rounded-xl text-white hover:bg-cyan-500 hover:text-black transition-all active:scale-95 group relative overflow-hidden"
+                            aria-label="KI Assistent Sarah"
+                        >
+                            <span className="absolute inset-0 bg-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity blur-md"></span>
+                            <svg className="w-5 h-5 md:w-6 md:h-6 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                            </svg>
+                        </button>
+                        <button onClick={() => setView('contact')} className={`px-4 py-2 md:px-8 md:py-3 rounded-lg md:rounded-xl text-[10px] md:text-[13px] font-technical font-bold uppercase tracking-[0.1em] transition-all active:scale-95 shrink-0 ${view === 'contact' ? 'bg-cyan-400 text-black' : 'bg-white text-black hover:bg-cyan-400'}`}>
+                            Kontakt
+                        </button>
+                    </div>
                 </div>
             </nav>
 
@@ -447,18 +472,21 @@ const App: React.FC = () => {
                         <ContactSection isDedicatedPage={true} onBack={() => setView('home')} />
                     </div>
                 )}
-                {['webdesign', 'telephony', '3d', 'automation', 'ai', 'security'].includes(view) && (
-                    <ServicePage
-                        data={SERVICE_DATA[view as keyof typeof SERVICE_DATA] || SERVICE_DATA['webdesign']}
-                        onBack={() => setView('home')}
-                    />
-                )}
-                {['imprint', 'privacy', 'tos'].includes(view) && (
-                    <LegalPage
-                        type={view as 'imprint' | 'privacy' | 'tos'}
-                        onBack={() => setView('home')}
-                    />
-                )}
+                <Suspense fallback={<LoadingSpinner />}>
+                    {['webdesign', 'telephony', '3d', 'automation', 'ai', 'security'].includes(view) && (
+                        <ServicePage
+                            data={SERVICE_DATA[view as keyof typeof SERVICE_DATA] || SERVICE_DATA['webdesign']}
+                            onBack={() => setView('home')}
+                        />
+                    )}
+                    {['imprint', 'privacy', 'tos'].includes(view) && (
+                        <LegalPage
+                            type={view as 'imprint' | 'privacy' | 'tos'}
+                            onBack={() => setView('home')}
+                        />
+                    )}
+                    <VoiceAssistantWidget isOpen={isVoiceWidgetOpen} onClose={() => setIsVoiceWidgetOpen(false)} />
+                </Suspense>
 
                 {view === 'home' && <ContactSection />}
                 <Footer onNavigate={(v) => setView(v)} />
