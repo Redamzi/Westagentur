@@ -4,212 +4,199 @@ import * as THREE from 'three';
 
 const ThreeSpaceBackground: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const mouse = useRef({ x: 0, y: 0 });
-    const viewBounds = useRef({ width: 500, height: 400 });
-    const trailPositions = useRef<THREE.Vector3[]>([]);
-    const MAX_TRAIL_POINTS = 40; // Even longer trail for the light streak
+    const reticleRef = useRef<HTMLDivElement>(null);
+    const coordsRef = useRef<HTMLDivElement>(null);
+
+    // State is handled via refs for performance (LERP loop)
+    const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+    const pos = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
 
     useEffect(() => {
+        // --- 1. THREE.JS STARFIELD ---
         if (!containerRef.current) return;
 
-        // 1. Scene & Camera Setup
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
-        const renderer = new THREE.WebGLRenderer({
-            antialias: true,
-            alpha: true,
-            powerPreference: "high-performance"
-        });
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 100;
 
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.setClearColor(0x000000, 1);
         containerRef.current.appendChild(renderer.domElement);
 
-        // 2. Cinematic Lighting
-        const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
-        scene.add(ambientLight);
-
-        // Super intense light for the shooting star
-        const meteorLight = new THREE.PointLight(0xffffff, 150, 2500);
-        scene.add(meteorLight);
-
-        // 3. The Meteor (Shooting Star Core)
-        const meteorGroup = new THREE.Group();
-        meteorGroup.position.set(0, 0, -350);
-        scene.add(meteorGroup);
-
-        // Bright Point Core
-        const coreGeom = new THREE.SphereGeometry(6, 16, 16);
-        const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-        const core = new THREE.Mesh(coreGeom, coreMat);
-        meteorGroup.add(core);
-
-        // Outer Glow Sphere
-        const glowGeom = new THREE.SphereGeometry(15, 32, 32);
-        const glowMat = new THREE.MeshBasicMaterial({
-            color: 0x00f2ff,
-            transparent: true,
-            opacity: 0.6,
-            blending: THREE.AdditiveBlending
-        });
-        const glow = new THREE.Mesh(glowGeom, glowMat);
-        meteorGroup.add(glow);
-
-        // 4. Shooting Star Streak (Trail)
-        const trailGroup = new THREE.Group();
-        scene.add(trailGroup);
-
-        const trailMeshes: THREE.Mesh[] = [];
-        const trailCount = MAX_TRAIL_POINTS;
-
-        // We use slightly tapered spheres or cylinders for a smooth streak
-        const streakGeom = new THREE.SphereGeometry(8, 16, 16);
-
-        for (let i = 0; i < trailCount; i++) {
-            const opacity = 1.0 - (i / trailCount);
-            const tMat = new THREE.MeshBasicMaterial({
-                color: i < 5 ? 0xffffff : 0x00f2ff, // Fade from white to cyan
-                transparent: true,
-                opacity: 0,
-                blending: THREE.AdditiveBlending
-            });
-            const mesh = new THREE.Mesh(streakGeom, tMat);
-            trailMeshes.push(mesh);
-            trailGroup.add(mesh);
-        }
-
-        // 5. Starfield
-        const starCount = 8000;
-        const starGeometry = new THREE.BufferGeometry();
-        const starPositions = new Float32Array(starCount * 3);
-        const starVelocities = new Float32Array(starCount);
+        // Stars
+        const starCount = 3000;
+        const starGeom = new THREE.BufferGeometry();
+        const positions = new Float32Array(starCount * 3);
+        const velocities = new Float32Array(starCount);
 
         for (let i = 0; i < starCount; i++) {
-            starPositions[i * 3] = (Math.random() - 0.5) * 4500;
-            starPositions[i * 3 + 1] = (Math.random() - 0.5) * 3500;
-            starPositions[i * 3 + 2] = (Math.random() * -6000);
-            starVelocities[i] = Math.random() * 4.0 + 1.5;
+            positions[i * 3] = (Math.random() - 0.5) * 1500;
+            positions[i * 3 + 1] = (Math.random() - 0.5) * 1000;
+            positions[i * 3 + 2] = (Math.random() - 0.5) * 2000;
+            velocities[i] = Math.random() * 0.2 + 0.05;
         }
 
-        starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-        const starMaterial = new THREE.PointsMaterial({
-            size: 1.3,
+        starGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const starMat = new THREE.PointsMaterial({
+            size: 1.2,
             color: 0xffffff,
             transparent: true,
             opacity: 0.8,
-            blending: THREE.AdditiveBlending
+            map: null
         });
-        const stars = new THREE.Points(starGeometry, starMaterial);
+        const stars = new THREE.Points(starGeom, starMat);
         scene.add(stars);
 
-        // 6. Interaction
-        const handleMouseMove = (event: MouseEvent) => {
-            mouse.current.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        };
-        window.addEventListener('mousemove', handleMouseMove);
-
-        const updateBounds = () => {
-            const aspect = window.innerWidth / window.innerHeight;
-            const visibleHeight = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * 600;
-            const visibleWidth = visibleHeight * aspect;
-            viewBounds.current = { width: visibleWidth, height: visibleHeight };
-        };
-        updateBounds();
-
-        // 7. Animation Loop
-        let time = 0;
-        camera.position.z = 250;
+        // --- 2. ANIMATION LOOPS ---
+        let frameId = 0;
 
         const animate = () => {
-            time += 0.02;
-
-            // Tracking
-            const mouseTargetX = (mouse.current.x * viewBounds.current.width) * 0.45;
-            const mouseTargetY = (mouse.current.y * viewBounds.current.height) * 0.45;
-
-            // Random tiny jitter for meteor look
-            const jitterX = Math.random() * 2;
-            const jitterY = Math.random() * 2;
-
-            const targetX = mouseTargetX + jitterX;
-            const targetY = mouseTargetY + jitterY;
-
-            const oldPos = meteorGroup.position.clone();
-            meteorGroup.position.x += (targetX - meteorGroup.position.x) * 0.12;
-            meteorGroup.position.y += (targetY - meteorGroup.position.y) * 0.12;
-
-            const velocity = meteorGroup.position.distanceTo(oldPos);
-
-            // Pulsate Glow
-            glow.scale.setScalar(1.0 + Math.sin(time * 10) * 0.2 + velocity * 0.1);
-
-            // Update Trail (Light Streak)
-            trailPositions.current.unshift(meteorGroup.position.clone());
-            if (trailPositions.current.length > trailCount * 2) {
-                trailPositions.current.pop();
-            }
-
-            trailMeshes.forEach((mesh, idx) => {
-                const pos = trailPositions.current[idx] || meteorGroup.position;
-                mesh.position.copy(pos);
-
-                const factor = 1.0 - (idx / trailCount);
-                // Streak becomes thinner towards the end
-                const scale = factor * (0.8 + velocity * 0.4);
-                mesh.scale.setScalar(scale);
-
-                // Opacity logic
-                const alpha = factor * 0.8 * Math.min(velocity * 0.5, 1.0);
-                (mesh.material as THREE.MeshBasicMaterial).opacity = alpha;
-            });
-
-            // Starfield
-            const positions = starGeometry.attributes.position.array as Float32Array;
+            // Stars Animation
+            const posAttr = starGeom.attributes.position.array as Float32Array;
             for (let i = 0; i < starCount; i++) {
-                positions[i * 3 + 2] += starVelocities[i] * (2.5 + velocity * 2.0);
-                if (positions[i * 3 + 2] > 500) {
-                    positions[i * 3 + 2] = -5500;
+                posAttr[i * 3 + 2] += velocities[i];
+                if (posAttr[i * 3 + 2] > 200) {
+                    posAttr[i * 3 + 2] = -1800;
                 }
             }
-            starGeometry.attributes.position.needsUpdate = true;
-
-            meteorLight.position.copy(meteorGroup.position);
-
-            // Camera Parallax
-            camera.position.x += (mouse.current.x * 20 - camera.position.x) * 0.05;
-            camera.position.y += (mouse.current.y * 15 - camera.position.y) * 0.05;
-            camera.lookAt(0, 0, -500);
-
+            starGeom.attributes.position.needsUpdate = true;
             renderer.render(scene, camera);
-            requestAnimationFrame(animate);
+
+            // Reticle LERP (Follow Mouse)
+            const targetX = mouse.current.x;
+            const targetY = mouse.current.y;
+
+            // Lerp factor 0.12 for distinct smooth lag
+            pos.current.x += (targetX - pos.current.x) * 0.12;
+            pos.current.y += (targetY - pos.current.y) * 0.12;
+
+            if (reticleRef.current) {
+                reticleRef.current.style.transform = `translate(${pos.current.x}px, ${pos.current.y}px)`;
+            }
+
+            // Coords Update (Live Data)
+            if (coordsRef.current) {
+                // Formatting to look technical: X: 0192 Y: 0843
+                const xStr = Math.round(pos.current.x).toString().padStart(4, '0');
+                const yStr = Math.round(pos.current.y).toString().padStart(4, '0');
+                coordsRef.current.innerText = `X: ${xStr}\nY: ${yStr}`;
+            }
+
+            frameId = requestAnimationFrame(animate);
         };
 
-        animate();
+        frameId = requestAnimationFrame(animate);
+
+        // Events
+        const handleMouseMove = (e: MouseEvent) => {
+            mouse.current = { x: e.clientX, y: e.clientY };
+        };
 
         const handleResize = () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-            updateBounds();
         };
+
+        window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('resize', handleResize);
 
         return () => {
-            window.removeEventListener('resize', handleResize);
             window.removeEventListener('mousemove', handleMouseMove);
-            if (containerRef.current) containerRef.current.removeChild(renderer.domElement);
+            window.removeEventListener('resize', handleResize);
+            cancelAnimationFrame(frameId);
+            if (containerRef.current) containerRef.current.innerHTML = '';
             renderer.dispose();
         };
     }, []);
 
     return (
-        <div
-            ref={containerRef}
-            className="fixed inset-0 z-[0] pointer-events-none"
-            style={{ background: '#000' }}
-        />
+        <div className="fixed inset-0 z-[0] pointer-events-none bg-black overflow-hidden">
+            {/* 3D Starfield layer */}
+            <div ref={containerRef} className="absolute inset-0" />
+
+            {/* Reticle HUD Overlay */}
+            <div
+                ref={reticleRef}
+                className="absolute top-0 left-0"
+                style={{
+                    willChange: 'transform',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '0px',
+                    height: '0px'
+                }}
+            >
+                {/* Centered Container relative to mouse position */}
+                <div className="relative flex items-center justify-center w-[600px] h-[600px] -translate-x-1/2 -translate-y-1/2">
+
+                    {/* SVG Filters Definition */}
+                    <svg width="0" height="0" className="absolute">
+                        <defs>
+                            <filter id="glow-blur">
+                                <feGaussianBlur stdDeviation="3.5" result="coloredBlur" />
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                        </defs>
+                    </svg>
+
+                    {/* Layer 1: Outer Rotating Dashed Ring (Slow) */}
+                    <div className="absolute inset-0 flex items-center justify-center animate-spin-very-slow opacity-20">
+                        <div className="w-[450px] h-[450px] rounded-full border border-dashed border-cyan-500/30"></div>
+                    </div>
+
+                    {/* Layer 2: Mid Tech Ring with Violet Accents (Counter-Rotate) */}
+                    <div className="absolute inset-0 flex items-center justify-center animate-reverse-spin opacity-50">
+                        <svg width="350" height="350" viewBox="0 0 350 350" fill="none">
+                            {/* Violet Arc */}
+                            <circle cx="175" cy="175" r="170" stroke="#bc13fe" strokeWidth="1" strokeDasharray="4 8" opacity="0.6" />
+                            {/* Cyan Markers */}
+                            <path d="M175,5 L175,25 M175,325 L175,345 M5,175 L25,175 M325,175 L345,175" stroke="#00f2ff" strokeWidth="2" />
+                        </svg>
+                    </div>
+
+                    {/* Layer 3: Inner Focus Ring (Fast Spin + Glow) */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div
+                            className="w-[180px] h-[180px] rounded-full border border-cyan-400 opacity-70 border-t-transparent border-b-transparent animate-spin-slow"
+                            style={{ filter: 'drop-shadow(0 0 8px rgba(0,242,255,0.6))' }}
+                        ></div>
+                    </div>
+
+                    {/* Layer 4: Center Crosshair & Core */}
+                    <div className="absolute w-4 h-4 bg-cyan-400 rounded-full blur-[2px] opacity-80"></div>
+                    <div className="absolute w-2 h-2 bg-white rounded-full z-10"></div>
+
+                    {/* Cross Lines */}
+                    <div className="absolute w-[250px] h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent"></div>
+                    <div className="absolute h-[250px] w-[1px] bg-gradient-to-b from-transparent via-cyan-500/40 to-transparent"></div>
+
+                    {/* Layer 5: Live Coordinates Display */}
+                    <div
+                        ref={coordsRef}
+                        className="absolute top-1/2 left-1/2 transform translate-x-12 translate-y-8 font-['Space_Mono'] text-xs text-cyan-300 drop-shadow-[0_0_5px_rgba(0,242,255,0.8)] whitespace-pre leading-tight"
+                    >
+                    </div>
+
+                </div>
+            </div>
+
+            <style>{`
+                .animate-spin-very-slow { animation: spin 40s linear infinite; }
+                .animate-spin-slow { animation: spin 8s linear infinite; }
+                .animate-reverse-spin { animation: spin 15s linear infinite reverse; }
+                
+                @keyframes spin {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+            `}</style>
+        </div>
     );
 };
 
