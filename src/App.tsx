@@ -379,12 +379,12 @@ const App: React.FC = () => {
             < section id="investment" className="py-20 md:py-32 relative" >
                 <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
                     <SectionHeading subtitle="Investition" title="Paket-Übersicht" />
-                    <div className="grid lg:grid-cols-3 gap-10 md:gap-12 lg:gap-16 items-stretch">
+                    <div className="flex overflow-x-auto pb-8 snap-x snap-mandatory gap-6 px-4 -mx-4 lg:grid lg:grid-cols-3 lg:gap-16 lg:pb-0 lg:px-0 lg:mx-0 lg:overflow-visible items-stretch scrollbar-hide">
                         {PRICING.map((pkg, i) => (
                             <div
                                 key={i}
                                 style={{ animationDelay: `${i * 300}ms`, animationDuration: '10s' }}
-                                className={`relative group animate-float flex flex-col ${pkg.recommended ? 'z-20' : 'z-10 opacity-90'}`}
+                                className={`relative group animate-float flex flex-col min-w-[85vw] md:min-w-[400px] lg:min-w-0 snap-center ${pkg.recommended ? 'z-20' : 'z-10 opacity-90'}`}
                             >
                                 {pkg.recommended && (
                                     <div className="absolute -top-5 left-1/2 -translate-x-1/2 px-6 py-2 bg-cyan-500 text-black text-[9px] md:text-[10px] font-technical font-black rounded-full tracking-[0.15em] uppercase z-30 shadow-[0_0_30px_rgba(0,242,255,0.5)] whitespace-nowrap">
