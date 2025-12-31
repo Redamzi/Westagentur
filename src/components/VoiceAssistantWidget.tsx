@@ -75,7 +75,7 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  // Canvas Visualization Loop
+  // Orb Visualization Loop
   useEffect(() => {
     if (!isOpen) return;
 
@@ -85,48 +85,56 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
     if (!ctx) return;
 
     let animationFrame: number;
-    let offset = 0;
-
-    const drawWave = (offset: number, amplitude: number, frequency: number, color: string, opacity: number) => {
-      if (!ctx || !canvas) return;
-      ctx.beginPath();
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = color;
-      ctx.globalAlpha = opacity;
-
-      for (let x = 0; x < canvas.width; x++) {
-        const y = canvas.height / 2 + Math.sin(x * frequency + offset) * amplitude;
-        if (x === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-    };
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Calculate amplitude based on volume
-      // Base 'breathing' amplitude when connected but silent: 5
-      // Active speaking adds substantial amplitude
-      const targetAmp = status === 'active'
-        ? 5 + (volume * 150) // Adjust multiplier based on observed Vapi volume levels
-        : 2;
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const isUserActive = isSpeaking || volume > 0.01;
 
-      // Multi-layer waves
-      drawWave(offset, targetAmp, 0.03, '#00f2ff', 0.8);
-      drawWave(offset * 0.8, targetAmp * 0.7, 0.04, '#bc13fe', 0.5);
-      drawWave(offset * 1.2, targetAmp * 0.5, 0.02, '#ffffff', 0.3);
+      // Base Radius
+      let radius = 30;
+      let color = '#bc13fe'; // Idle Purple
+      let glow = 20;
 
-      // Speed up when speaking
-      const speed = (status === 'active' && volume > 0.05) ? 0.2 : 0.05;
-      offset += speed;
+      if (isUserActive) {
+        // ACTIVE: Cyan, pulsed by volume
+        radius = 35 + (volume * 150); // Volume impacts size significantly
+        color = '#00f2ff';
+        glow = 40 + (volume * 100);
+      } else {
+        // IDLE: Breathing
+        const time = Date.now() / 1000;
+        radius = 30 + Math.sin(time * 2) * 2;
+        glow = 20 + Math.sin(time * 2) * 10;
+      }
+
+      // Draw Glow
+      const gradient = ctx.createRadialGradient(centerX, centerY, radius * 0.2, centerX, centerY, radius * 1.5);
+      gradient.addColorStop(0, color);
+      gradient.addColorStop(1, 'transparent');
+
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius * 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      // Draw Core
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.shadowBlur = glow;
+      ctx.shadowColor = color;
+      ctx.fill();
+      ctx.shadowBlur = 0; // Reset
 
       animationFrame = requestAnimationFrame(animate);
     };
 
     animate();
     return () => cancelAnimationFrame(animationFrame);
-  }, [isOpen, status, volume]);
+  }, [isOpen, status, volume, isSpeaking]);
 
   if (!isOpen) return null;
 
@@ -191,19 +199,25 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Spacer for visual balance */}
-          <div className="flex-1 w-full flex flex-col justify-center items-center">
-            {/* Visualizer */}
-            <canvas
-              ref={canvasRef}
-              width={300}
-              height={150}
-              className="w-full h-32 opacity-80"
-            />
-            {status === 'active' && !isSpeaking && (
-              <p className="text-cyan-400 font-body italic text-sm mt-4 animate-pulse">
-                Sprechen Sie jetzt...
-              </p>
-            )}
+          <div className="flex-1 w-full flex flex-col justify-center items-center gap-4">
+            {/* Visualizer Container - FIXED and RIGID */}
+            <div className="w-[300px] h-[150px] flex-none overflow-hidden rounded-2xl relative flex items-center justify-center border border-white/5 bg-white/5 backdrop-blur-sm shadow-inner">
+              <canvas
+                ref={canvasRef}
+                width={300}
+                height={150}
+                className="w-full h-full opacity-90"
+              />
+            </div>
+
+            {/* Status Text Area - Fixed Height to prevent layout shift */}
+            <div className="h-6 flex items-center justify-center">
+              {status === 'active' && !isSpeaking && (
+                <p className="text-cyan-400 font-body italic text-sm animate-pulse">
+                  Sprechen Sie jetzt...
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Controls */}
