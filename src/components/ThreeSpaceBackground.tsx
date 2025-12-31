@@ -78,34 +78,48 @@ const ThreeSpaceBackground: React.FC = () => {
             lastPos.x = pos.current.x;
             lastPos.y = pos.current.y;
 
-            // Stars Animation
+            // Stars Animation - VORTEX MODE
             const posAttr = starGeom.attributes.position.array as Float32Array;
 
-            // Movement factors (tune for feel)
-            const moveX = dx * 0.2;
-            const moveY = dy * 0.2; // Invert DOM Y to 3D Y vs Screen
+            // Map mouse to 3D space center (approx)
+            // Screen center (0,0) -> 3D(0,0). Screen edge -> ~1000
+            const centerX = (pos.current.x - window.innerWidth / 2) * 2;
+            const centerY = -(pos.current.y - window.innerHeight / 2) * 2;
+
+            // Vortex rotation speed (faster when moving mouse)
+            const swirlSpeed = 0.005 * speedRef.current;
+            const sin = Math.sin(swirlSpeed);
+            const cos = Math.cos(swirlSpeed);
 
             for (let i = 0; i < starCount; i++) {
-                // Apply dynamic Z speed (Warp)
+                // 1. Z-Movement (Forward Warp)
                 const moveSpeed = velocities[i] * speedRef.current;
                 posAttr[i * 3 + 2] += moveSpeed;
 
-                // Apply Lateral 'Follow' Movement
-                posAttr[i * 3] += moveX;     // Follow Mouse X
-                posAttr[i * 3 + 1] -= moveY; // Follow Mouse Y (DOM Y is inverted vs 3D Y)
+                // 2. Vortex Swirl (Rotate around Mouse)
+                let x = posAttr[i * 3];
+                let y = posAttr[i * 3 + 1];
 
-                // Z Wrapping (Depth)
+                // Relative to mouse
+                const relX = x - centerX;
+                const relY = y - centerY;
+
+                // Rotate
+                const newRelX = relX * cos - relY * sin;
+                const newRelY = relX * sin + relY * cos;
+
+                // Apply back + slight suction (0.998 factor pulls stars in)
+                posAttr[i * 3] = centerX + newRelX * 0.998;
+                posAttr[i * 3 + 1] = centerY + newRelY * 0.998;
+
+                // 3. Wrapping (Infinite Tunnel)
                 if (posAttr[i * 3 + 2] > 200) {
                     posAttr[i * 3 + 2] = -1800;
+                    // Respawn star at random position when it loops back 
+                    // to ensure density stays uniform and not all sucked into the hole
+                    posAttr[i * 3] = (Math.random() - 0.5) * 3000;
+                    posAttr[i * 3 + 1] = (Math.random() - 0.5) * 2000;
                 }
-
-                // X Wrapping (Width)
-                if (posAttr[i * 3] > 1500) posAttr[i * 3] = -1500;
-                if (posAttr[i * 3] < -1500) posAttr[i * 3] = 1500;
-
-                // Y Wrapping (Height)
-                if (posAttr[i * 3 + 1] > 1000) posAttr[i * 3 + 1] = -1000;
-                if (posAttr[i * 3 + 1] < -1000) posAttr[i * 3 + 1] = 1000;
             }
             starGeom.attributes.position.needsUpdate = true;
             renderer.render(scene, camera);
