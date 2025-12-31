@@ -428,7 +428,7 @@ const App: React.FC = () => {
             <ThreeSpaceBackground />
 
             {/* Navigation */}
-            <nav className="fixed top-0 w-full z-[60] py-3 md:py-4 px-3 md:px-6">
+            <nav className={`fixed top-0 w-full z-[60] py-3 md:py-4 px-3 md:px-6 transition-all duration-500 transform ${isVoiceWidgetOpen ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
                 <div className="max-w-[1440px] mx-auto cosmic-glass glass-reflection px-4 md:px-10 py-3 md:py-4 rounded-[1rem] md:rounded-[1.5rem] flex justify-between items-center group overflow-hidden border-white/10">
                     <div className="flex items-center gap-3 md:gap-6 relative cursor-pointer" onClick={() => setView('home')}>
                         <AppLogo className="w-10 h-10 md:w-16 md:h-16 transition-transform group-hover:scale-105 shrink-0 drop-shadow-[0_0_15px_rgba(0,242,255,0.4)]" />

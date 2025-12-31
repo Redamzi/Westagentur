@@ -169,7 +169,7 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl animate-entrance">
       {/* Outer Phone Wrapper */}
-      <div className="relative w-[320px] md:w-[380px] h-[650px] md:h-[780px] bg-[#050505] rounded-[3.5rem] p-3 shadow-[0_0_100px_rgba(0,242,255,0.15)] border-[8px] border-[#1a1a1a] flex flex-col items-center overflow-hidden transition-all duration-700">
+      <div className="relative w-[320px] md:w-[380px] h-[85vh] max-h-[650px] md:h-[780px] md:max-h-[780px] bg-[#050505] rounded-[3.5rem] p-3 shadow-[0_0_100px_rgba(0,242,255,0.15)] border-[8px] border-[#1a1a1a] flex flex-col items-center overflow-hidden transition-all duration-700">
 
         {/* Hardware details */}
         <div className="absolute top-[150px] -left-2 w-1 h-12 bg-[#1a1a1a] rounded-r-lg"></div> {/* Vol Up */}
