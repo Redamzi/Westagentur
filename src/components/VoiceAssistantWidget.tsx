@@ -94,20 +94,20 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
       const isUserActive = isSpeaking || volume > 0.01;
 
       // Base Radius
-      let radius = 30;
+      let radius = 18;
       let color = '#bc13fe'; // Idle Purple
-      let glow = 20;
+      let glow = 15;
 
       if (isUserActive) {
         // ACTIVE: Cyan, pulsed by volume
-        radius = 35 + (volume * 150); // Volume impacts size significantly
+        radius = 20 + (volume * 80); // Reduced size sensitivity
         color = '#00f2ff';
-        glow = 40 + (volume * 100);
+        glow = 30 + (volume * 50);
       } else {
         // IDLE: Breathing
         const time = Date.now() / 1000;
-        radius = 30 + Math.sin(time * 2) * 2;
-        glow = 20 + Math.sin(time * 2) * 10;
+        radius = 18 + Math.sin(time * 2) * 2;
+        glow = 15 + Math.sin(time * 2) * 5;
       }
 
       // Draw Glow
@@ -180,14 +180,14 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
         <div className="relative w-full h-full bg-[#010103] rounded-[2.8rem] overflow-hidden flex flex-col items-center pt-6 px-6">
 
           {/* Dynamic Island */}
-          <div className="w-24 h-7 bg-black rounded-full flex items-center justify-center gap-2 mb-10 z-20">
+          <div className="w-24 h-7 bg-black rounded-full flex items-center justify-center gap-2 mb-5 z-20">
             {isSpeaking && <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></div>}
             <div className="w-2 h-2 bg-white/10 rounded-full"></div>
           </div>
 
           {/* Caller Info */}
-          <div className="mt-8 flex flex-col items-center">
-            <div className={`w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-cyan-500 to-violet-500 rounded-full flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(188,19,254,0.3)] transition-all duration-500 ${isSpeaking ? 'scale-110 shadow-[0_0_60px_rgba(188,19,254,0.6)]' : ''}`}>
+          <div className="mt-4 flex flex-col items-center">
+            <div className={`w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-cyan-500 to-violet-500 rounded-full flex items-center justify-center mb-4 shadow-[0_0_40px_rgba(188,19,254,0.3)] transition-all duration-500 ${isSpeaking ? 'scale-110 shadow-[0_0_60px_rgba(188,19,254,0.6)]' : ''}`}>
               <svg className="w-12 h-12 md:w-16 md:h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
@@ -236,11 +236,8 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
                 onClick={handleClose}
                 className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all"
               >
-                <svg className={`w-8 h-8 ${status !== 'active' ? 'rotate-0' : 'rotate-[135deg]'}`} fill="currentColor" viewBox="0 0 24 24">
-                  <path d={status !== 'active'
-                    ? "M6 18L18 6M6 6l12 12" // X-Icon when not active (just close)
-                    : "M6.62 10.79a15.15 15.15 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.27 11.72 11.72 0 003.7.59 1 1 0 011 1V20a1 1 0 01-1 1A16 16 0 013 5a1 1 0 011-1h3.41a1 1 0 011 1 11.72 11.72 0 00.59 3.7 1 1 0 01-.27 1.11l-2.2 2.2z" // Phone icon for hangup
-                  } strokeLinecap="round" strokeLinejoin="round" />
+                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
 
