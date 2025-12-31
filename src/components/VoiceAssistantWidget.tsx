@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Vapi from '@vapi-ai/web';
+import SarahAvatar from './SarahAvatar';
 
 // Vapi Configuration
 const VAPI_PUBLIC_KEY = "0439aee3-ffe1-49c9-b7a4-f34a3f128c43";
@@ -187,10 +188,8 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
 
           {/* Caller Info */}
           <div className="mt-2 flex flex-col items-center shrink-0">
-            <div className={`w-20 h-20 md:w-32 md:h-32 bg-gradient-to-br from-cyan-500 to-violet-500 rounded-full flex items-center justify-center mb-2 shadow-[0_0_40px_rgba(188,19,254,0.3)] transition-all duration-500 ${isSpeaking ? 'scale-110 shadow-[0_0_60px_rgba(188,19,254,0.6)]' : ''}`}>
-              <svg className="w-10 h-10 md:w-16 md:h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
+            <div className={`w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-[#050505] to-[#1a1a1a] rounded-full flex items-center justify-center mb-2 shadow-[0_0_40px_rgba(0,242,255,0.2)] border border-white/10 transition-all duration-500 overflow-hidden ${isSpeaking ? 'shadow-[0_0_50px_rgba(0,242,255,0.4)]' : ''}`}>
+              <SarahAvatar isSpeaking={isSpeaking} volume={volume} className="w-full h-full" />
             </div>
             <h2 className="text-white font-vanguard font-black text-xl md:text-3xl uppercase italic tracking-wider mb-1">KI-Assistent</h2>
             <p className="text-neutral-500 font-technical text-[10px] uppercase tracking-[0.2em] h-4">
