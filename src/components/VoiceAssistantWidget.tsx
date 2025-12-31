@@ -88,6 +88,18 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
+  // Auto-start call when opening to speed up connection (User Request)
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (isOpen && status === 'ready') {
+      // Trigger connection immediately to save time
+      timeout = setTimeout(() => {
+        toggleCall();
+      }, 100);
+    }
+    return () => clearTimeout(timeout);
+  }, [isOpen]);
+
   // Orb Visualization Loop
   useEffect(() => {
     if (!isOpen) return;
