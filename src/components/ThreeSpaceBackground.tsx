@@ -34,7 +34,7 @@ const ThreeSpaceBackground: React.FC = () => {
             positions[i * 3] = (Math.random() - 0.5) * 1500;
             positions[i * 3 + 1] = (Math.random() - 0.5) * 1000;
             positions[i * 3 + 2] = (Math.random() - 0.5) * 2000;
-            velocities[i] = Math.random() * 0.2 + 0.05;
+            velocities[i] = Math.random() * 0.05 + 0.01; // Much slower base speed
         }
 
         starGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -42,7 +42,7 @@ const ThreeSpaceBackground: React.FC = () => {
             size: 1.2,
             color: 0xffffff,
             transparent: true,
-            opacity: 0.8,
+            opacity: 0.3, // Dimmer stars
             map: null
         });
         const stars = new THREE.Points(starGeom, starMat);
@@ -66,7 +66,7 @@ const ThreeSpaceBackground: React.FC = () => {
 
             // Map movement to speed target (0 movement = 1x, fast movement = up to 5x)
             // Smaller threshold for sensitivity
-            speedRef.target = 1.0 + (dist * 0.2);
+            speedRef.target = 1.0 + (dist * 0.05); // Less aggressive acceleration
 
             // Limit max speed
             if (speedRef.target > 8.0) speedRef.target = 8.0;
