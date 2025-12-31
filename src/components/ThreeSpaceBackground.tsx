@@ -80,14 +80,32 @@ const ThreeSpaceBackground: React.FC = () => {
 
             // Stars Animation
             const posAttr = starGeom.attributes.position.array as Float32Array;
+
+            // Movement factors (tune for feel)
+            const moveX = dx * 0.2;
+            const moveY = dy * 0.2; // Invert DOM Y to 3D Y vs Screen
+
             for (let i = 0; i < starCount; i++) {
-                // Apply dynamic speed multiplier
+                // Apply dynamic Z speed (Warp)
                 const moveSpeed = velocities[i] * speedRef.current;
                 posAttr[i * 3 + 2] += moveSpeed;
 
+                // Apply Lateral 'Follow' Movement
+                posAttr[i * 3] += moveX;     // Follow Mouse X
+                posAttr[i * 3 + 1] -= moveY; // Follow Mouse Y (DOM Y is inverted vs 3D Y)
+
+                // Z Wrapping (Depth)
                 if (posAttr[i * 3 + 2] > 200) {
-                    posAttr[i * 3 + 2] = -1800; // Reset to far back
+                    posAttr[i * 3 + 2] = -1800;
                 }
+
+                // X Wrapping (Width)
+                if (posAttr[i * 3] > 1500) posAttr[i * 3] = -1500;
+                if (posAttr[i * 3] < -1500) posAttr[i * 3] = 1500;
+
+                // Y Wrapping (Height)
+                if (posAttr[i * 3 + 1] > 1000) posAttr[i * 3 + 1] = -1000;
+                if (posAttr[i * 3 + 1] < -1000) posAttr[i * 3 + 1] = 1000;
             }
             starGeom.attributes.position.needsUpdate = true;
             renderer.render(scene, camera);
