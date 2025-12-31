@@ -28,6 +28,7 @@ const ThreeSpaceBackground: React.FC = () => {
         const starCount = 3000;
         const starGeom = new THREE.BufferGeometry();
         const positions = new Float32Array(starCount * 3);
+        const colors = new Float32Array(starCount * 3);
         const velocities = new Float32Array(starCount);
 
         for (let i = 0; i < starCount; i++) {
@@ -35,14 +36,35 @@ const ThreeSpaceBackground: React.FC = () => {
             positions[i * 3 + 1] = (Math.random() - 0.5) * 1000;
             positions[i * 3 + 2] = (Math.random() - 0.5) * 2000;
             velocities[i] = Math.random() * 0.05 + 0.01; // Much slower base speed
+
+            // Star Colors (Cyan/Blue/Violet Tint)
+            const type = Math.random();
+            if (type > 0.9) {
+                // Violet
+                colors[i * 3] = 0.8;
+                colors[i * 3 + 1] = 0.5;
+                colors[i * 3 + 2] = 1.0;
+            } else if (type > 0.6) {
+                // Cyan
+                colors[i * 3] = 0.5;
+                colors[i * 3 + 1] = 0.9;
+                colors[i * 3 + 2] = 1.0;
+            } else {
+                // White / Blue-ish
+                colors[i * 3] = 0.9;
+                colors[i * 3 + 1] = 0.9;
+                colors[i * 3 + 2] = 1.0;
+            }
         }
 
         starGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        starGeom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
         const starMat = new THREE.PointsMaterial({
             size: 1.2,
-            color: 0xffffff,
+            vertexColors: true, // Enable individual star colors
             transparent: true,
-            opacity: 0.3, // Dimmer stars
+            opacity: 0.8, // Slightly more visible now that they obey colors
             map: null
         });
         const stars = new THREE.Points(starGeom, starMat);
