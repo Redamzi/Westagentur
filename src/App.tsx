@@ -387,7 +387,7 @@ const App: React.FC = () => {
                                 className={`relative group animate-float flex flex-col min-w-[85vw] md:min-w-[400px] lg:min-w-0 snap-center ${pkg.recommended ? 'z-20' : 'z-10 opacity-90'}`}
                             >
                                 {pkg.recommended && (
-                                    <div className="absolute -top-5 left-1/2 -translate-x-1/2 px-6 py-2 bg-cyan-500 text-black text-[9px] md:text-[10px] font-technical font-black rounded-full tracking-[0.15em] uppercase z-30 shadow-[0_0_30px_rgba(0,242,255,0.5)] whitespace-nowrap">
+                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-2 bg-cyan-500 text-black text-[9px] md:text-[10px] font-technical font-black rounded-full tracking-[0.15em] uppercase z-30 shadow-[0_0_30px_rgba(0,242,255,0.5)] whitespace-nowrap">
                                         Empfehlung
                                     </div>
                                 )}
