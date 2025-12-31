@@ -379,7 +379,7 @@ const App: React.FC = () => {
             < section id="investment" className="py-20 md:py-32 relative" >
                 <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
                     <SectionHeading subtitle="Investition" title="Paket-Übersicht" />
-                    <div className="flex overflow-x-auto pb-8 snap-x snap-mandatory gap-6 px-4 -mx-4 lg:grid lg:grid-cols-3 lg:gap-16 lg:pb-0 lg:px-0 lg:mx-0 lg:overflow-visible items-stretch scrollbar-hide">
+                    <div className="flex overflow-x-auto pt-12 pb-8 snap-x snap-mandatory gap-6 px-4 -mx-4 lg:grid lg:grid-cols-3 lg:gap-16 lg:pt-0 lg:pb-0 lg:px-0 lg:mx-0 lg:overflow-visible items-stretch scrollbar-hide">
                         {PRICING.map((pkg, i) => (
                             <div
                                 key={i}
