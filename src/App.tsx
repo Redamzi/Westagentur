@@ -449,10 +449,10 @@ const App: React.FC = () => {
                     <div className="flex items-center gap-4">
                         <button
                             onClick={() => setIsVoiceWidgetOpen(true)}
-                            className="bg-white/10 p-2 md:p-3 rounded-full md:rounded-xl text-white hover:bg-cyan-500 hover:text-black transition-all active:scale-95 group relative overflow-hidden"
+                            className="bg-cyan-400 p-2 md:p-3 rounded-full md:rounded-xl text-black hover:bg-white hover:text-black transition-all active:scale-95 group relative overflow-hidden shadow-[0_0_15px_rgba(0,242,255,0.6)]"
                             aria-label="KI Assistent Sarah"
                         >
-                            <span className="absolute inset-0 bg-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity blur-md"></span>
+                            <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity blur-md"></span>
                             <svg className="w-5 h-5 md:w-6 md:h-6 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                             </svg>
