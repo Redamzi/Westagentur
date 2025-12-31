@@ -130,7 +130,7 @@ const ThreeSpaceBackground: React.FC = () => {
                 }}
             >
                 {/* Centered Container relative to mouse position */}
-                <div className="relative flex items-center justify-center w-[600px] h-[600px] -translate-x-1/2 -translate-y-1/2">
+                <div className="relative flex items-center justify-center w-[300px] h-[300px] -translate-x-1/2 -translate-y-1/2">
 
                     {/* SVG Filters Definition */}
                     <svg width="0" height="0" className="absolute">
@@ -147,23 +147,23 @@ const ThreeSpaceBackground: React.FC = () => {
 
                     {/* Layer 1: Outer Rotating Dashed Ring (Slow) */}
                     <div className="absolute inset-0 flex items-center justify-center animate-spin-very-slow opacity-20">
-                        <div className="w-[450px] h-[450px] rounded-full border border-dashed border-cyan-500/30"></div>
+                        <div className="w-[225px] h-[225px] rounded-full border border-dashed border-cyan-500/30"></div>
                     </div>
 
                     {/* Layer 2: Mid Tech Ring with Violet Accents (Counter-Rotate) */}
                     <div className="absolute inset-0 flex items-center justify-center animate-reverse-spin opacity-50">
-                        <svg width="350" height="350" viewBox="0 0 350 350" fill="none">
+                        <svg width="175" height="175" viewBox="0 0 350 350" fill="none">
                             {/* Violet Arc */}
-                            <circle cx="175" cy="175" r="170" stroke="#bc13fe" strokeWidth="1" strokeDasharray="4 8" opacity="0.6" />
+                            <circle cx="175" cy="175" r="170" stroke="#bc13fe" strokeWidth="2" strokeDasharray="4 8" opacity="0.6" />
                             {/* Cyan Markers */}
-                            <path d="M175,5 L175,25 M175,325 L175,345 M5,175 L25,175 M325,175 L345,175" stroke="#00f2ff" strokeWidth="2" />
+                            <path d="M175,5 L175,25 M175,325 L175,345 M5,175 L25,175 M325,175 L345,175" stroke="#00f2ff" strokeWidth="4" />
                         </svg>
                     </div>
 
                     {/* Layer 3: Inner Focus Ring (Fast Spin + Glow) */}
                     <div className="absolute inset-0 flex items-center justify-center">
                         <div
-                            className="w-[180px] h-[180px] rounded-full border border-cyan-400 opacity-70 border-t-transparent border-b-transparent animate-spin-slow"
+                            className="w-[90px] h-[90px] rounded-full border border-cyan-400 opacity-70 border-t-transparent border-b-transparent animate-spin-slow"
                             style={{ filter: 'drop-shadow(0 0 8px rgba(0,242,255,0.6))' }}
                         ></div>
                     </div>
@@ -173,13 +173,13 @@ const ThreeSpaceBackground: React.FC = () => {
                     <div className="absolute w-2 h-2 bg-white rounded-full z-10"></div>
 
                     {/* Cross Lines */}
-                    <div className="absolute w-[250px] h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent"></div>
-                    <div className="absolute h-[250px] w-[1px] bg-gradient-to-b from-transparent via-cyan-500/40 to-transparent"></div>
+                    <div className="absolute w-[125px] h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent"></div>
+                    <div className="absolute h-[125px] w-[1px] bg-gradient-to-b from-transparent via-cyan-500/40 to-transparent"></div>
 
                     {/* Layer 5: Live Coordinates Display */}
                     <div
                         ref={coordsRef}
-                        className="absolute top-1/2 left-1/2 transform translate-x-12 translate-y-8 font-['Space_Mono'] text-xs text-cyan-300 drop-shadow-[0_0_5px_rgba(0,242,255,0.8)] whitespace-pre leading-tight"
+                        className="absolute top-1/2 left-1/2 transform translate-x-6 translate-y-4 font-['Space_Mono'] text-[10px] text-cyan-300 drop-shadow-[0_0_5px_rgba(0,242,255,0.8)] whitespace-pre leading-tight"
                     >
                     </div>
 
