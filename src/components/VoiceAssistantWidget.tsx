@@ -19,6 +19,18 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // Lock body scroll when open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   // Handle Vapi Events
   useEffect(() => {
     const onCallStart = () => {
