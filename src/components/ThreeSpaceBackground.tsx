@@ -51,13 +51,42 @@ const ThreeSpaceBackground: React.FC = () => {
         // --- 2. ANIMATION LOOPS ---
         let frameId = 0;
 
+        // State for speed calculation
+        const speedRef = {
+            current: 1.0,  // Base speed multiplier
+            target: 1.0
+        };
+        const lastPos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
         const animate = () => {
+            // Calculate mouse speed based on reticle movement (smoothed)
+            const dx = pos.current.x - lastPos.x;
+            const dy = pos.current.y - lastPos.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            // Map movement to speed target (0 movement = 1x, fast movement = up to 5x)
+            // Smaller threshold for sensitivity
+            speedRef.target = 1.0 + (dist * 0.2);
+
+            // Limit max speed
+            if (speedRef.target > 8.0) speedRef.target = 8.0;
+
+            // Smoothly interpolate current speed to target
+            // accelerate fast, decelerate slow
+            speedRef.current += (speedRef.target - speedRef.current) * 0.1;
+
+            lastPos.x = pos.current.x;
+            lastPos.y = pos.current.y;
+
             // Stars Animation
             const posAttr = starGeom.attributes.position.array as Float32Array;
             for (let i = 0; i < starCount; i++) {
-                posAttr[i * 3 + 2] += velocities[i];
+                // Apply dynamic speed multiplier
+                const moveSpeed = velocities[i] * speedRef.current;
+                posAttr[i * 3 + 2] += moveSpeed;
+
                 if (posAttr[i * 3 + 2] > 200) {
-                    posAttr[i * 3 + 2] = -1800;
+                    posAttr[i * 3 + 2] = -1800; // Reset to far back
                 }
             }
             starGeom.attributes.position.needsUpdate = true;
