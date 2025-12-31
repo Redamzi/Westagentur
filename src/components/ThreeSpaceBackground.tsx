@@ -64,7 +64,7 @@ const ThreeSpaceBackground: React.FC = () => {
             size: 1.2,
             vertexColors: true, // Enable individual star colors
             transparent: true,
-            opacity: 0.8, // Slightly more visible now that they obey colors
+            opacity: 0.6, // Darker
             map: null
         });
         const stars = new THREE.Points(starGeom, starMat);
