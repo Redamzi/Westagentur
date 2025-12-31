@@ -14,7 +14,9 @@
   }
 
   body {
-    @apply bg-[#010103] text-white font-body overflow-x-hidden m-0 p-0 antialiased;
+    @apply text-white font-body overflow-x-hidden m-0 p-0 antialiased;
+    background: radial-gradient(circle at 50% 50%, #0a0a14 0%, #000000 90%);
+    min-height: 100vh;
     scroll-behavior: smooth;
   }
 
@@ -28,11 +30,12 @@
 
 @layer components {
   .hud-overlay {
-    @apply fixed top-0 left-0 w-full h-full pointer-events-none z-[100] opacity-[0.08];
+    @apply fixed top-0 left-0 w-full h-full pointer-events-none z-[100] opacity-40 mix-blend-overlay;
     background:
-      linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+      radial-gradient(circle at center, transparent 50%, #000 100%),
+      linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.2) 50%),
       url('https://grainy-gradients.vercel.app/noise.svg');
-    background-size: 100% 3px, 150px 150px;
+    background-size: 100% 100%, 100% 4px, 100px 100px;
   }
 
   .aurora-blob {
