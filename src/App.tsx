@@ -7,10 +7,9 @@ import Interactive3DViewer, { AnimationType } from './components/Interactive3DVi
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 
-// Lazy Load Pages for Performance
-const ServicePage = React.lazy(() => import('./components/ServicePage'));
-const LegalPage = React.lazy(() => import('./components/LegalPage'));
-const VoiceAssistantWidget = React.lazy(() => import('./components/VoiceAssistantWidget'));
+import ServicePage from './components/ServicePage';
+import LegalPage from './components/LegalPage';
+import VoiceAssistantWidget from './components/VoiceAssistantWidget';
 
 export type ViewState = 'home' | 'webdesign' | 'telephony' | '3d' | 'automation' | 'ai' | 'security' | 'about' | 'contact' | 'imprint' | 'privacy' | 'tos';
 
@@ -472,21 +471,19 @@ const App: React.FC = () => {
                         <ContactSection isDedicatedPage={true} onBack={() => setView('home')} />
                     </div>
                 )}
-                <Suspense fallback={<LoadingSpinner />}>
-                    {['webdesign', 'telephony', '3d', 'automation', 'ai', 'security'].includes(view) && (
-                        <ServicePage
-                            data={SERVICE_DATA[view as keyof typeof SERVICE_DATA] || SERVICE_DATA['webdesign']}
-                            onBack={() => setView('home')}
-                        />
-                    )}
-                    {['imprint', 'privacy', 'tos'].includes(view) && (
-                        <LegalPage
-                            type={view as 'imprint' | 'privacy' | 'tos'}
-                            onBack={() => setView('home')}
-                        />
-                    )}
-                    <VoiceAssistantWidget isOpen={isVoiceWidgetOpen} onClose={() => setIsVoiceWidgetOpen(false)} />
-                </Suspense>
+                {['webdesign', 'telephony', '3d', 'automation', 'ai', 'security'].includes(view) && (
+                    <ServicePage
+                        data={SERVICE_DATA[view as keyof typeof SERVICE_DATA] || SERVICE_DATA['webdesign']}
+                        onBack={() => setView('home')}
+                    />
+                )}
+                {['imprint', 'privacy', 'tos'].includes(view) && (
+                    <LegalPage
+                        type={view as 'imprint' | 'privacy' | 'tos'}
+                        onBack={() => setView('home')}
+                    />
+                )}
+                <VoiceAssistantWidget isOpen={isVoiceWidgetOpen} onClose={() => setIsVoiceWidgetOpen(false)} />
 
                 {view === 'home' && <ContactSection />}
                 <Footer onNavigate={(v) => setView(v)} />

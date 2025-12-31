@@ -180,40 +180,40 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
         <div className="relative w-full h-full bg-[#010103] rounded-[2.8rem] overflow-hidden flex flex-col items-center pt-6 px-6">
 
           {/* Dynamic Island */}
-          <div className="w-24 h-7 bg-black rounded-full flex items-center justify-center gap-2 mb-5 z-20">
+          <div className="w-24 h-7 bg-black rounded-full flex items-center justify-center gap-2 mb-2 z-20 shrink-0">
             {isSpeaking && <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></div>}
             <div className="w-2 h-2 bg-white/10 rounded-full"></div>
           </div>
 
           {/* Caller Info */}
-          <div className="mt-4 flex flex-col items-center">
-            <div className={`w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-cyan-500 to-violet-500 rounded-full flex items-center justify-center mb-4 shadow-[0_0_40px_rgba(188,19,254,0.3)] transition-all duration-500 ${isSpeaking ? 'scale-110 shadow-[0_0_60px_rgba(188,19,254,0.6)]' : ''}`}>
-              <svg className="w-12 h-12 md:w-16 md:h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="mt-2 flex flex-col items-center shrink-0">
+            <div className={`w-20 h-20 md:w-32 md:h-32 bg-gradient-to-br from-cyan-500 to-violet-500 rounded-full flex items-center justify-center mb-2 shadow-[0_0_40px_rgba(188,19,254,0.3)] transition-all duration-500 ${isSpeaking ? 'scale-110 shadow-[0_0_60px_rgba(188,19,254,0.6)]' : ''}`}>
+              <svg className="w-10 h-10 md:w-16 md:h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
-            <h2 className="text-white font-vanguard font-black text-2xl md:text-3xl uppercase italic tracking-wider mb-2">KI-Assistent</h2>
+            <h2 className="text-white font-vanguard font-black text-xl md:text-3xl uppercase italic tracking-wider mb-1">KI-Assistent</h2>
             <p className="text-neutral-500 font-technical text-[10px] uppercase tracking-[0.2em] h-4">
               {status === 'connecting' ? 'Verbinde...' : status === 'active' ? (isSpeaking ? 'Sarah spricht...' : 'Hört zu...') : status === 'finished' ? 'Beendet' : 'Bereit'}
             </p>
           </div>
 
           {/* Spacer for visual balance */}
-          <div className="flex-1 w-full flex flex-col justify-center items-center gap-4">
-            {/* Visualizer Container - FIXED and RIGID */}
-            <div className="w-[300px] h-[150px] flex-none overflow-hidden rounded-2xl relative flex items-center justify-center border border-white/5 bg-white/5 backdrop-blur-sm shadow-inner">
+          <div className="flex-1 w-full flex flex-col justify-center items-center gap-2 min-h-0">
+            {/* Visualizer Container - Responsive Height */}
+            <div className="w-[280px] md:w-[300px] h-[100px] md:h-[150px] flex-none overflow-hidden rounded-2xl relative flex items-center justify-center border border-white/5 bg-white/5 backdrop-blur-sm shadow-inner transition-all">
               <canvas
                 ref={canvasRef}
                 width={300}
                 height={150}
-                className="w-full h-full opacity-90"
+                className="w-full h-full opacity-90 object-contain"
               />
             </div>
 
-            {/* Status Text Area - Fixed Height to prevent layout shift */}
-            <div className="h-6 flex items-center justify-center">
+            {/* Status Text Area */}
+            <div className="h-6 flex items-center justify-center shrink-0">
               {status === 'active' && !isSpeaking && (
-                <p className="text-cyan-400 font-body italic text-sm animate-pulse">
+                <p className="text-cyan-400 font-body italic text-xs md:text-sm animate-pulse">
                   Sprechen Sie jetzt...
                 </p>
               )}
@@ -221,22 +221,22 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Controls */}
-          <div className="w-full pb-16 flex flex-col items-center gap-8">
-            <div className="grid grid-cols-3 w-full max-w-[240px] gap-4 mb-4">
+          <div className="w-full pb-8 flex flex-col items-center gap-4 shrink-0">
+            <div className="grid grid-cols-3 w-full max-w-[200px] md:max-w-[240px] gap-3 mb-2">
               {[1, 2, 3, 4, 5, 6].map(i => (
-                <div key={i} className="aspect-square rounded-full bg-white/5 flex items-center justify-center text-white/20 text-xs">
+                <div key={i} className="aspect-square rounded-full bg-white/5 flex items-center justify-center text-white/20 text-[10px] md:text-xs">
                   •
                 </div>
               ))}
             </div>
 
             <div className="flex justify-between items-center w-full max-w-[200px]">
-              {/* Decliine / Close */}
+              {/* Decline / Close */}
               <button
                 onClick={handleClose}
-                className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all"
+                className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all"
               >
-                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 md:w-8 md:h-8" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
@@ -245,17 +245,15 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
               <button
                 onClick={toggleCall}
                 disabled={status === 'connecting'}
-                className={`w-16 h-16 rounded-full flex items-center justify-center transition-all ${status === 'active' ? 'bg-cyan-500 text-white shadow-[0_0_30px_#00f2ff]' : 'bg-green-500 text-white hover:bg-green-400'}`}
+                className={`w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center transition-all ${status === 'active' ? 'bg-cyan-500 text-white shadow-[0_0_30px_#00f2ff]' : 'bg-green-500 text-white hover:bg-green-400'}`}
               >
                 {status === 'connecting' ? (
-                  <div className="w-6 h-6 border-2 border-black/20 border-t-black rounded-full animate-spin"></div>
+                  <div className="w-5 h-5 md:w-6 md:h-6 border-2 border-black/20 border-t-black rounded-full animate-spin"></div>
                 ) : (
-                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6 md:w-8 md:h-8" fill="currentColor" viewBox="0 0 24 24">
                     {status === 'active' ? (
-                      /* Mute Icon or Active State Indicator */
                       <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
                     ) : (
-                      /* Phone Icon for Start */
                       <path d="M6.62 10.79a15.15 15.15 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.27 11.72 11.72 0 003.7.59 1 1 0 011 1V20a1 1 0 01-1 1A16 16 0 013 5a1 1 0 011-1h3.41a1 1 0 011 1 11.72 11.72 0 00.59 3.7 1 1 0 01-.27 1.11l-2.2 2.2z" />
                     )}
                   </svg>
