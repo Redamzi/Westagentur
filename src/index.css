@@ -36,6 +36,7 @@
       linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.2) 50%),
       url('https://grainy-gradients.vercel.app/noise.svg');
     background-size: 100% 100%, 100% 4px, 100px 100px;
+    box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.9);
   }
 
   .aurora-blob {
