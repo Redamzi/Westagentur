@@ -94,20 +94,20 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
       const isUserActive = isSpeaking || volume > 0.01;
 
       // Base Radius
-      let radius = 18;
+      let radius = 12;
       let color = '#bc13fe'; // Idle Purple
-      let glow = 15;
+      let glow = 10;
 
       if (isUserActive) {
         // ACTIVE: Cyan, pulsed by volume
-        radius = 20 + (volume * 80); // Reduced size sensitivity
+        radius = 14 + (volume * 60); // Even smaller sensitivity
         color = '#00f2ff';
-        glow = 30 + (volume * 50);
+        glow = 20 + (volume * 40);
       } else {
         // IDLE: Breathing
         const time = Date.now() / 1000;
-        radius = 18 + Math.sin(time * 2) * 2;
-        glow = 15 + Math.sin(time * 2) * 5;
+        radius = 12 + Math.sin(time * 2) * 1.5;
+        glow = 10 + Math.sin(time * 2) * 3;
       }
 
       // Draw Glow
@@ -201,7 +201,7 @@ const VoiceAssistantWidget: React.FC<Props> = ({ isOpen, onClose }) => {
           {/* Spacer for visual balance */}
           <div className="flex-1 w-full flex flex-col justify-center items-center gap-2 min-h-0">
             {/* Visualizer Container - Responsive Height */}
-            <div className="w-[280px] md:w-[300px] h-[100px] md:h-[150px] flex-none overflow-hidden rounded-2xl relative flex items-center justify-center border border-white/5 bg-white/5 backdrop-blur-sm shadow-inner transition-all">
+            <div className="w-[280px] md:w-[300px] h-[100px] md:h-[150px] flex-none overflow-hidden rounded-full relative flex items-center justify-center border border-white/5 bg-white/5 backdrop-blur-sm shadow-inner transition-all">
               <canvas
                 ref={canvasRef}
                 width={300}
