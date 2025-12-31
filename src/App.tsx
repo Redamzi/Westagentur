@@ -253,7 +253,7 @@ const App: React.FC = () => {
                     </h1>
 
                     <p className="text-sm md:text-2xl text-neutral-300 max-w-4xl mx-auto mb-12 md:mb-20 leading-relaxed font-light tracking-[0.05em] md:tracking-[0.1em] uppercase italic opacity-90 px-4">
-                        Wir transformieren Marken in <span className="text-cyan-400 font-bold drop-shadow-[0_0_8px_#00f2ff]">digitale Anlaufstellen</span>. <br className="hidden md:block" />Modernes Webdesign für den deutschen Mittelstand.
+                        Wir bauen nicht nur Webseiten – wir bringen Ihr Unternehmen auf das <span className="text-cyan-400 font-bold drop-shadow-[0_0_8px_#00f2ff]">nächste Level</span>. <br className="hidden md:block" />Ihr digitaler Architekt für den deutschen Mittelstand.
                     </p>
 
                     <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-10 w-full max-w-3xl px-4">
