@@ -1,0 +1,144 @@
+{
+  "nav": {
+    "leistungen": "Services",
+    "about": "About us",
+    "referenzen": "References",
+    "faq": "FAQ",
+    "contact": "Contact"
+  },
+  "hero": {
+    "h1": "Web Design & AI Automation for SME",
+    "subheadline": "We don't build standard websites. We develop powerful, modern digital solutions that bring real customers, automate processes and sustainably advance your business.",
+    "pills": [
+      "Performance Websites",
+      "AI Telephony",
+      "Lead Automation",
+      "SEO Optimization",
+      "Online Shops"
+    ],
+    "cta_primary": "Book a consultation now",
+    "cta_secondary": "View projects",
+    "trust": "Over 40 successfully implemented projects • 100% German servers • Personal support"
+  },
+  "services": {
+    "title": "Our Services",
+    "items": [
+      {
+        "title": "Performance Web Design",
+        "desc": "Modern, fast and high-conversion websites that work perfectly on all devices. Optimized for loading time, user experience and Google ranking."
+      },
+      {
+        "title": "AI Telephony & Voice Bots",
+        "desc": "Automatic call answering, intelligent appointment booking, lead qualification and forwarding - available 24/7, without additional staff."
+      },
+      {
+        "title": "Lead Automation & CRM",
+        "desc": "From the first inquiry to the closing: Automated workflows, email marketing, connections to common CRM systems and clear evaluations."
+      },
+      {
+        "title": "Online Shops & Booking Systems",
+        "desc": "Individual shops (WooCommerce & Custom) or professional booking systems for service providers, trades and hospitality."
+      },
+      {
+        "title": "SEO & Visibility",
+        "desc": "Technical SEO, content strategy and local search engine optimization - so you are found for relevant search queries."
+      },
+      {
+        "title": "Maintenance, Hosting & Support",
+        "desc": "All-round carefree packages including regular updates, backups, security and fast support."
+      }
+    ]
+  },
+  "about": {
+    "title": "Who we are – Westagentur",
+    "p1": "I am Amzi, founder of Westagentur and a passionate digital entrepreneur.",
+    "p2": "Instead of just delivering concepts, I have been implementing my own successful digital products for years. These include Mailscout.app (B2B lead platform), Direktverteilung.com (nationwide household advertising) and Voyanero.com (Premium Travel Marketplace).",
+    "p3": "This practical know-how from real product building flows into every client project. With us, you don't get an off-the-shelf agency, but solutions from someone who deals with the same challenges such as sales, efficiency and scaling every day.",
+    "advantages_title": "Your advantages:",
+    "advantages": [
+      "Direct contact person = Founder & Owner",
+      "Focus on measurable results instead of pure aesthetics",
+      "Fair, transparent pricing without hidden costs",
+      "Long-term partnership and real support",
+      "GDPR compliant and on German servers"
+    ]
+  },
+  "projects": {
+    "title": "Projects we have realized",
+    "items": [
+      {
+        "name": "Westagentur.de",
+        "desc": "The current platform (continuously optimized)"
+      },
+      {
+        "name": "Mailscout.app",
+        "desc": "Intelligent B2B contact data & AI automation"
+      },
+      {
+        "name": "Direktverteilung.com",
+        "desc": "Modern platform for flyer and brochure distribution"
+      },
+      {
+        "name": "Voyanero.com",
+        "desc": "Premium travel marketplace with AI concierge"
+      }
+    ],
+    "testimonial_placeholder": "\"Thanks to Westagentur, we not only have a new, professional design, but were also able to increase our qualified inquiries by 40%.\" – Musterkunde GmbH"
+  },
+  "whyus": {
+    "title": "Why companies work with us",
+    "reasons": [
+      "Personal support by the owner - no long communication paths",
+      "Combination of agency quality and product developer mentality",
+      "High standards of performance, design and technical cleanliness",
+      "Fast and transparent implementation",
+      "Sustainable solutions that are still easy to maintain in 3-5 years",
+      "Honesty and clear communication"
+    ]
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "items": [
+      {
+        "q": "How long does it take to create a new website?",
+        "a": "Depending on the scope, a complete project usually takes 4-8 weeks. We work with clear milestones and keep you updated at all times."
+      },
+      {
+        "q": "How much does a professional website cost?",
+        "a": "Our packages start at €3,900 for modern business websites. Individual solutions with a shop, AI telephony or complex automations range between €6,500 and €15,000 depending on requirements. We always create an individual offer."
+      },
+      {
+        "q": "Do you also offer ongoing support?",
+        "a": "Yes. We offer flexible maintenance and support packages including updates, backups, security and further development."
+      },
+      {
+        "q": "Do you work regionally or nationwide?",
+        "a": "We work nationwide with clients from all over Germany. Most processes run digitally, personal appointments are possible if required."
+      },
+      {
+        "q": "Can you take over and optimize existing websites?",
+        "a": "Yes, gladly. We analyze your current page and point out concrete potential for improvement."
+      },
+      {
+        "q": "Do you integrate AI solutions?",
+        "a": "Absolutely. AI telephony, chatbots, automations and intelligent processes are among our specialties."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Ready for the next step?",
+    "sub": "Let's shape your digital future together.",
+    "desc": "Get an honest assessment and concrete suggestions for your business in a non-binding consultation.",
+    "button": "Schedule a free consultation now",
+    "phone_text": "Or call us directly:",
+    "phone": "+49 152 27506958",
+    "callback": "We usually get back to you within 24 hours."
+  },
+  "footer": {
+    "imprint": "Imprint",
+    "privacy": "Privacy Policy",
+    "tos": "Terms of Service",
+    "made_in": "Made in Germany",
+    "rights": "All rights reserved."
+  }
+}

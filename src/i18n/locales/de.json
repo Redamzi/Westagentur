@@ -1,0 +1,144 @@
+{
+  "nav": {
+    "leistungen": "Leistungen",
+    "about": "Über uns",
+    "referenzen": "Referenzen",
+    "faq": "FAQ",
+    "contact": "Kontakt"
+  },
+  "hero": {
+    "h1": "Webdesign & KI-Automatisierung für den Mittelstand",
+    "subheadline": "Wir bauen keine Standard-Webseiten. Wir entwickeln leistungsstarke, moderne digitale Lösungen, die echte Kunden bringen, Prozesse automatisieren und Ihr Unternehmen nachhaltig voranbringen.",
+    "pills": [
+      "Performance Websites",
+      "KI-Telefonie",
+      "Lead-Automatisierung",
+      "SEO-Optimierung",
+      "Online-Shops"
+    ],
+    "cta_primary": "Jetzt Beratungsgespräch buchen",
+    "cta_secondary": "Projekte ansehen",
+    "trust": "Über 40 erfolgreich umgesetzte Projekte • 100% deutsche Server • Persönliche Betreuung"
+  },
+  "services": {
+    "title": "Unsere Leistungen",
+    "items": [
+      {
+        "title": "Performance Webdesign",
+        "desc": "Moderne, schnelle und conversion-starke Websites, die auf allen Geräten perfekt funktionieren. Optimiert für Ladezeit, Nutzererfahrung und Google-Ranking."
+      },
+      {
+        "title": "KI-Telefonie & Voice Bots",
+        "desc": "Automatische Anrufannahme, intelligente Terminbuchung, Lead-Qualifizierung und Weiterleitung – 24/7 erreichbar, ohne zusätzliches Personal."
+      },
+      {
+        "title": "Lead-Automatisierung & CRM",
+        "desc": "Von der ersten Anfrage bis zum Abschluss: Automatisierte Workflows, E-Mail-Marketing, Anbindungen an gängige CRM-Systeme und klare Auswertungen."
+      },
+      {
+        "title": "Online-Shops & Buchungssysteme",
+        "desc": "Individuelle Shops (WooCommerce & Custom) oder professionelle Buchungssysteme für Dienstleister, Handwerk und Hotellerie."
+      },
+      {
+        "title": "SEO & Sichtbarkeit",
+        "desc": "Technische SEO, Content-Strategie und lokale Suchmaschinenoptimierung – damit Sie bei relevanten Suchanfragen gefunden werden."
+      },
+      {
+        "title": "Wartung, Hosting & Support",
+        "desc": "Rundum-sorglos Pakete inklusive regelmäßiger Updates, Backups, Sicherheit und schnellem Support."
+      }
+    ]
+  },
+  "about": {
+    "title": "Wer wir sind – Westagentur",
+    "p1": "Ich bin Amzi, Gründer der Westagentur und leidenschaftlicher digitaler Unternehmer.",
+    "p2": "Statt nur Konzepte zu liefern, realisiere ich seit Jahren eigene erfolgreiche Digitalprodukte. Dazu gehören Mailscout.app (B2B Lead-Plattform), Direktverteilung.com (Haushaltswerbung bundesweit) und Voyanero.com (Premium Travel Marketplace).",
+    "p3": "Dieses praktische Know-how aus dem echten Produkt-Building fließt in jedes Kundenprojekt ein. Bei uns erhalten Sie keine Agentur von der Stange, sondern Lösungen von jemandem, der selbst täglich mit denselben Herausforderungen wie Umsatz, Effizienz und Skalierung zu tun hat.",
+    "advantages_title": "Ihre Vorteile:",
+    "advantages": [
+      "Direkter Ansprechpartner = Gründer & Inhaber",
+      "Fokus auf messbare Ergebnisse statt reiner Ästhetik",
+      "Faire, transparente Preise ohne versteckte Kosten",
+      "Langfristige Partnerschaft und echte Unterstützung",
+      "DSGVO-konform und auf deutschen Servern"
+    ]
+  },
+  "projects": {
+    "title": "Projekte, die wir umgesetzt haben",
+    "items": [
+      {
+        "name": "Westagentur.de",
+        "desc": "Die aktuelle Plattform (laufend optimiert)"
+      },
+      {
+        "name": "Mailscout.app",
+        "desc": "Intelligente B2B-Kontaktdaten & KI-Automatisierung"
+      },
+      {
+        "name": "Direktverteilung.com",
+        "desc": "Moderne Plattform für Flyer- und Prospektverteilung"
+      },
+      {
+        "name": "Voyanero.com",
+        "desc": "Premium Reise-Marktplatz mit AI-Concierge"
+      }
+    ],
+    "testimonial_placeholder": "„Dank der Westagentur haben wir nicht nur ein neues, professionelles Design, sondern konnten unsere qualifizierten Anfragen um 40% steigern.“ – Musterkunde GmbH"
+  },
+  "whyus": {
+    "title": "Warum Unternehmen mit uns zusammenarbeiten",
+    "reasons": [
+      "Persönliche Betreuung durch den Inhaber – keine langen Kommunikationswege",
+      "Kombination aus Agentur-Qualität und Produkt-Entwickler-Mentalität",
+      "Hoher Anspruch an Performance, Design und technische Sauberkeit",
+      "Schnelle und transparente Umsetzung",
+      "Nachhaltige Lösungen, die auch in 3–5 Jahren noch gut wartbar sind",
+      "Ehrlichkeit und klare Kommunikation"
+    ]
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "items": [
+      {
+        "q": "Wie lange dauert die Erstellung einer neuen Website?",
+        "a": "Je nach Umfang dauert ein komplettes Projekt in der Regel 4–8 Wochen. Wir arbeiten mit klaren Meilensteinen und halten Sie laufend auf dem aktuellen Stand."
+      },
+      {
+        "q": "Was kostet eine professionelle Website?",
+        "a": "Unsere Pakete starten bei 3.900 € für moderne Business-Websites. Individuelle Lösungen mit Shop, KI-Telefonie oder komplexen Automatisierungen liegen je nach Anforderung zwischen 6.500 € und 15.000 €. Wir erstellen immer ein individuelles Angebot."
+      },
+      {
+        "q": "Bieten Sie auch laufende Betreuung an?",
+        "a": "Ja. Wir bieten flexible Wartungs- und Support-Pakete inklusive Updates, Backups, Sicherheit und Weiterentwicklung."
+      },
+      {
+        "q": "Arbeiten Sie regional oder bundesweit?",
+        "a": "Wir arbeiten bundesweit mit Kunden aus ganz Deutschland. Die meisten Prozesse laufen digital, persönliche Termine sind bei Bedarf möglich."
+      },
+      {
+        "q": "Können Sie bestehende Webseiten übernehmen und optimieren?",
+        "a": "Ja, sehr gerne. Wir analysieren Ihre aktuelle Seite und zeigen konkrete Verbesserungspotenziale auf."
+      },
+      {
+        "q": "Integrieren Sie KI-Lösungen?",
+        "a": "Absolut. KI-Telefonie, Chatbots, Automatisierungen und intelligente Prozesse gehören zu unseren Spezialgebieten."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Bereit für den nächsten Schritt?",
+    "sub": "Lassen Sie uns gemeinsam Ihre digitale Zukunft gestalten.",
+    "desc": "Erhalten Sie in einem unverbindlichen Gespräch eine ehrliche Einschätzung und konkrete Vorschläge für Ihr Unternehmen.",
+    "button": "Jetzt kostenloses Beratungsgespräch vereinbaren",
+    "phone_text": "Oder rufen Sie uns direkt an:",
+    "phone": "+49 152 27506958",
+    "callback": "Wir melden uns in der Regel innerhalb von 24 Stunden zurück."
+  },
+  "footer": {
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "tos": "AGB",
+    "made_in": "Made in Germany",
+    "rights": "Alle Rechte vorbehalten."
+  }
+}
