@@ -24,7 +24,7 @@
 
   /* Structural Cards */
   .card-swiss {
-    @apply bg-surface border border-border p-8 hover:bg-[#0D0D0D] transition-colors duration-500 relative overflow-hidden group;
+    @apply bg-surface border border-border p-8 hover:bg-[#0D0D0D] transition-colors duration-500 relative overflow-hidden;
   }
   
   /* Utilities for the specific aesthetic */
