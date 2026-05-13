@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 const WhyUs = () => {
   const { t } = useTranslation();
-  const reasons: string[] = t('whyus.reasons', { returnObjects: true });
+  const reasons = t('whyus.reasons', { returnObjects: true });
 
   return (
     <section className="relative py-32 bg-background border-b border-border overflow-hidden">

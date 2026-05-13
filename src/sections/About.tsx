@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 const About = () => {
   const { t } = useTranslation();
-  const advantages: string[] = t('about.advantages', { returnObjects: true });
+  const advantages = t('about.advantages', { returnObjects: true });
 
   return (
     <section id="about" className="relative py-32 bg-background border-b border-border overflow-hidden">

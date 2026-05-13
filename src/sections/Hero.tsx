@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
   const { t } = useTranslation();
-  const pills: string[] = t('hero.pills', { returnObjects: true });
+  const pills = t('hero.pills', { returnObjects: true });
 
   // Custom Highlight logic to make specific words italic and colored
   const h1Text = t('hero.h1');
