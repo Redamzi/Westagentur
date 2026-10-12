@@ -65,7 +65,7 @@ function App() {
         <main>
           <PageContent page={page} />
         </main>
-        <CTA />
+        <CTA page={page} />
         <Footer lang={page.lang} />
       </div>
     </MotionConfig>

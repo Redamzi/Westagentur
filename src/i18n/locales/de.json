@@ -139,5 +139,37 @@
     "tos": "AGB",
     "made_in": "Made in Germany",
     "rights": "Alle Rechte vorbehalten."
+  },
+  "form": {
+    "title": "Anfrage senden",
+    "name": "Name",
+    "email": "E-Mail",
+    "phone": "Telefon (optional)",
+    "company": "Unternehmen (optional)",
+    "service": "Interesse",
+    "services": {
+      "webdesign": "Webdesign",
+      "automation": "KI-Automatisierung",
+      "telephony": "KI-Telefonie",
+      "other": "Sonstiges"
+    },
+    "message": "Ihre Nachricht",
+    "consent_before": "Ich habe die ",
+    "consent_link": "Datenschutzerklärung",
+    "consent_after": " gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden.",
+    "required": "Pflichtfeld",
+    "submit": "Anfrage senden",
+    "sending": "Wird gesendet …",
+    "success_title": "Vielen Dank!",
+    "success": "Ihre Anfrage ist angekommen. Sie erhalten gleich eine Bestätigung per E-Mail. Wir melden uns werktags innerhalb von 24 Stunden.",
+    "error": "Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder schreiben Sie direkt an",
+    "rate_limited": "Zu viele Anfragen in kurzer Zeit. Bitte versuchen Sie es später erneut oder schreiben Sie direkt an",
+    "errors": {
+      "name": "Bitte geben Sie Ihren Namen an.",
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse an.",
+      "phone": "Bitte prüfen Sie die Telefonnummer.",
+      "message": "Bitte beschreiben Sie Ihr Anliegen kurz (mind. 10 Zeichen).",
+      "consent": "Bitte stimmen Sie der Datenschutzerklärung zu."
+    }
   }
 }

@@ -139,5 +139,37 @@
     "tos": "Terms of Service",
     "made_in": "Made in Germany",
     "rights": "All rights reserved."
+  },
+  "form": {
+    "title": "Send an enquiry",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "company": "Company (optional)",
+    "service": "Interested in",
+    "services": {
+      "webdesign": "Web design",
+      "automation": "AI automation",
+      "telephony": "AI telephony",
+      "other": "Other"
+    },
+    "message": "Your message",
+    "consent_before": "I have read the ",
+    "consent_link": "privacy policy",
+    "consent_after": " and agree to my details being processed to handle my enquiry.",
+    "required": "Required",
+    "submit": "Send enquiry",
+    "sending": "Sending …",
+    "success_title": "Thank you!",
+    "success": "Your enquiry has arrived. You will receive a confirmation email shortly. We will get back to you within 24 hours on working days.",
+    "error": "Something went wrong. Please try again or write directly to",
+    "rate_limited": "Too many requests in a short time. Please try again later or write directly to",
+    "errors": {
+      "name": "Please enter your name.",
+      "email": "Please enter a valid email address.",
+      "phone": "Please check the phone number.",
+      "message": "Please briefly describe your request (at least 10 characters).",
+      "consent": "Please accept the privacy policy."
+    }
   }
 }

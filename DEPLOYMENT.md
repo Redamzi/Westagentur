@@ -38,6 +38,37 @@ curl http://localhost:3000/health
 
 ---
 
+## ✉️ Kontaktformular-API (im selben Container)
+
+Der Container startet neben nginx eine kleine Node-API (`server/`) für das Kontaktformular.
+nginx leitet `/api/*` an sie weiter. Anfragen werden in SQLite gespeichert und per SMTP versendet.
+
+### Persistenter Speicher (wichtig)
+In Coolify unter **Storages** ein Volume auf **`/data`** einhängen.
+Dort liegen die Datenbank (`westagentur.db`) und tägliche Backups (`backups/`, 14 Tage).
+Ohne Volume gehen Anfragen bei jedem Deployment verloren.
+
+### Environment Variables
+```
+SMTP_HOST=mail.example.de
+SMTP_PORT=587            # 465 = SSL, 587 = STARTTLS
+SMTP_USER=mail@westagentur.de
+SMTP_PASS=********
+MAIL_FROM=Westagentur <mail@westagentur.de>
+MAIL_TO=mail@westagentur.de
+```
+Ohne `SMTP_HOST` werden Anfragen gespeichert, Mails aber nur ins Log geschrieben.
+Im Log erscheint nach dem Start `[mail] SMTP connection ok`, wenn die Zugangsdaten stimmen.
+
+### Lokal entwickeln
+```bash
+cd server && npm install && npm run dev   # API auf :8787
+npm run dev                              # Frontend, /api wird weitergeleitet
+cd server && npm test                    # API-Tests
+```
+
+---
+
 ## 🚀 Coolify Deployment
 
 ### 1. Repository Setup
