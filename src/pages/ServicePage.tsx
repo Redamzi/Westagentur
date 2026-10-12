@@ -19,7 +19,8 @@ const ServicePage: React.FC<ServicePageProps> = ({ serviceKey, lang }) => {
       {/* Hero */}
       <section className="section-dark relative bg-background border-b border-border overflow-hidden pt-28 md:pt-40 pb-16 md:pb-24">
         <div className="absolute inset-0 grid-bg opacity-40" />
-        <div className="container mx-auto px-6 relative z-10 max-w-5xl">
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-5xl">
           <nav aria-label="Breadcrumb" className="mb-8 text-sm text-muted">
             <ol className="flex flex-wrap items-center gap-2">
               <li>
@@ -42,6 +43,7 @@ const ServicePage: React.FC<ServicePageProps> = ({ serviceKey, lang }) => {
                 {ui.demo}
               </a>
             )}
+          </div>
           </div>
         </div>
       </section>
