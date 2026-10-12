@@ -2,9 +2,10 @@ import de from '../i18n/locales/de.json';
 import en from '../i18n/locales/en.json';
 import { SERVICES, SERVICE_KEYS, SERVICE_UI, type ServiceKey } from '../content/services';
 import { LEGAL_CONTENT, type LegalKey } from '../content/legal';
+import { BOOKING_PATHS, BOOKING_TEXT } from '../content/booking';
 import { CONTACT, HOME_PATH, OG_IMAGE, SITE_NAME, SITE_URL, normalizePath, type Lang } from './site';
 
-export type PageKind = 'home' | 'service' | 'legal' | 'notfound';
+export type PageKind = 'home' | 'service' | 'legal' | 'booking' | 'manage' | 'admin' | 'notfound';
 
 export interface PageDef {
   path: string;
@@ -137,11 +138,45 @@ const legalPage = (key: LegalKey): PageDef => ({
   jsonLd: [organization, breadcrumb('de', LEGAL_CONTENT[key].title, LEGAL_PATHS[key])],
 });
 
+const bookingPage = (lang: Lang): PageDef => ({
+  path: BOOKING_PATHS[lang].book,
+  lang,
+  kind: 'booking',
+  title: BOOKING_TEXT[lang].title,
+  description: BOOKING_TEXT[lang].description,
+  alternates: { de: BOOKING_PATHS.de.book, en: BOOKING_PATHS.en.book },
+  jsonLd: [organization, breadcrumb(lang, BOOKING_TEXT[lang].navLabel, BOOKING_PATHS[lang].book)],
+});
+
+const managePage = (lang: Lang): PageDef => ({
+  path: BOOKING_PATHS[lang].manage,
+  lang,
+  kind: 'manage',
+  title: `${BOOKING_TEXT[lang].manageTitle} | Westagentur`,
+  description: BOOKING_TEXT[lang].manageDescription,
+  alternates: { de: BOOKING_PATHS.de.manage, en: BOOKING_PATHS.en.manage },
+  noindex: true,
+  jsonLd: [],
+});
+
 export const PAGES: PageDef[] = [
   homePage('de'),
   homePage('en'),
   ...SERVICE_KEYS.flatMap((key) => [servicePage('de', key), servicePage('en', key)]),
+  bookingPage('de'),
+  bookingPage('en'),
+  managePage('de'),
+  managePage('en'),
   ...(Object.keys(LEGAL_PATHS) as LegalKey[]).map(legalPage),
+  {
+    path: '/admin',
+    lang: 'de',
+    kind: 'admin',
+    title: 'Admin | Westagentur',
+    description: '',
+    noindex: true,
+    jsonLd: [],
+  },
 ];
 
 export const legalPath = (key: LegalKey) => LEGAL_PATHS[key];

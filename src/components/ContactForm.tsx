@@ -5,15 +5,13 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { legalPath } from '../seo/pages';
 import { CONTACT, type Lang } from '../seo/site';
 import type { ServiceKey } from '../content/services';
+import { inputClass, labelClass } from './formStyles';
 
 type Field = 'name' | 'email' | 'phone' | 'company' | 'message' | 'consent';
 type Status = 'idle' | 'sending' | 'success' | 'error' | 'rate_limited';
 
 const SERVICE_OPTIONS = ['webdesign', 'automation', 'telephony', 'other'] as const;
 
-const inputClass =
-  'w-full bg-background border border-border px-4 py-3 min-h-[44px] text-primary placeholder:text-muted focus:border-accent outline-none transition-colors aria-[invalid=true]:border-red-500';
-const labelClass = 'block text-sm font-display font-medium text-primary mb-2';
 
 interface ContactFormProps {
   lang: Lang;

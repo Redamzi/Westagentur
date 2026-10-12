@@ -9,6 +9,9 @@ import Home from './pages/Home';
 import ServicePage from './pages/ServicePage';
 import LegalPage from './pages/LegalPage';
 import NotFound from './pages/NotFound';
+import BookingPage from './pages/BookingPage';
+import ManageBookingPage from './pages/ManageBookingPage';
+import AdminPage from './pages/AdminPage';
 import { findPage, notFoundPage, type PageDef } from './seo/pages';
 import { applyHeadTags } from './seo/head';
 import { langFromPath } from './seo/site';
@@ -24,6 +27,10 @@ const PageContent = ({ page }: { page: PageDef }) => {
       return <ServicePage serviceKey={page.serviceKey!} lang={page.lang} />;
     case 'legal':
       return <LegalPage legalKey={page.legalKey!} />;
+    case 'booking':
+      return <BookingPage lang={page.lang} />;
+    case 'manage':
+      return <ManageBookingPage lang={page.lang} />;
     default:
       return <NotFound lang={page.lang} />;
   }
@@ -38,6 +45,13 @@ function App() {
   useEffect(() => {
     if (i18n.language !== page.lang) i18n.changeLanguage(page.lang);
     applyHeadTags(page);
+    // Cookieless page view count (see server/src/app.js)
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path: pathname, referrer: document.referrer }),
+      keepalive: true,
+    }).catch(() => undefined);
   }, [page.path, page.lang]);
 
   // Scroll to the anchor after navigation, or to the top on a new page.
@@ -58,6 +72,16 @@ function App() {
     return () => cancelAnimationFrame(frame);
   }, [pathname, hash]);
 
+  if (page.kind === 'admin') {
+    return (
+      <main className="bg-background text-primary">
+        <AdminPage />
+      </main>
+    );
+  }
+
+  const showCta = page.kind !== 'booking' && page.kind !== 'manage';
+
   return (
     <MotionConfig reducedMotion="user">
       <div className="min-h-screen bg-background text-primary">
@@ -65,7 +89,7 @@ function App() {
         <main>
           <PageContent page={page} />
         </main>
-        <CTA page={page} />
+        {showCta && <CTA page={page} />}
         <Footer lang={page.lang} />
       </div>
     </MotionConfig>

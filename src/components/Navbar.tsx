@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { SERVICES, SERVICE_KEYS } from '../content/services';
 import { HOME_PATH } from '../seo/site';
+import { BOOKING_PATHS, BOOKING_TEXT } from '../content/booking';
 import type { PageDef } from '../seo/pages';
 
 const Navbar: React.FC<{ page: PageDef }> = ({ page }) => {
@@ -71,9 +72,9 @@ const Navbar: React.FC<{ page: PageDef }> = ({ page }) => {
             {otherLang.toUpperCase()}
           </Link>
 
-          <a href="#kontakt" className="btn-primary py-2.5 px-6 text-sm">
-            {t('nav.contact')} <ArrowRight className="w-4 h-4" />
-          </a>
+          <Link to={BOOKING_PATHS[lang].book} className="btn-primary py-2.5 px-6 text-sm">
+            {BOOKING_TEXT[lang].navLabel} <ArrowRight className="w-4 h-4" />
+          </Link>
         </nav>
 
         {/* Mobile Toggle */}
@@ -118,9 +119,9 @@ const Navbar: React.FC<{ page: PageDef }> = ({ page }) => {
                 {link.name}
               </Link>
             ))}
-            <a href="#kontakt" className="btn-primary w-full mt-4" onClick={() => setMobileMenuOpen(false)}>
-              {t('nav.contact')} <ArrowRight className="w-4 h-4" />
-            </a>
+            <Link to={BOOKING_PATHS[lang].book} className="btn-primary w-full mt-4" onClick={() => setMobileMenuOpen(false)}>
+              {BOOKING_TEXT[lang].navLabel} <ArrowRight className="w-4 h-4" />
+            </Link>
           </motion.nav>
         )}
       </AnimatePresence>

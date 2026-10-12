@@ -1,7 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Mail, Phone } from 'lucide-react';
+import { ArrowRight, Mail, Phone } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { BOOKING_PATHS, BOOKING_TEXT } from '../content/booking';
 import ContactForm from '../components/ContactForm';
 import { CONTACT } from '../seo/site';
 import type { PageDef } from '../seo/pages';
@@ -25,7 +27,10 @@ const CTA: React.FC<{ page: PageDef }> = ({ page }) => {
             {t('cta.title')}
           </motion.h2>
           <p className="text-xl md:text-2xl font-display font-medium text-primary mb-6">{t('cta.sub')}</p>
-          <p className="text-lg text-muted mb-10 max-w-xl">{t('cta.desc')}</p>
+          <p className="text-lg text-muted mb-8 max-w-xl">{t('cta.desc')}</p>
+          <Link to={BOOKING_PATHS[page.lang].book} className="btn-primary mb-10">
+            {BOOKING_TEXT[page.lang].navLabel} <ArrowRight aria-hidden="true" className="w-5 h-5" />
+          </Link>
 
           <p className="text-sm font-display font-bold uppercase tracking-widest text-muted mb-3">{t('cta.phone_text')}</p>
           <ul className="space-y-1 mb-4">

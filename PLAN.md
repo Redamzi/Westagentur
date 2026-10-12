@@ -24,16 +24,17 @@
 2. ✅ **Design** – helles Design-System (Tokens in Tailwind), Mobil-Fixes, Fokus-Stile, aria-Labels, Touch-Ziele ≥ 44 px.
 3. ✅ **SEO-Basis** – Prerendering, Routing (`/webdesign`, `/ki-automatisierung`, `/ki-telefonie`, `/kontakt`, `/impressum`, `/datenschutz`, `/agb`, `/en/...`), Meta/OG/hreflang je Seite, `robots.txt`, `sitemap.xml`, JSON-LD (`LocalBusiness`, Service, FAQ), Logo + OG-Bild, Performance (Lazy-Load Vapi, Fonts self-hosted, nginx gzip/Cache).
 4. ✅ **Backend** – Node-Container in `docker-compose.yml`, nginx `/api` → Backend, SQLite auf Volume + tägliches Backup, `nodemailer` (SMTP aus `.env`). Kontaktformular mit Honeypot + Rate-Limit, Bestätigungs- und Benachrichtigungsmail.
-5. **Terminbuchung** – Verfügbarkeiten, freie Slots, Buchung, `.ics`-Einladung, Storno/Verschieben per Link.
-6. **Admin `/admin`** – Leads, Termine, Status-Pipeline, Verfügbarkeiten, Statistik (cookielos). Passwortgeschützt.
-7. **Automatisierung** – Vapi-Webhook `/api/vapi` (Lead + Termin), Follow-ups nach 2/7 Tagen, Terminerinnerung 24 h vorher, Bewertungsanfrage nach Projektabschluss, optional Angebots-PDF.
+5. ✅ **Terminbuchung** – Verfügbarkeiten, freie Slots, Buchung, `.ics`-Einladung, Storno/Verschieben per Link.
+6. ✅ **Admin `/admin`** – Leads, Termine, Status-Pipeline, Verfügbarkeiten, Statistik (cookielos). Passwortgeschützt.
+7. ✅ **Automatisierung** – Vapi-Webhook `/api/vapi` (Lead + Termin), Follow-ups nach 2/7 Tagen, Terminerinnerung 24 h vorher, Bewertungsanfrage nach Projektabschluss, optional Angebots-PDF.
 8. **Vermarktung/Inhalte** – lokale Landingpages (Dortmund, Ruhrgebiet), Ratgeber/Blog, Fallstudien (MailScout, Direktverteilung, Voyanero), Lead-Magnet „Website- & Automatisierungs-Check“, Live-Demo „Sarah anrufen“, Google-Unternehmensprofil.
 
 ## Offene Punkte aus Schritt 3
 - Impressum enthält Platzhalter (Max Mustermann, HRB 12345, USt-ID DE 123 456 789, „Westagentur Digital Solutions GmbH“) – echte Angaben nötig.
 - Datenschutzerklärung ist unvollständig (u. a. Vapi/OpenAI, Server-Logs, Kontaktformular fehlen) – rechtlich prüfen lassen.
 - Fiktives Kundenzitat („Musterkunde GmbH“) entfernt – echte Kundenstimmen ergänzen.
-- Datenschutzerklärung muss das Kontaktformular (Speicherung, Mailversand, Löschfristen) abdecken.
+- Datenschutzerklärung muss Kontaktformular, Terminbuchung, cookielose Statistik und Vapi/OpenAI (Telefon & Browser-Demo) abdecken.
+- Angebots-PDF (optional aus Schritt 7) noch nicht umgesetzt.
 - Logo/OG-Bild sind generierte Platzhalter (`public/logo.png`, `public/og-image.png`).
 
 ## Benötigt

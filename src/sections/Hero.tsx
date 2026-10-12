@@ -2,9 +2,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { BOOKING_PATHS } from '../content/booking';
 
 const Hero = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language === 'en' ? 'en' : 'de';
   const pills = t('hero.pills', { returnObjects: true });
 
   // Custom Highlight logic to make specific words italic and colored
@@ -67,10 +70,10 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-12 md:mb-16"
           >
-            <a href="#kontakt" className="btn-primary w-full sm:w-auto group">
-              {t('hero.cta_primary')} 
+            <Link to={BOOKING_PATHS[lang].book} className="btn-primary w-full sm:w-auto group">
+              {t('hero.cta_primary')}
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </a>
+            </Link>
             <a href="#projekte" className="btn-ghost w-full sm:w-auto">
               {t('hero.cta_secondary')}
             </a>

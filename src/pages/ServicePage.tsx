@@ -4,6 +4,7 @@ import { ArrowRight, Plus } from 'lucide-react';
 import AIAssistant from '../sections/AIAssistant';
 import { SERVICES, SERVICE_UI, type ServiceKey } from '../content/services';
 import { HOME_PATH, type Lang } from '../seo/site';
+import { BOOKING_PATHS } from '../content/booking';
 
 interface ServicePageProps {
   serviceKey: ServiceKey;
@@ -35,9 +36,9 @@ const ServicePage: React.FC<ServicePageProps> = ({ serviceKey, lang }) => {
           <h1 className="heading-xl text-primary mb-8">{s.h1}</h1>
           <p className="text-lg md:text-xl text-muted max-w-2xl leading-relaxed mb-10">{s.intro}</p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <a href="#kontakt" className="btn-primary w-full sm:w-auto">
+            <Link to={BOOKING_PATHS[lang].book} className="btn-primary w-full sm:w-auto">
               {ui.cta} <ArrowRight className="w-5 h-5" />
-            </a>
+            </Link>
             {s.demo && (
               <a href="#ki-assistent" className="btn-ghost w-full sm:w-auto">
                 {ui.demo}
