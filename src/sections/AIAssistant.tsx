@@ -85,7 +85,7 @@ const AIAssistant = () => {
   };
 
   return (
-    <section className="relative py-32 bg-background border-b border-border overflow-hidden flex justify-center">
+    <section className="section-dark relative section-padding bg-background border-b border-border overflow-hidden flex justify-center">
       
       {/* Background Pattern */}
       <div className="absolute inset-0 grid-bg opacity-20 pointer-events-none" />
@@ -93,7 +93,7 @@ const AIAssistant = () => {
 
       <div className="container mx-auto px-6 relative z-10 flex flex-col items-center">
         
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 md:mb-16">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -102,7 +102,7 @@ const AIAssistant = () => {
           >
             KI <span className="text-accent italic font-normal">Assistent</span>
           </motion.h2>
-          <p className="text-muted font-sans text-xl mt-4 max-w-2xl mx-auto">
+          <p className="text-muted font-sans text-lg md:text-xl mt-4 max-w-2xl mx-auto">
             Testen Sie unsere Sprach-KI live im Browser. Keine Wartezeiten, direktes Feedback.
           </p>
         </div>
@@ -112,11 +112,11 @@ const AIAssistant = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="w-full max-w-md bg-surface border border-border p-8 flex flex-col items-center gap-10 shadow-2xl shadow-black relative"
+          className="w-full max-w-md bg-surface border border-border p-6 md:p-8 flex flex-col items-center gap-8 md:gap-10 shadow-2xl shadow-black relative"
         >
           {/* Avatar Section */}
           <div className="flex flex-col items-center gap-4">
-            <div className="w-24 h-24 border border-border flex items-center justify-center bg-[#080808] relative overflow-hidden">
+            <div className="w-24 h-24 border border-border flex items-center justify-center bg-background relative overflow-hidden">
               {status === 'connected' && (
                 <div 
                   className="absolute inset-0 bg-accent/20"
@@ -130,14 +130,14 @@ const AIAssistant = () => {
               <h3 className="text-2xl font-display font-bold tracking-widest text-primary uppercase">
                 KI-Assistent
               </h3>
-              <div className={`mt-2 inline-flex px-3 py-1 border text-[10px] font-display font-bold tracking-[0.2em] uppercase ${getStatusColor()}`}>
+              <div className={`mt-2 inline-flex px-3 py-1 border text-xs font-display font-bold tracking-[0.2em] uppercase ${getStatusColor()}`}>
                 {getStatusText()}
               </div>
             </div>
           </div>
 
           {/* Visualizer Middle Area */}
-          <div className="w-full h-32 border border-border bg-[#050505] flex items-center justify-center relative overflow-hidden">
+          <div aria-hidden="true" className="w-full h-32 border border-border bg-background flex items-center justify-center relative overflow-hidden">
             {status === 'connected' ? (
               <div 
                 className="w-16 h-16 rounded-full bg-accent blur-xl transition-all duration-75"
@@ -160,6 +160,7 @@ const AIAssistant = () => {
           <div className="flex w-full gap-4">
             <button
               onClick={endCall}
+              aria-label="Gespräch beenden"
               disabled={status === 'idle' || status === 'finished'}
               className="flex-1 border border-border py-6 flex items-center justify-center text-muted hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/50 transition-colors disabled:opacity-50 disabled:pointer-events-none"
             >
@@ -167,6 +168,7 @@ const AIAssistant = () => {
             </button>
             <button
               onClick={startCall}
+              aria-label="Gespräch mit KI-Assistent starten"
               disabled={status === 'connected' || status === 'connecting'}
               className="flex-1 border border-border py-6 flex items-center justify-center text-primary bg-white/5 hover:bg-green-500/20 hover:text-green-400 hover:border-green-500/50 transition-colors disabled:opacity-50 disabled:pointer-events-none"
             >
@@ -175,7 +177,7 @@ const AIAssistant = () => {
           </div>
           
           <div className="w-full text-center">
-            <p className="text-[10px] font-sans text-muted uppercase tracking-widest">
+            <p className="text-xs font-sans text-muted uppercase tracking-widest">
               Powered by Vapi & OpenAI
             </p>
           </div>

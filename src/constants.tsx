@@ -80,18 +80,6 @@ export const PRICING: PricingPackage[] = [
             "Automatisierung (z.B. MailScout)",
             "Festpreis-Garantie"
         ]
-    },
-    {
-        name: "Ultimate 3D",
-        price: "5.000€+",
-        features: [
-            "Alles aus Professional",
-            "3D Webdesign Effekte",
-            "Three.js Integration",
-            "Individuelle Prozess-Automatisierung",
-            "Premium Support & Wartung",
-            "E-Commerce Integration"
-        ]
     }
 ];
 
@@ -116,17 +104,6 @@ export const SERVICE_DATA: Record<string, ServiceData> = {
             { title: "24/7 Service", desc: "Immer erreichbar, auch an Wochenenden und Feiertagen." },
             { title: "Intelligente Dialoge", desc: "Natürliche Gespräche und direkte Terminbuchung." },
             { title: "Team Entlastung", desc: "Fokus auf komplexe Aufgaben statt Telefon-Routine." }
-        ]
-    },
-    '3d': {
-        title: "3D Webdesign",
-        subtitle: "3D Erlebnisse",
-        heroText: "Interaktive Erlebnisse durch moderne WebGL Technologien.",
-        content: "Heben Sie sich technologisch von der Masse ab. Mit 3D Webdesign ermöglichen wir es Nutzern, Produkte virtuell zu erleben, durch Räume zu navigieren und interaktive Effekte zu genießen. Wir nutzen Frameworks wie Three.js, um hochwertige dreidimensionale Welten direkt im Browser zu schaffen – ohne zusätzliche Plugins.",
-        features: [
-            { title: "Interaktive Produkte", desc: "Lassen Sie Kunden Ihre Produkte digital 'anfassen'." },
-            { title: "WebGL Performance", desc: "High-End Grafik bei minimalen Ladezeiten." },
-            { title: "Nutzererfahrung", desc: "Einzigartige Erlebnisse, die im Gedächtnis bleiben." }
         ]
     },
     automation: {

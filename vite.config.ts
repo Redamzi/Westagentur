@@ -11,7 +11,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          three: ['three', 'three/examples/jsm/controls/OrbitControls.js'],
           vapi: ['@vapi-ai/web']
         }
       }

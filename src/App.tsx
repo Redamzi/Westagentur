@@ -1,4 +1,5 @@
 import React from 'react';
+import { MotionConfig } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 import Services from './sections/Services';
@@ -12,7 +13,8 @@ import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-white/30">
+    <MotionConfig reducedMotion="user">
+    <div className="min-h-screen bg-background text-primary">
       <Navbar />
       <main>
         <Hero />
@@ -26,6 +28,7 @@ function App() {
       </main>
       <Footer />
     </div>
+    </MotionConfig>
   );
 }
 

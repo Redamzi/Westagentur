@@ -30,11 +30,11 @@ const Navbar = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled ? 'bg-background/80 backdrop-blur-md border-b border-border py-4' : 'bg-transparent py-6'
+        isScrolled ? 'bg-background/90 backdrop-blur-md border-b border-border py-3' : 'section-dark bg-transparent py-5'
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <a href="#" className="text-2xl font-display font-bold tracking-tight text-primary flex items-center gap-2">
+        <a href="#" className="text-2xl font-display font-bold tracking-tight text-primary flex items-center gap-2 min-h-[44px]">
           WEST<span className="text-accent italic font-normal">AGENTUR</span>
         </a>
 
@@ -52,7 +52,8 @@ const Navbar = () => {
           
           <button 
             onClick={toggleLanguage}
-            className="flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors"
+            aria-label={i18n.language === 'de' ? 'Switch to English' : 'Auf Deutsch wechseln'}
+            className="flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors min-h-[44px]"
           >
             <Globe className="w-4 h-4" />
             {i18n.language.toUpperCase()}
@@ -67,17 +68,20 @@ const Navbar = () => {
         </nav>
 
         {/* Mobile Toggle */}
-        <div className="flex items-center gap-6 md:hidden">
+        <div className="flex items-center gap-2 md:hidden">
           <button 
             onClick={toggleLanguage}
-            className="text-primary flex items-center gap-1 text-sm font-medium"
+            aria-label={i18n.language === 'de' ? 'Switch to English' : 'Auf Deutsch wechseln'}
+            className="text-primary flex items-center justify-center gap-1 text-sm font-medium min-h-[44px] min-w-[44px]"
           >
             <Globe className="w-4 h-4" />
             {i18n.language.toUpperCase()}
           </button>
           <button
-            className="text-primary"
+            className="text-primary flex items-center justify-center min-h-[44px] min-w-[44px]"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? 'Menü schließen' : 'Menü öffnen'}
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X /> : <Menu />}
           </button>
@@ -97,7 +101,7 @@ const Navbar = () => {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-lg font-display font-medium text-muted hover:text-primary"
+                className="text-lg font-display font-medium text-muted hover:text-primary py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.name}

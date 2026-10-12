@@ -20,7 +20,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-[90vh] flex items-center pt-32 pb-20 bg-background overflow-hidden border-b border-border">
+    <section className="section-dark relative min-h-[90vh] flex items-center pt-28 md:pt-32 pb-16 md:pb-20 bg-background overflow-hidden border-b border-border">
       {/* Structural Grid Background */}
       <div className="absolute inset-0 grid-bg opacity-40" />
 
@@ -34,7 +34,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-wrap gap-3 mb-10"
+            className="flex flex-wrap gap-2 md:gap-3 mb-8 md:mb-10"
           >
             {pills.map((pill, index) => (
               <span key={index} className="px-3 py-1.5 border border-border text-xs font-display text-muted uppercase tracking-widest">
@@ -56,7 +56,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-lg md:text-xl text-muted mb-12 max-w-2xl leading-relaxed"
+            className="text-lg md:text-xl text-muted mb-10 md:mb-12 max-w-2xl leading-relaxed"
           >
             {t('hero.subheadline')}
           </motion.p>
@@ -65,7 +65,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row items-center gap-6 mb-16"
+            className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-12 md:mb-16"
           >
             <a href="#kontakt" className="btn-primary w-full sm:w-auto group">
               {t('hero.cta_primary')} 

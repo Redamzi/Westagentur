@@ -7,7 +7,7 @@ const CTA = () => {
   const { t } = useTranslation();
 
   return (
-    <section id="kontakt" className="relative py-32 bg-accent text-background overflow-hidden">
+    <section id="kontakt" className="section-dark relative section-padding bg-accent text-background overflow-hidden">
       {/* Structural Grid Background for CTA */}
       <div className="absolute inset-0 grid-bg opacity-10" />
 
@@ -27,7 +27,7 @@ const CTA = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-2xl md:text-3xl font-display font-medium mb-6"
+            className="text-xl md:text-3xl font-display font-medium mb-6"
           >
             {t('cta.sub')}
           </motion.p>
@@ -37,7 +37,7 @@ const CTA = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-xl font-sans text-background/80 mb-16 max-w-2xl"
+            className="text-lg md:text-xl font-sans text-background/80 mb-12 md:mb-16 max-w-2xl"
           >
             {t('cta.desc')}
           </motion.p>
@@ -61,7 +61,7 @@ const CTA = () => {
               <span className="text-sm font-display font-bold uppercase tracking-widest text-background/60">
                 {t('cta.phone_text')}
               </span>
-              <a href="tel:+4915227506958" className="text-2xl font-display font-bold hover:text-white transition-colors">
+              <a href="tel:+4915227506958" className="text-2xl font-display font-bold hover:underline underline-offset-4 inline-block py-1.5">
                 {t('cta.phone')}
               </a>
               <span className="text-sm font-sans text-background/80 mt-1">
