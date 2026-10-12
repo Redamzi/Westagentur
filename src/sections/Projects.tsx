@@ -47,16 +47,6 @@ const Projects = () => {
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-12 md:mt-16 p-6 md:p-12 border border-border bg-surface text-center"
-        >
-          <p className="text-xl md:text-2xl font-display text-primary italic font-medium leading-relaxed">
-            {t('projects.testimonial_placeholder')}
-          </p>
-        </motion.div>
 
       </div>
     </section>

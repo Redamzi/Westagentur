@@ -1,9 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
+import { SERVICES, SERVICE_UI, type ServiceKey } from '../content/services';
+import type { Lang } from '../seo/site';
+
+// Service cards (by position) that have their own detail page.
+const DETAIL_PAGES: (ServiceKey | null)[] = ['webdesign', 'telephony', 'automation'];
 
 const Services = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = (i18n.language === 'en' ? 'en' : 'de') as Lang;
   const items: { title: string; desc: string }[] = t('services.items', { returnObjects: true });
 
   return (
@@ -47,9 +55,20 @@ const Services = () => {
                 </span>
                 <h3 className="text-2xl font-display font-semibold text-primary mb-4 leading-tight">{service.title}</h3>
               </div>
-              <p className="text-muted leading-relaxed font-sans mt-6 md:mt-8">
-                {service.desc}
-              </p>
+              <div className="mt-6 md:mt-8">
+                <p className="text-muted leading-relaxed font-sans">
+                  {service.desc}
+                </p>
+                {DETAIL_PAGES[index] && (
+                  <Link
+                    to={SERVICES[lang][DETAIL_PAGES[index]!].path}
+                    className="mt-6 inline-flex items-center gap-2 py-2.5 font-display font-medium text-accent hover:underline underline-offset-4"
+                  >
+                    {SERVICE_UI[lang].more}<span className="sr-only">: {service.title}</span>
+                    <ArrowRight aria-hidden="true" className="w-4 h-4" />
+                  </Link>
+                )}
+              </div>
             </motion.div>
           ))}
         </div>

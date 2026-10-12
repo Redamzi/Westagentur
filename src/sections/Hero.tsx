@@ -31,7 +31,7 @@ const Hero = () => {
         <div className="max-w-5xl">
           
           <motion.div 
-            initial={{ opacity: 0, y: 10 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-wrap gap-2 md:gap-3 mb-8 md:mb-10"
@@ -44,7 +44,7 @@ const Hero = () => {
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="heading-xl text-primary mb-8"
@@ -53,7 +53,7 @@ const Hero = () => {
           </motion.h1>
           
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="text-lg md:text-xl text-muted mb-10 md:mb-12 max-w-2xl leading-relaxed"
@@ -62,7 +62,7 @@ const Hero = () => {
           </motion.p>
           
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-12 md:mb-16"
@@ -77,7 +77,7 @@ const Hero = () => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={false}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.6 }}
             className="pt-8 border-t border-border inline-block"

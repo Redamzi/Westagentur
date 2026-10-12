@@ -20,14 +20,20 @@
 - Alte, ungenutzte Komponenten mit undefinierten Klassen.
 
 ## Schritte
-1. **Aufräumen** – 3D (`three`, `Interactive3DViewer`, `ThreeSpaceBackground`), alte Komponenten, 3D in Schema/Texten/Vapi-Prompt entfernen.
-2. **Design** – helles Design-System (Tokens in Tailwind), Mobil-Fixes, Fokus-Stile, aria-Labels, Touch-Ziele ≥ 44 px.
-3. **SEO-Basis** – Prerendering, Routing (`/webdesign`, `/ki-automatisierung`, `/ki-telefonie`, `/kontakt`, `/impressum`, `/datenschutz`, `/agb`, `/en/...`), Meta/OG/hreflang je Seite, `robots.txt`, `sitemap.xml`, JSON-LD (`LocalBusiness`, Service, FAQ), Logo + OG-Bild, Performance (Lazy-Load Vapi, Fonts self-hosted, nginx gzip/Cache).
+1. ✅ **Aufräumen** – 3D (`three`, `Interactive3DViewer`, `ThreeSpaceBackground`), alte Komponenten, 3D in Schema/Texten/Vapi-Prompt entfernen.
+2. ✅ **Design** – helles Design-System (Tokens in Tailwind), Mobil-Fixes, Fokus-Stile, aria-Labels, Touch-Ziele ≥ 44 px.
+3. ✅ **SEO-Basis** – Prerendering, Routing (`/webdesign`, `/ki-automatisierung`, `/ki-telefonie`, `/kontakt`, `/impressum`, `/datenschutz`, `/agb`, `/en/...`), Meta/OG/hreflang je Seite, `robots.txt`, `sitemap.xml`, JSON-LD (`LocalBusiness`, Service, FAQ), Logo + OG-Bild, Performance (Lazy-Load Vapi, Fonts self-hosted, nginx gzip/Cache).
 4. **Backend** – Node-Container in `docker-compose.yml`, nginx `/api` → Backend, SQLite auf Volume + tägliches Backup, `nodemailer` (SMTP aus `.env`). Kontaktformular mit Honeypot + Rate-Limit, Bestätigungs- und Benachrichtigungsmail.
 5. **Terminbuchung** – Verfügbarkeiten, freie Slots, Buchung, `.ics`-Einladung, Storno/Verschieben per Link.
 6. **Admin `/admin`** – Leads, Termine, Status-Pipeline, Verfügbarkeiten, Statistik (cookielos). Passwortgeschützt.
 7. **Automatisierung** – Vapi-Webhook `/api/vapi` (Lead + Termin), Follow-ups nach 2/7 Tagen, Terminerinnerung 24 h vorher, Bewertungsanfrage nach Projektabschluss, optional Angebots-PDF.
 8. **Vermarktung/Inhalte** – lokale Landingpages (Dortmund, Ruhrgebiet), Ratgeber/Blog, Fallstudien (MailScout, Direktverteilung, Voyanero), Lead-Magnet „Website- & Automatisierungs-Check“, Live-Demo „Sarah anrufen“, Google-Unternehmensprofil.
+
+## Offene Punkte aus Schritt 3
+- Impressum enthält Platzhalter (Max Mustermann, HRB 12345, USt-ID DE 123 456 789, „Westagentur Digital Solutions GmbH“) – echte Angaben nötig.
+- Datenschutzerklärung ist unvollständig (u. a. Vapi/OpenAI, Server-Logs, Kontaktformular fehlen) – rechtlich prüfen lassen.
+- Fiktives Kundenzitat („Musterkunde GmbH“) entfernt – echte Kundenstimmen ergänzen.
+- Logo/OG-Bild sind generierte Platzhalter (`public/logo.png`, `public/og-image.png`).
 
 ## Benötigt
 - SMTP-Daten (Host, Port, Benutzer, Passwort) – nur in `.env` auf dem Server.

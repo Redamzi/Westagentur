@@ -13,6 +13,8 @@ i18n
     },
     lng: 'de', // Standard-Sprache
     fallbackLng: 'en',
+    initImmediate: false, // synchron initialisieren (nötig für Prerendering)
+    react: { useSuspense: false },
     interpolation: {
       escapeValue: false // react already safes from xss
     }
