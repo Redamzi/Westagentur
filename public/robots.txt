@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /termin/verwalten
+Disallow: /en/appointment/manage
+
+Sitemap: https://westagentur.de/sitemap.xml

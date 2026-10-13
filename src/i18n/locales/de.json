@@ -82,8 +82,7 @@
         "name": "Voyanero.com",
         "desc": "Premium Reise-Marktplatz mit AI-Concierge"
       }
-    ],
-    "testimonial_placeholder": "„Dank der Westagentur haben wir nicht nur ein neues, professionelles Design, sondern konnten unsere qualifizierten Anfragen um 40% steigern.“ – Musterkunde GmbH"
+    ]
   },
   "whyus": {
     "title": "Warum Unternehmen mit uns zusammenarbeiten",
@@ -105,7 +104,7 @@
       },
       {
         "q": "Was kostet eine professionelle Website?",
-        "a": "Unsere Pakete starten bei 3.900 € für moderne Business-Websites. Individuelle Lösungen mit Shop, KI-Telefonie oder komplexen Automatisierungen liegen je nach Anforderung zwischen 6.500 € und 15.000 €. Wir erstellen immer ein individuelles Angebot."
+        "a": "Unsere Webdesign-Pakete starten ab 1.500 € (Starter) bzw. ab 3.200 € (Pro). KI-Telefonie und Automatisierungen kalkulieren wir individuell nach einem kostenlosen Check. Sie erhalten immer ein konkretes Angebot."
       },
       {
         "q": "Bieten Sie auch laufende Betreuung an?",
@@ -129,9 +128,7 @@
     "title": "Bereit für den nächsten Schritt?",
     "sub": "Lassen Sie uns gemeinsam Ihre digitale Zukunft gestalten.",
     "desc": "Erhalten Sie in einem unverbindlichen Gespräch eine ehrliche Einschätzung und konkrete Vorschläge für Ihr Unternehmen.",
-    "button": "Jetzt kostenloses Beratungsgespräch vereinbaren",
     "phone_text": "Oder rufen Sie uns direkt an:",
-    "phone": "+49 152 27506958",
     "callback": "Wir melden uns in der Regel innerhalb von 24 Stunden zurück."
   },
   "footer": {
@@ -140,5 +137,37 @@
     "tos": "AGB",
     "made_in": "Made in Germany",
     "rights": "Alle Rechte vorbehalten."
+  },
+  "form": {
+    "title": "Anfrage senden",
+    "name": "Name",
+    "email": "E-Mail",
+    "phone": "Telefon (optional)",
+    "company": "Unternehmen (optional)",
+    "service": "Interesse",
+    "services": {
+      "webdesign": "Webdesign",
+      "automation": "KI-Automatisierung",
+      "telephony": "KI-Telefonie",
+      "other": "Sonstiges"
+    },
+    "message": "Ihre Nachricht",
+    "consent_before": "Ich habe die ",
+    "consent_link": "Datenschutzerklärung",
+    "consent_after": " gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden.",
+    "required": "Pflichtfeld",
+    "submit": "Anfrage senden",
+    "sending": "Wird gesendet …",
+    "success_title": "Vielen Dank!",
+    "success": "Ihre Anfrage ist angekommen. Sie erhalten gleich eine Bestätigung per E-Mail. Wir melden uns werktags innerhalb von 24 Stunden.",
+    "error": "Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder schreiben Sie uns per E-Mail:",
+    "rate_limited": "Zu viele Anfragen in kurzer Zeit. Bitte versuchen Sie es später erneut oder schreiben Sie uns per E-Mail:",
+    "errors": {
+      "name": "Bitte geben Sie Ihren Namen an.",
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse an.",
+      "phone": "Bitte prüfen Sie die Telefonnummer.",
+      "message": "Bitte beschreiben Sie Ihr Anliegen kurz (mind. 10 Zeichen).",
+      "consent": "Bitte stimmen Sie der Datenschutzerklärung zu."
+    }
   }
 }

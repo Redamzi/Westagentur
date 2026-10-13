@@ -38,6 +38,72 @@ curl http://localhost:3000/health
 
 ---
 
+## ✉️ Kontaktformular-API (im selben Container)
+
+Der Container startet neben nginx eine kleine Node-API (`server/`) für das Kontaktformular.
+nginx leitet `/api/*` an sie weiter. Anfragen werden in SQLite gespeichert und per SMTP versendet.
+
+### Persistenter Speicher (wichtig)
+In Coolify unter **Storages** ein Volume auf **`/data`** einhängen.
+Dort liegen die Datenbank (`westagentur.db`) und tägliche Backups (`backups/`, 14 Tage).
+Ohne Volume gehen Anfragen bei jedem Deployment verloren.
+
+### Environment Variables
+```
+SMTP_HOST=mail.example.de
+SMTP_PORT=587            # 465 = SSL, 587 = STARTTLS
+SMTP_USER=mail@westagentur.de
+SMTP_PASS=********
+MAIL_FROM=Westagentur <mail@westagentur.de>
+MAIL_TO=mail@westagentur.de
+PUBLIC_URL=https://westagentur.de
+ADMIN_PASSWORD=<langes zufälliges Passwort>
+VAPI_WEBHOOK_SECRET=<zufälliger Wert, siehe unten>
+GOOGLE_REVIEW_URL=<Link zur Google-Bewertung, optional>
+```
+
+Ohne `SMTP_HOST` werden Anfragen gespeichert, Mails aber nur ins Log geschrieben.
+Im Log erscheint nach dem Start `[mail] SMTP connection ok`, wenn die Zugangsdaten stimmen.
+
+### Funktionen der API
+| Bereich | Pfad | Beschreibung |
+|---|---|---|
+| Kontaktformular | `POST /api/contact` | Anfrage speichern, Mail an Inhaber + Bestätigung |
+| Terminbuchung | `/termin`, `GET /api/slots`, `POST /api/bookings` | Freie Zeiten, Buchung, .ics-Einladung |
+| Termin verwalten | `/termin/verwalten?t=…` | Verschieben/Absagen per Link aus der Mail |
+| Admin | `/admin` | Anfragen, Pipeline, Termine, Verfügbarkeit, Statistik |
+| Statistik | `POST /api/track` | Cookielos, ohne IP: nur Tag, Seite, Verweis-Domain |
+| Vapi | `POST /api/vapi` | Termine im Telefonat buchen, Anrufe als Anfrage speichern |
+
+Automatisch (alle 5 Minuten geprüft):
+- Terminerinnerung 24 h vorher an den Kunden
+- Nachfass-Mails 2 und 7 Tage nachdem eine Anfrage auf „Angebot gesendet“ gesetzt wurde
+- Bewertungsanfrage, wenn eine Anfrage auf „Abgeschlossen“ gesetzt wird (nur mit `GOOGLE_REVIEW_URL`)
+- Tagesübersicht um 7 Uhr an `MAIL_TO` (Termine heute, unbearbeitete Anfragen)
+
+### Vapi einrichten (KI-Telefonie)
+1. Im Vapi-Dashboard beim Assistenten unter **Server URL** `https://westagentur.de/api/vapi` eintragen
+   und als **Server Secret** denselben Wert wie `VAPI_WEBHOOK_SECRET` (wird als Header `x-vapi-secret` gesendet).
+2. Unter **Server Messages** mindestens `end-of-call-report` und `tool-calls` aktivieren.
+3. Zwei **Function-Tools** anlegen (Server URL wie oben):
+   - `get_free_slots` – Parameter: `date` (string, optional, Format `YYYY-MM-DD`).
+     Beschreibung: „Liefert freie Termine für ein kostenloses Erstgespräch.“
+   - `book_appointment` – Parameter: `start` (string, ISO-Zeit aus get_free_slots, Pflicht), `name` (string, Pflicht),
+     `phone`, `email`, `company`, `service` (`webdesign` | `automation` | `telephony` | `other`), `note`.
+     Beschreibung: „Bucht einen Termin. Vorher Namen erfragen und Termin bestätigen lassen.“
+4. Optional unter **Analysis → Structured Data** ein Schema mit `name`, `email`, `company`, `service` anlegen –
+   diese Felder landen in der Anfrage.
+5. Im System-Prompt ergänzen: „Biete bei Interesse Termine mit get_free_slots an und buche mit book_appointment.“
+
+### Lokal entwickeln
+```bash
+cd server && npm install && npm run dev   # API auf :8787
+npm run dev                              # Frontend, /api wird weitergeleitet
+cd server && npm test                    # API-Tests
+```
+
+---
+
 ## 🚀 Coolify Deployment
 
 ### 1. Repository Setup

@@ -1,31 +1,98 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { MotionConfig } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Navbar from './components/Navbar';
-import Hero from './sections/Hero';
-import Services from './sections/Services';
-import AIAssistant from './sections/AIAssistant';
-import About from './sections/About';
-import Projects from './sections/Projects';
-import WhyUs from './sections/WhyUs';
-import FAQ from './sections/FAQ';
-import CTA from './sections/CTA';
 import Footer from './components/Footer';
+import CTA from './sections/CTA';
+import Home from './pages/Home';
+import ServicePage from './pages/ServicePage';
+import LegalPage from './pages/LegalPage';
+import NotFound from './pages/NotFound';
+import BookingPage from './pages/BookingPage';
+import ManageBookingPage from './pages/ManageBookingPage';
+import AdminPage from './pages/AdminPage';
+import { findPage, notFoundPage, type PageDef } from './seo/pages';
+import { applyHeadTags } from './seo/head';
+import { langFromPath } from './seo/site';
+
+export const resolvePage = (pathname: string): PageDef =>
+  findPage(pathname) ?? notFoundPage(pathname, langFromPath(pathname));
+
+const PageContent = ({ page }: { page: PageDef }) => {
+  switch (page.kind) {
+    case 'home':
+      return <Home />;
+    case 'service':
+      return <ServicePage serviceKey={page.serviceKey!} lang={page.lang} />;
+    case 'legal':
+      return <LegalPage legalKey={page.legalKey!} />;
+    case 'booking':
+      return <BookingPage lang={page.lang} />;
+    case 'manage':
+      return <ManageBookingPage lang={page.lang} />;
+    default:
+      return <NotFound lang={page.lang} />;
+  }
+};
 
 function App() {
-  return (
-    <div className="min-h-screen bg-black text-white selection:bg-white/30">
-      <Navbar />
-      <main>
-        <Hero />
-        <AIAssistant />
-        <Services />
-        <About />
-        <Projects />
-        <WhyUs />
-        <FAQ />
-        <CTA />
+  const { pathname, hash } = useLocation();
+  const { i18n } = useTranslation();
+  const page = resolvePage(pathname);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (i18n.language !== page.lang) i18n.changeLanguage(page.lang);
+    applyHeadTags(page);
+    // Cookieless page view count (see server/src/app.js)
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path: pathname, referrer: document.referrer }),
+      keepalive: true,
+    }).catch(() => undefined);
+  }, [page.path, page.lang]);
+
+  // Scroll to the anchor after navigation, or to the top on a new page.
+  // Deferred two frames: framer-motion restores the old scroll position after measuring.
+  useEffect(() => {
+    const firstRender = isFirstRender.current;
+    isFirstRender.current = false;
+    let frame = requestAnimationFrame(() => {
+      frame = requestAnimationFrame(() => {
+        const target = hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
+        if (target) {
+          target.scrollIntoView();
+        } else if (!firstRender) {
+          window.scrollTo(0, 0);
+        }
+      });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [pathname, hash]);
+
+  if (page.kind === 'admin') {
+    return (
+      <main className="bg-background text-primary">
+        <AdminPage />
       </main>
-      <Footer />
-    </div>
+    );
+  }
+
+  const showCta = page.kind !== 'booking' && page.kind !== 'manage';
+
+  return (
+    <MotionConfig reducedMotion="user">
+      <div className="min-h-screen bg-background text-primary">
+        <Navbar page={page} />
+        <main>
+          <PageContent page={page} />
+        </main>
+        {showCta && <CTA page={page} />}
+        <Footer lang={page.lang} />
+      </div>
+    </MotionConfig>
   );
 }
 

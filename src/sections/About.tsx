@@ -7,26 +7,26 @@ const About = () => {
   const advantages = t('about.advantages', { returnObjects: true });
 
   return (
-    <section id="about" className="relative py-32 bg-background border-b border-border overflow-hidden">
+    <section id="about" className="relative section-padding bg-background border-b border-border overflow-hidden">
       
       {/* Background Number */}
-      <div className="bg-number top-0 -right-10 text-right">02</div>
+      <div aria-hidden="true" className="bg-number top-0 -right-10 text-right">02</div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="mb-12 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <motion.h2 
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-display font-bold text-primary uppercase"
+            className="heading-section"
           >
             {t('about.title')}
           </motion.h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16">
           {/* Text Content */}
-          <div className="space-y-8 text-xl font-sans text-muted leading-relaxed">
+          <div className="space-y-6 md:space-y-8 text-lg md:text-xl font-sans text-muted leading-relaxed">
             <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
               {t('about.p1')}
             </motion.p>
@@ -44,13 +44,13 @@ const About = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="border-l border-border pl-8 md:pl-16 flex flex-col justify-center"
+            className="border-l border-border pl-6 md:pl-16 flex flex-col justify-center"
           >
             <h3 className="text-sm font-display text-accent uppercase tracking-widest mb-8">{t('about.advantages_title')}</h3>
             <ul className="space-y-6">
               {advantages.map((adv, index) => (
                 <li key={index} className="flex items-start gap-4 text-primary font-display text-lg">
-                  <span className="text-border mt-1">→</span>
+                  <span aria-hidden="true" className="text-accent mt-1">→</span>
                   <span>{adv}</span>
                 </li>
               ))}

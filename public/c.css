@@ -1,0 +1,6 @@
+/* E-mail address rendered only via CSS generated content: visible and read by screen
+   readers, but not part of the HTML/DOM text that crawlers and AI scrapers read.
+   Kept outside the Vite build on purpose, the minifier would decode the escapes. */
+.email-protected::after {
+  content: "\6d \61 \69 \6c \40 \77 \65 \73 \74 \61 \67 \65 \6e \74 \75 \72 \2e \64 \65";
+}

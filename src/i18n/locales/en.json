@@ -82,8 +82,7 @@
         "name": "Voyanero.com",
         "desc": "Premium travel marketplace with AI concierge"
       }
-    ],
-    "testimonial_placeholder": "\"Thanks to Westagentur, we not only have a new, professional design, but were also able to increase our qualified inquiries by 40%.\" – Musterkunde GmbH"
+    ]
   },
   "whyus": {
     "title": "Why companies work with us",
@@ -105,7 +104,7 @@
       },
       {
         "q": "How much does a professional website cost?",
-        "a": "Our packages start at €3,900 for modern business websites. Individual solutions with a shop, AI telephony or complex automations range between €6,500 and €15,000 depending on requirements. We always create an individual offer."
+        "a": "Our web design packages start at €1,500 (Starter) and €3,200 (Pro). AI telephony and automations are quoted individually after a free check. You always receive a concrete quote."
       },
       {
         "q": "Do you also offer ongoing support?",
@@ -129,9 +128,7 @@
     "title": "Ready for the next step?",
     "sub": "Let's shape your digital future together.",
     "desc": "Get an honest assessment and concrete suggestions for your business in a non-binding consultation.",
-    "button": "Schedule a free consultation now",
     "phone_text": "Or call us directly:",
-    "phone": "+49 152 27506958",
     "callback": "We usually get back to you within 24 hours."
   },
   "footer": {
@@ -140,5 +137,37 @@
     "tos": "Terms of Service",
     "made_in": "Made in Germany",
     "rights": "All rights reserved."
+  },
+  "form": {
+    "title": "Send an enquiry",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "company": "Company (optional)",
+    "service": "Interested in",
+    "services": {
+      "webdesign": "Web design",
+      "automation": "AI automation",
+      "telephony": "AI telephony",
+      "other": "Other"
+    },
+    "message": "Your message",
+    "consent_before": "I have read the ",
+    "consent_link": "privacy policy",
+    "consent_after": " and agree to my details being processed to handle my enquiry.",
+    "required": "Required",
+    "submit": "Send enquiry",
+    "sending": "Sending …",
+    "success_title": "Thank you!",
+    "success": "Your enquiry has arrived. You will receive a confirmation email shortly. We will get back to you within 24 hours on working days.",
+    "error": "Something went wrong. Please try again or email us:",
+    "rate_limited": "Too many requests in a short time. Please try again later or email us:",
+    "errors": {
+      "name": "Please enter your name.",
+      "email": "Please enter a valid email address.",
+      "phone": "Please check the phone number.",
+      "message": "Please briefly describe your request (at least 10 characters).",
+      "consent": "Please accept the privacy policy."
+    }
   }
 }

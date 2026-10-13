@@ -9,18 +9,18 @@ const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative py-32 bg-background border-b border-border overflow-hidden">
+    <section id="faq" className="relative section-padding bg-background border-b border-border overflow-hidden">
       
       {/* Background Number */}
-      <div className="bg-number top-0 -left-10">05</div>
+      <div aria-hidden="true" className="bg-number top-0 -left-10">05</div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="mb-12 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <motion.h2 
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-display font-bold text-primary uppercase"
+            className="heading-section"
           >
             {t('faq.title')}
           </motion.h2>
@@ -40,12 +40,13 @@ const FAQ = () => {
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="w-full flex items-center justify-between py-8 text-left group"
+                  aria-expanded={isOpen}
+                  className="w-full flex items-center justify-between py-6 md:py-8 text-left group"
                 >
-                  <span className="text-xl md:text-2xl font-display font-medium text-primary pr-8 group-hover:text-accent transition-colors">
+                  <span className="text-lg md:text-2xl font-display font-medium text-primary pr-4 md:pr-8 group-hover:text-accent transition-colors">
                     {item.q}
                   </span>
-                  <div className="w-8 h-8 flex items-center justify-center border border-border shrink-0 text-muted group-hover:border-accent group-hover:text-accent transition-colors">
+                  <div aria-hidden="true" className="w-8 h-8 flex items-center justify-center border border-border shrink-0 text-muted group-hover:border-accent group-hover:text-accent transition-colors">
                     {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                   </div>
                 </button>
@@ -57,7 +58,7 @@ const FAQ = () => {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <div className="pb-8 text-lg text-muted font-sans max-w-4xl leading-relaxed">
+                      <div className="pb-6 md:pb-8 text-base md:text-lg text-muted font-sans max-w-4xl leading-relaxed">
                         {item.a}
                       </div>
                     </motion.div>
