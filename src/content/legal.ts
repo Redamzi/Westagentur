@@ -1,10 +1,9 @@
 export type LegalKey = 'imprint' | 'privacy' | 'tos';
 
-// TODO: echte Angaben eintragen (Name des Inhabers, USt-ID oder Abschnitt entfernen).
-export const OWNER_NAME = '[Vor- und Nachname des Inhabers]';
-const VAT_ID = '[USt-IdNr. eintragen – oder Abschnitt entfernen, falls keine vorhanden]';
+export const OWNER_NAME = 'Argjend Krasniqi';
+const STREET = 'Schildkamp 1\n59063 Hamm';
 
-const ADDRESS = `Westagentur\nInhaber: ${OWNER_NAME}\nKielstraße 28\n44145 Dortmund\nDeutschland`;
+const ADDRESS = `Westagentur\nInhaber: ${OWNER_NAME}\n${STREET}\nDeutschland`;
 
 /**
  * Legal texts. In "body", the placeholders {{email}} and {{phone}} are rendered as
@@ -16,10 +15,9 @@ export const LEGAL_CONTENT: Record<LegalKey, { title: string; updated?: string; 
     sections: [
       { heading: 'Angaben gemäß § 5 DDG', body: ADDRESS },
       { heading: 'Kontakt', body: 'Telefon: {{phone}}\nE-Mail: {{email}}' },
-      { heading: 'Umsatzsteuer-ID', body: `Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:\n${VAT_ID}` },
       {
         heading: 'Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV',
-        body: `${OWNER_NAME}\nKielstraße 28\n44145 Dortmund`,
+        body: `${OWNER_NAME}\n${STREET}`,
       },
       {
         heading: 'Verbraucherstreitbeilegung',

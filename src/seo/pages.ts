@@ -132,7 +132,7 @@ const legalPage = (key: LegalKey): PageDef => ({
   kind: 'legal',
   legalKey: key,
   title: `${LEGAL_CONTENT[key].title} | Westagentur`,
-  description: `${LEGAL_CONTENT[key].title} der Westagentur, Kielstraße 28, 44145 Dortmund.`,
+  description: `${LEGAL_CONTENT[key].title} der Westagentur – Webdesign & KI-Automatisierung für den Mittelstand.`,
   jsonLd: [organization, breadcrumb('de', LEGAL_CONTENT[key].title, LEGAL_PATHS[key])],
 });
 

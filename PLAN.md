@@ -30,7 +30,7 @@
 8. **Vermarktung/Inhalte** – lokale Landingpages (Dortmund, Ruhrgebiet), Ratgeber/Blog, Fallstudien (MailScout, Direktverteilung, Voyanero), Lead-Magnet „Website- & Automatisierungs-Check“, Live-Demo „Sarah anrufen“, Google-Unternehmensprofil.
 
 ## Offene Punkte aus Schritt 3
-- Impressum (Einzelunternehmen) neu – noch offen: Name des Inhabers und USt-ID in `src/content/legal.ts`.
+- Impressum: Westagentur, Inhaber Argjend Krasniqi, Schildkamp 1, Hamm. USt-ID ergänzen, falls vorhanden. Website (Footer, Google-Daten, Mails) nennt noch Kielstraße 28, Dortmund.
 - Datenschutzerklärung neu (Hosting IONOS, Logs, Formular, Termine, Statistik, Vapi) – rechtlich prüfen lassen.
 - Fiktives Kundenzitat („Musterkunde GmbH“) entfernt – echte Kundenstimmen ergänzen.
 - Angebots-PDF (optional aus Schritt 7) noch nicht umgesetzt.

@@ -8,7 +8,7 @@ export const OG_IMAGE = `${SITE_URL}/og-image.png`;
 // revealed on click (see ProtectedContact), so crawlers and AI scrapers cannot read them.
 export const PROTECTED_CONTACT = {
   email: 'ZWQucnV0bmVnYXRzZXdAbGlhbQ==',
-  phone: 'ODU5NjA1NzIgMjUxIDk0Kw==',
+  phone: 'ODU5NjA1NyAyMjUxIDk0Kw==',
 };
 
 export const revealContact = (kind: keyof typeof PROTECTED_CONTACT) =>
