@@ -79,3 +79,32 @@ test('accepts large end-of-call reports (full transcript)', async () => {
   assert.equal(res.status, 200);
   assert.equal(app.db.listLeads()[0].phone, '+49 170 7654321');
 });
+
+test('without a summary the transcript is stored (GPT Live)', async () => {
+  await vapi({
+    type: 'end-of-call-report',
+    call: { id: 'call-live', customer: { number: '+49 151 1112223' } },
+    artifact: {
+      messages: [
+        { role: 'system', message: 'Prompt' },
+        { role: 'bot', message: 'Hallo, hier ist Toni.' },
+        { role: 'user', message: 'Ich brauche eine Website.' },
+      ],
+    },
+  });
+  const [lead] = app.db.listLeads();
+  assert.match(lead.message, /Gesprächsprotokoll:\nToni: Hallo, hier ist Toni\.\nAnrufer: Ich brauche eine Website\./);
+  assert.ok(!lead.message.includes('Prompt'));
+});
+
+test('no empty summary heading is appended to a booked lead', async () => {
+  const call = { id: 'call-empty', customer: { number: '+4923112345' } };
+  await vapi({
+    type: 'tool-calls',
+    call,
+    toolCallList: [{ id: 't1', function: { name: 'book_appointment', arguments: { start: '2026-10-13T07:00:00.000Z', name: 'Anna Anruf' } } }],
+  });
+  await vapi({ type: 'end-of-call-report', call });
+  const [lead] = app.db.listLeads();
+  assert.ok(!/Gesprächszusammenfassung/.test(lead.message ?? ''));
+});

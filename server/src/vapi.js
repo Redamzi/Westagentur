@@ -22,6 +22,21 @@ const parseArgs = (args) => {
   }
 };
 
+const ROLE_LABELS = { user: 'Anrufer', assistant: 'Toni', bot: 'Toni' };
+
+/** Readable transcript from an end-of-call report (plain text or message list). */
+const callTranscript = (message) => {
+  const plain = message.artifact?.transcript ?? message.transcript;
+  if (typeof plain === 'string' && plain.trim()) {
+    return text(plain.replace(/^AI:/gm, 'Toni:').replace(/^User:/gm, 'Anrufer:'), 5000);
+  }
+  const messages = message.artifact?.messages ?? message.messages ?? [];
+  const lines = messages
+    .filter((m) => ROLE_LABELS[m.role] && typeof m.message === 'string' && m.message.trim())
+    .map((m) => `${ROLE_LABELS[m.role]}: ${m.message.trim()}`);
+  return text(lines.join('\n'), 5000);
+};
+
 /**
  * Handles Vapi server messages:
  * - "tool-calls": get_free_slots / book_appointment (booking during the call)
@@ -75,20 +90,26 @@ export const createVapiHandler = ({ db, services, logger = console, now = () => 
     const call = message.call ?? {};
     const data = message.analysis?.structuredData ?? {};
     const summary = text(message.analysis?.summary ?? message.summary, 5000);
+    const transcript = callTranscript(message);
+    // Some setups (e.g. GPT Live) send no summary – keep the transcript instead.
+    const report = summary
+      ? `Gesprächszusammenfassung:\n${summary}`
+      : transcript
+        ? `Gesprächsprotokoll:\n${transcript}`
+        : '';
     const page = call.id ? `vapi:${call.id}` : 'vapi';
 
-    // A booking during the call already created the lead – just add the summary.
+    // A booking during the call already created the lead – just add the report.
     const existing = call.id && db.raw.prepare('SELECT id FROM leads WHERE page = ?').get(page);
     if (existing) {
-      db.raw.prepare("UPDATE leads SET message = TRIM(COALESCE(message, '') || char(10) || char(10) || ?) WHERE id = ?").run(
-        `Gesprächszusammenfassung:\n${summary}`,
-        existing.id
-      );
+      if (report) {
+        db.raw.prepare("UPDATE leads SET message = TRIM(COALESCE(message, '') || char(10) || char(10) || ?) WHERE id = ?").run(report, existing.id);
+      }
       return;
     }
 
     const phone = line(call.customer?.number, 30);
-    if (!summary && !phone) return; // nothing useful (e.g. browser demo without content)
+    if (!report && !phone) return; // nothing useful (e.g. browser demo without content)
     const email = line(data.email, 200).toLowerCase();
     await services.createLead(
       {
@@ -98,7 +119,7 @@ export const createVapiHandler = ({ db, services, logger = console, now = () => 
         phone: isPhone(phone) ? phone : '',
         company: line(data.company, 120),
         service: SERVICES.includes(data.service) ? data.service : 'telephony',
-        message: summary || '(keine Zusammenfassung)',
+        message: report || '(kein Gesprächsinhalt übermittelt)',
         page,
         lang: 'de',
       },
