@@ -6,6 +6,9 @@ import { createSessions, getStats, passwordMatches } from './admin.js';
 import { createVapiHandler, vapiSecretMatches } from './vapi.js';
 import { isLocalDate } from './time.js';
 
+// Vapi end-of-call reports contain the whole transcript and can be several hundred KB.
+const VAPI_MAX_BODY_BYTES = 5_000_000;
+
 const PUBLIC_BOOKING_FIELDS = ['start_utc', 'end_utc', 'status', 'name', 'service', 'lang'];
 const publicBooking = (b) => Object.fromEntries(PUBLIC_BOOKING_FIELDS.map((k) => [k, b[k]]));
 
@@ -114,7 +117,7 @@ export const createApp = ({ db, services, config, limiters, logger = console, no
       const bearer = String(req.headers.authorization ?? '').replace(/^Bearer\s+/i, '');
       const secret = req.headers['x-vapi-secret'] ?? bearer;
       if (!vapiSecretMatches(secret, config.vapiSecret)) throw new HttpError(401, 'unauthorized');
-      return sendJson(res, 200, await vapi(await readJson(req)));
+      return sendJson(res, 200, await vapi(await readJson(req, VAPI_MAX_BODY_BYTES)));
     }],
 
     // ---------------------------------------------------------- admin

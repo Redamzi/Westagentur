@@ -67,3 +67,15 @@ test('end-of-call report creates a phone lead and notifies only the owner', asyn
   assert.equal(lead.phone, '+49 170 1234567');
   assert.deepEqual(app.sent.map((m) => m.to), ['owner@westagentur.de']);
 });
+
+test('accepts large end-of-call reports (full transcript)', async () => {
+  const transcript = 'Anrufer: Hallo. '.repeat(6000); // ~100 KB
+  const res = await vapi({
+    type: 'end-of-call-report',
+    call: { id: 'call-big', customer: { number: '+49 170 7654321' } },
+    analysis: { summary: 'Langer Anruf.' },
+    artifact: { transcript },
+  });
+  assert.equal(res.status, 200);
+  assert.equal(app.db.listLeads()[0].phone, '+49 170 7654321');
+});
