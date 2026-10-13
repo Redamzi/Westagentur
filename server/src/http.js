@@ -19,7 +19,7 @@ export const sendJson = (res, status, payload, headers = {}) => {
   res.end(JSON.stringify(payload));
 };
 
-export const readJson = (req) =>
+export const readJson = (req, maxBytes = MAX_BODY_BYTES) =>
   new Promise((resolve, reject) => {
     if (!String(req.headers['content-type'] || '').startsWith('application/json')) {
       reject(new HttpError(415, 'unsupported_media_type'));
@@ -29,7 +29,7 @@ export const readJson = (req) =>
     const chunks = [];
     req.on('data', (chunk) => {
       size += chunk.length;
-      if (size > MAX_BODY_BYTES) {
+      if (size > maxBytes) {
         reject(new HttpError(413, 'payload_too_large'));
         req.destroy();
         return;
