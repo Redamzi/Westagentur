@@ -112,13 +112,17 @@ export const createVapiHandler = ({ db, services, logger = console, now = () => 
       const calls = message.toolCallList ?? message.toolCalls ?? [];
       const results = [];
       for (const call of calls) {
-        const fn = tools[call.function?.name];
-        const result = fn ? await fn(parseArgs(call.function.arguments), message.call) : `Unbekanntes Tool: ${call.function?.name}`;
+        const name = call.function?.name;
+        const fn = tools[name];
+        logger.info(`[vapi] tool-call ${name} ${typeof call.function?.arguments === 'string' ? call.function.arguments : JSON.stringify(call.function?.arguments ?? {})}`);
+        const result = fn ? await fn(parseArgs(call.function.arguments), message.call) : `Unbekanntes Tool: ${name}`;
+        logger.info(`[vapi] tool-result ${name}: ${String(result).slice(0, 160)}`);
         results.push({ toolCallId: call.id, result });
       }
       return { results };
     }
     if (message.type === 'end-of-call-report') {
+      logger.info(`[vapi] end-of-call-report (call ${message.call?.id ?? '?'})`);
       await endOfCall(message);
       return { ok: true };
     }

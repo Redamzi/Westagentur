@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowRight, CalendarCheck, Check } from 'lucide-react';
 import SlotPicker from '../components/SlotPicker';
 import { errorClass, inputClass, labelClass } from '../components/formStyles';
-import { BOOKING_TEXT, formatAppointment } from '../content/booking';
+import { BOOKING_TEXT, formatAppointment, formatSlot } from '../content/booking';
 import { legalPath } from '../seo/pages';
 import type { ServiceKey } from '../content/services';
 import type { Lang } from '../seo/site';
@@ -115,13 +115,17 @@ const BookingPage: React.FC<{ lang: Lang }> = ({ lang }) => {
             <>
               {status === 'taken' && <p role="alert" className={`${errorClass} mb-6 text-base`}>{text.taken}</p>}
               {!slot ? (
-                <SlotPicker lang={lang} onSelect={(start, timeZone) => { setSlot({ start, timeZone }); setStatus('idle'); }} reloadKey={reloadKey} />
+                <>
+                  <p className="text-sm font-display font-bold uppercase tracking-widest text-accent mb-6">{text.step1}</p>
+                  <SlotPicker lang={lang} onSelect={(start, timeZone) => { setSlot({ start, timeZone }); setStatus('idle'); }} reloadKey={reloadKey} />
+                </>
               ) : (
                 <form ref={formRef} onSubmit={onSubmit} noValidate className="relative bg-surface border border-border p-6 md:p-8 space-y-5 scroll-mt-24">
-                  <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-border">
+                  <p className="text-sm font-display font-bold uppercase tracking-widest text-accent">{text.step2}</p>
+                  <div className="flex flex-wrap items-center justify-between gap-4 p-5 border-2 border-accent bg-accent/5">
                     <div>
                       <p className="text-sm text-muted">{text.selected}</p>
-                      <p className="text-lg md:text-xl font-display font-semibold text-primary">{formatAppointment(slot.start, lang, slot.timeZone)}</p>
+                      <p className="text-xl md:text-2xl font-display font-bold text-primary">{formatAppointment(slot.start, lang, slot.timeZone)}</p>
                     </div>
                     <button type="button" onClick={() => setSlot(undefined)} className="text-accent underline underline-offset-2 min-h-[44px]">
                       {text.change}
@@ -185,7 +189,11 @@ const BookingPage: React.FC<{ lang: Lang }> = ({ lang }) => {
                   {status === 'error' && <p role="alert" className={errorClass}>{t('form.error')} <ProtectedContact kind="email" lang={lang} /></p>}
 
                   <button type="submit" disabled={status === 'sending'} className="btn-primary w-full disabled:opacity-60">
-                    {status === 'sending' ? text.sending : text.submit}
+                    {status === 'sending'
+                      ? text.sending
+                      : text.submitAt
+                          .replace('{date}', formatSlot(slot.start, lang, slot.timeZone, { weekday: 'short', day: 'numeric', month: 'numeric' }))
+                          .replace('{time}', formatSlot(slot.start, lang, slot.timeZone, { hour: '2-digit', minute: '2-digit' }))}
                     <ArrowRight aria-hidden="true" className="w-5 h-5" />
                   </button>
                 </form>
