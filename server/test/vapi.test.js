@@ -13,6 +13,12 @@ const vapi = (message, secret = 'vapi-secret') => app.request('POST', '/api/vapi
 
 test('rejects requests without the shared secret', async () => {
   assert.equal((await vapi({ type: 'end-of-call-report' }, 'wrong')).status, 401);
+  assert.equal((await app.request('POST', '/api/vapi', { message: {} })).status, 401);
+});
+
+test('accepts the secret as Bearer token', async () => {
+  const res = await app.request('POST', '/api/vapi', { message: { type: 'status-update' } }, { Authorization: 'Bearer vapi-secret' });
+  assert.equal(res.status, 200);
 });
 
 test('tool calls: free slots and booking during the call', async () => {

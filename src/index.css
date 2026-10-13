@@ -87,10 +87,6 @@
     text-shadow: 0 0 40px rgb(var(--c-accent) / 0.4);
   }
 
-  /* Background Number Styling */
-  .bg-number {
-    @apply absolute font-display font-bold text-[12rem] md:text-[30rem] leading-none text-primary/[0.04] select-none pointer-events-none z-0;
-  }
 }
 
 /* Base structural grid classes */

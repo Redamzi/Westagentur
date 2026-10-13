@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import SectionLabel from '../components/SectionLabel';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { SERVICES, SERVICE_UI, type ServiceKey } from '../content/services';
@@ -16,12 +17,11 @@ const Services = () => {
 
   return (
     <section id="leistungen" className="relative section-padding bg-background border-b border-border overflow-hidden">
-      
-      {/* Background Number */}
-      <div aria-hidden="true" className="bg-number top-0 -left-10">01</div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="mb-12 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+          <SectionLabel>{t('labels.services')}</SectionLabel>
           <motion.h2 
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -30,6 +30,7 @@ const Services = () => {
           >
             {t('services.title')}
           </motion.h2>
+          </div>
           <motion.div 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}

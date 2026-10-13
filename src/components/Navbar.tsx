@@ -30,7 +30,7 @@ const Navbar: React.FC<{ page: PageDef }> = ({ page }) => {
   useEffect(() => setMobileMenuOpen(false), [page.path]);
 
   // Pages without a dark hero always get the solid header.
-  const hasDarkHero = page.kind === 'home' || page.kind === 'service';
+  const hasDarkHero = page.kind === 'home' || page.kind === 'service' || page.kind === 'case';
   const solid = isScrolled || !hasDarkHero;
 
   const navLinks = [
