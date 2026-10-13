@@ -3,9 +3,10 @@ import en from '../i18n/locales/en.json';
 import { SERVICES, SERVICE_KEYS, SERVICE_UI, type ServiceKey } from '../content/services';
 import { LEGAL_CONTENT, type LegalKey } from '../content/legal';
 import { BOOKING_PATHS, BOOKING_TEXT } from '../content/booking';
+import { CASE_STUDIES } from '../content/caseStudies';
 import { CONTACT, HOME_PATH, OG_IMAGE, SITE_NAME, SITE_URL, normalizePath, type Lang } from './site';
 
-export type PageKind = 'home' | 'service' | 'legal' | 'booking' | 'manage' | 'admin' | 'notfound';
+export type PageKind = 'home' | 'service' | 'legal' | 'booking' | 'manage' | 'admin' | 'case' | 'notfound';
 
 export interface PageDef {
   path: string;
@@ -15,6 +16,7 @@ export interface PageDef {
   description: string;
   serviceKey?: ServiceKey;
   legalKey?: LegalKey;
+  caseSlug?: string;
   /** Paths of this page in all available languages (for hreflang). */
   alternates?: Partial<Record<Lang, string>>;
   noindex?: boolean;
@@ -161,6 +163,28 @@ export const PAGES: PageDef[] = [
   homePage('de'),
   homePage('en'),
   ...SERVICE_KEYS.flatMap((key) => [servicePage('de', key), servicePage('en', key)]),
+  ...CASE_STUDIES.map((c): PageDef => ({
+    path: c.path,
+    lang: 'de',
+    kind: 'case',
+    caseSlug: c.slug,
+    title: c.title,
+    description: c.description,
+    jsonLd: [
+      organization,
+      {
+        '@type': 'Article',
+        headline: c.title.replace(/ \| Westagentur$/, ''),
+        description: c.description,
+        url: abs(c.path),
+        inLanguage: 'de',
+        author: { '@id': ORG_ID },
+        publisher: { '@id': ORG_ID },
+        about: c.tags,
+      },
+      breadcrumb('de', c.client, c.path),
+    ],
+  })),
   bookingPage('de'),
   bookingPage('en'),
   managePage('de'),

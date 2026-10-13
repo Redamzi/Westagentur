@@ -5,6 +5,8 @@ import AIAssistant from '../sections/AIAssistant';
 import { SERVICES, SERVICE_UI, type ServiceKey } from '../content/services';
 import { HOME_PATH, type Lang } from '../seo/site';
 import { BOOKING_PATHS } from '../content/booking';
+import { CASE_STUDIES, CASE_UI } from '../content/caseStudies';
+import SectionLabel from '../components/SectionLabel';
 
 interface ServicePageProps {
   serviceKey: ServiceKey;
@@ -89,6 +91,23 @@ const ServicePage: React.FC<ServicePageProps> = ({ serviceKey, lang }) => {
       </section>
 
       {s.demo && <AIAssistant />}
+
+      {serviceKey === 'automation' && (
+        <section className="section-padding bg-background border-b border-border">
+          <div className="container mx-auto px-6">
+            <Link to={CASE_STUDIES[0].path} className="section-dark group block bg-background border border-border p-8 md:p-12 hover:border-accent transition-colors">
+              <SectionLabel>{CASE_UI[lang].label} · {CASE_STUDIES[0].client}</SectionLabel>
+              <h2 className="text-2xl md:text-4xl font-display font-bold text-primary mb-4 max-w-3xl leading-tight">
+                {lang === 'de' ? 'Aus einem Arbeitstag Disposition werden wenige Minuten Kontrolle' : 'A full working day of dispatch becomes a few minutes of review'}
+              </h2>
+              <p className="text-muted text-lg max-w-3xl leading-relaxed mb-8">{CASE_STUDIES[0].teaser}</p>
+              <span className="inline-flex items-center gap-2 font-display font-medium text-accent">
+                {CASE_UI[lang].read} <ArrowRight aria-hidden="true" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* Process */}
       <section className="section-padding bg-background border-b border-border">

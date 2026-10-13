@@ -52,7 +52,7 @@
   "about": {
     "title": "Wer wir sind – Westagentur",
     "p1": "Ich bin Amzi, Gründer der Westagentur und leidenschaftlicher digitaler Unternehmer.",
-    "p2": "Statt nur Konzepte zu liefern, realisiere ich seit Jahren eigene erfolgreiche Digitalprodukte. Dazu gehören Mailscout.app (B2B Lead-Plattform), Direktverteilung.com (Haushaltswerbung bundesweit) und Voyanero.com (Premium Travel Marketplace).",
+    "p2": "Statt nur Konzepte zu liefern, realisiere ich seit Jahren eigene erfolgreiche Digitalprodukte. Dazu gehören Mailscout.app (B2B Lead-Plattform) und Direktverteilung.com (Haushaltswerbung bundesweit).",
     "p3": "Dieses praktische Know-how aus dem echten Produkt-Building fließt in jedes Kundenprojekt ein. Bei uns erhalten Sie keine Agentur von der Stange, sondern Lösungen von jemandem, der selbst täglich mit denselben Herausforderungen wie Umsatz, Effizienz und Skalierung zu tun hat.",
     "advantages_title": "Ihre Vorteile:",
     "advantages": [
@@ -68,21 +68,59 @@
     "items": [
       {
         "name": "Westagentur.de",
-        "desc": "Die aktuelle Plattform (laufend optimiert)"
+        "desc": "Unsere eigene Website – mit Terminbuchung, KI-Telefonie und Automatisierung",
+        "url": "https://westagentur.de",
+        "tag": "Webdesign & KI"
       },
       {
         "name": "Mailscout.app",
-        "desc": "Intelligente B2B-Kontaktdaten & KI-Automatisierung"
+        "desc": "Intelligente B2B-Kontaktdaten & KI-Automatisierung",
+        "url": "https://mailscout.app",
+        "tag": "Plattform"
       },
       {
         "name": "Direktverteilung.com",
-        "desc": "Moderne Plattform für Flyer- und Prospektverteilung"
+        "desc": "Moderne Plattform für Flyer- und Prospektverteilung",
+        "url": "https://direktverteilung.com",
+        "tag": "Plattform"
       },
       {
-        "name": "Voyanero.com",
-        "desc": "Premium Reise-Marktplatz mit AI-Concierge"
+        "name": "Geokos-Prospektverteilung.de",
+        "desc": "Website für Prospekt- und Flyerverteilung",
+        "url": "https://geokos-prospektverteilung.de",
+        "tag": "Webdesign"
+      },
+      {
+        "name": "Mani-Invest.de",
+        "desc": "Unternehmenswebsite",
+        "url": "http://mani-invest.de",
+        "tag": "Webdesign"
+      },
+      {
+        "name": "KIWerbeplaner.de",
+        "desc": "Web-Anwendung für KI-gestützte Werbeplanung",
+        "url": "https://kiwerbeplaner.de",
+        "tag": "Web-App & KI"
+      },
+      {
+        "name": "Engels-Autotuning.de",
+        "desc": "Website für Fahrzeugtuning",
+        "url": "https://engels-autotuning.de",
+        "tag": "Webdesign"
       }
-    ]
+    ],
+    "featured": {
+      "label": "Fallstudie KI-Automatisierung",
+      "title": "Mani Werbedienste GmbH: Disposition für ~1.000 Verteilbezirke automatisiert",
+      "desc": "Ein Portal erkennt Aufträge selbständig, prüft die Unterlagen und liefert Agenturen, Fahrern und Depots genau ihren Teil. Aus einem Arbeitstag Disposition werden wenige Minuten Kontrolle.",
+      "cta": "Fallstudie lesen"
+    },
+    "visit": "Website ansehen",
+    "next": {
+      "tag": "Ihr Projekt",
+      "title": "Als Nächstes: Ihre Website?",
+      "cta": "Erstgespräch buchen"
+    }
   },
   "whyus": {
     "title": "Warum Unternehmen mit uns zusammenarbeiten",
@@ -169,5 +207,13 @@
       "message": "Bitte beschreiben Sie Ihr Anliegen kurz (mind. 10 Zeichen).",
       "consent": "Bitte stimmen Sie der Datenschutzerklärung zu."
     }
+  },
+  "labels": {
+    "assistant": "Live-Demo",
+    "services": "Leistungen",
+    "about": "Über uns",
+    "projects": "Referenzen",
+    "whyus": "Warum wir",
+    "faq": "FAQ"
   }
 }

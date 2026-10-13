@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import SectionLabel from '../components/SectionLabel';
 
 const WhyUs = () => {
   const { t } = useTranslation();
@@ -8,12 +9,11 @@ const WhyUs = () => {
 
   return (
     <section className="relative section-padding bg-background border-b border-border overflow-hidden">
-      
-      {/* Background Number */}
-      <div aria-hidden="true" className="bg-number top-0 -right-10 text-right">04</div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="mb-12 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+          <SectionLabel>{t('labels.whyus')}</SectionLabel>
           <motion.h2 
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -22,6 +22,7 @@ const WhyUs = () => {
           >
             {t('whyus.title')}
           </motion.h2>
+          </div>
         </div>
 
         <div className="border-t border-l border-border flex flex-wrap">

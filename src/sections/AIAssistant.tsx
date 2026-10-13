@@ -3,6 +3,7 @@ import type VapiClient from '@vapi-ai/web';
 import { motion } from 'framer-motion';
 import { Phone, PhoneOff, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import SectionLabel from '../components/SectionLabel';
 
 // Configuration
 const VAPI_PUBLIC_KEY = "0439aee3-ffe1-49c9-b7a4-f34a3f128c43";
@@ -88,11 +89,11 @@ const AIAssistant = () => {
       
       {/* Background Pattern */}
       <div className="absolute inset-0 grid-bg opacity-20 pointer-events-none" />
-      <div aria-hidden="true" className="bg-number top-0 right-[-5%]">AI</div>
 
       <div className="container mx-auto px-6 relative z-10 flex flex-col items-center">
         
         <div className="text-center mb-12 md:mb-16">
+          <SectionLabel className="justify-center">{de ? 'Live-Demo' : 'Live demo'}</SectionLabel>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

@@ -60,7 +60,7 @@ const ProtectedContact: React.FC<ProtectedContactProps> = ({ kind, lang, classNa
     );
   }
 
-  const href = kind === 'email' ? `mailto:${value}` : `tel:${value.replace(/[^+\d]/g, '')}`;
+  const href = `tel:${value.replace(/[^+\d]/g, '')}`;
   return (
     <a ref={linkRef} href={href} className={`inline-flex items-center gap-3 min-h-[44px] ${className}`}>
       {iconEl}

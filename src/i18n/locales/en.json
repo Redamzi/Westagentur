@@ -52,7 +52,7 @@
   "about": {
     "title": "Who we are – Westagentur",
     "p1": "I am Amzi, founder of Westagentur and a passionate digital entrepreneur.",
-    "p2": "Instead of just delivering concepts, I have been implementing my own successful digital products for years. These include Mailscout.app (B2B lead platform), Direktverteilung.com (nationwide household advertising) and Voyanero.com (Premium Travel Marketplace).",
+    "p2": "Instead of just delivering concepts, I have been implementing my own successful digital products for years. These include Mailscout.app (B2B lead platform) and Direktverteilung.com (nationwide household advertising).",
     "p3": "This practical know-how from real product building flows into every client project. With us, you don't get an off-the-shelf agency, but solutions from someone who deals with the same challenges such as sales, efficiency and scaling every day.",
     "advantages_title": "Your advantages:",
     "advantages": [
@@ -68,21 +68,59 @@
     "items": [
       {
         "name": "Westagentur.de",
-        "desc": "The current platform (continuously optimized)"
+        "desc": "Our own website – with appointment booking, AI telephony and automation",
+        "url": "https://westagentur.de",
+        "tag": "Web design & AI"
       },
       {
         "name": "Mailscout.app",
-        "desc": "Intelligent B2B contact data & AI automation"
+        "desc": "Intelligent B2B contact data & AI automation",
+        "url": "https://mailscout.app",
+        "tag": "Platform"
       },
       {
         "name": "Direktverteilung.com",
-        "desc": "Modern platform for flyer and brochure distribution"
+        "desc": "Modern platform for flyer and brochure distribution",
+        "url": "https://direktverteilung.com",
+        "tag": "Platform"
       },
       {
-        "name": "Voyanero.com",
-        "desc": "Premium travel marketplace with AI concierge"
+        "name": "Geokos-Prospektverteilung.de",
+        "desc": "Website for brochure and flyer distribution",
+        "url": "https://geokos-prospektverteilung.de",
+        "tag": "Web design"
+      },
+      {
+        "name": "Mani-Invest.de",
+        "desc": "Company website",
+        "url": "http://mani-invest.de",
+        "tag": "Web design"
+      },
+      {
+        "name": "KIWerbeplaner.de",
+        "desc": "Web application for AI-assisted advertising planning",
+        "url": "https://kiwerbeplaner.de",
+        "tag": "Web app & AI"
+      },
+      {
+        "name": "Engels-Autotuning.de",
+        "desc": "Website for vehicle tuning",
+        "url": "https://engels-autotuning.de",
+        "tag": "Web design"
       }
-    ]
+    ],
+    "featured": {
+      "label": "Case study AI automation",
+      "title": "Mani Werbedienste GmbH: dispatch for ~1,000 distribution districts automated",
+      "desc": "A portal detects orders on its own, checks the documents and gives agencies, drivers and depots exactly their part. A full working day of dispatch becomes a few minutes of review.",
+      "cta": "Read case study (German)"
+    },
+    "visit": "Visit website",
+    "next": {
+      "tag": "Your project",
+      "title": "Next up: your website?",
+      "cta": "Book a consultation"
+    }
   },
   "whyus": {
     "title": "Why companies work with us",
@@ -169,5 +207,13 @@
       "message": "Please briefly describe your request (at least 10 characters).",
       "consent": "Please accept the privacy policy."
     }
+  },
+  "labels": {
+    "assistant": "Live demo",
+    "services": "Services",
+    "about": "About",
+    "projects": "Work",
+    "whyus": "Why us",
+    "faq": "FAQ"
   }
 }

@@ -12,6 +12,7 @@ import NotFound from './pages/NotFound';
 import BookingPage from './pages/BookingPage';
 import ManageBookingPage from './pages/ManageBookingPage';
 import AdminPage from './pages/AdminPage';
+import CaseStudyPage from './pages/CaseStudyPage';
 import { findPage, notFoundPage, type PageDef } from './seo/pages';
 import { applyHeadTags } from './seo/head';
 import { langFromPath } from './seo/site';
@@ -29,6 +30,8 @@ const PageContent = ({ page }: { page: PageDef }) => {
       return <LegalPage legalKey={page.legalKey!} />;
     case 'booking':
       return <BookingPage lang={page.lang} />;
+    case 'case':
+      return <CaseStudyPage slug={page.caseSlug!} />;
     case 'manage':
       return <ManageBookingPage lang={page.lang} />;
     default:

@@ -1,20 +1,31 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import SectionLabel from '../components/SectionLabel';
+import { CASE_STUDIES } from '../content/caseStudies';
+import { BOOKING_PATHS } from '../content/booking';
+
+interface ProjectItem {
+  name: string;
+  desc: string;
+  url: string;
+  tag: string;
+}
 
 const Projects = () => {
-  const { t } = useTranslation();
-  const items: { name: string; desc: string }[] = t('projects.items', { returnObjects: true });
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language === 'en' ? 'en' : 'de';
+  const items: ProjectItem[] = t('projects.items', { returnObjects: true });
+  const featured = t('projects.featured', { returnObjects: true }) as { label: string; title: string; desc: string; cta: string };
 
   return (
-    <section id="projekte" className="relative section-padding bg-background border-b border-border overflow-hidden">
-      
-      {/* Background Number */}
-      <div aria-hidden="true" className="bg-number top-0 -left-10">03</div>
-
+    <section id="projekte" className="relative section-padding bg-background border-b border-border overflow-hidden scroll-mt-16">
       <div className="container mx-auto px-6 relative z-10">
-        <div className="mb-12 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <motion.h2 
+        <div className="mb-12 md:mb-16">
+          <SectionLabel>{t('labels.projects')}</SectionLabel>
+          <motion.h2
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -24,30 +35,53 @@ const Projects = () => {
           </motion.h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border border border-border">
-          {items.map((project, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="card-swiss md:min-h-[250px] flex flex-col justify-between gap-8"
-            >
-              <span className="text-accent font-display text-sm font-bold tracking-widest block">
-                P-{(index + 1).toString().padStart(3, '0')}
-              </span>
-              <div>
-                <h3 className="text-2xl md:text-3xl font-display font-semibold text-primary mb-3">{project.name}</h3>
-                <p className="text-muted font-sans text-lg">
-                  {project.desc}
-                </p>
-              </div>
-            </motion.div>
+        {/* Featured case study */}
+        <Link
+          to={CASE_STUDIES[0].path}
+          className="section-dark group block bg-background border border-border p-8 md:p-12 mb-8 hover:border-accent transition-colors"
+        >
+          <SectionLabel>{featured.label}</SectionLabel>
+          <h3 className="text-2xl md:text-4xl font-display font-bold text-primary mb-4 max-w-3xl leading-tight">{featured.title}</h3>
+          <p className="text-muted text-lg max-w-3xl leading-relaxed mb-8">{featured.desc}</p>
+          <span className="inline-flex items-center gap-2 font-display font-medium text-accent">
+            {featured.cta}
+            <ArrowRight aria-hidden="true" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </span>
+        </Link>
+
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border">
+          {items.map((project) => (
+            <li key={project.name} className="bg-surface">
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group card-swiss h-full flex flex-col justify-between gap-8 md:min-h-[220px]"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <span className="text-accent font-display text-xs font-bold tracking-widest uppercase">{project.tag}</span>
+                  <ArrowUpRight aria-hidden="true" className="w-5 h-5 text-muted group-hover:text-accent transition-colors" />
+                </div>
+                <div>
+                  <h3 className="text-xl xl:text-2xl font-display font-semibold text-primary mb-2">{project.name}</h3>
+                  <p className="text-muted">{project.desc}</p>
+                  <span className="sr-only"> – {t('projects.visit')} (öffnet in neuem Tab)</span>
+                </div>
+              </a>
+            </li>
           ))}
-        </div>
-
-
+          <li className="section-dark bg-background">
+            <Link to={BOOKING_PATHS[lang].book} className="group h-full p-8 flex flex-col justify-between gap-8 md:min-h-[220px]">
+              <span className="text-accent font-display text-xs font-bold tracking-widest uppercase">{t('projects.next.tag')}</span>
+              <div>
+                <h3 className="text-xl md:text-2xl font-display font-semibold text-primary mb-2">{t('projects.next.title')}</h3>
+                <span className="inline-flex items-center gap-2 text-accent font-display">
+                  {t('projects.next.cta')} <ArrowRight aria-hidden="true" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </div>
+            </Link>
+          </li>
+        </ul>
       </div>
     </section>
   );
