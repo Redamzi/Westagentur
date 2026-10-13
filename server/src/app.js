@@ -110,7 +110,10 @@ export const createApp = ({ db, services, config, limiters, logger = console, no
     // ---------------------------------------------------------- Vapi
     ['POST', '/api/vapi', async ({ req, res }) => {
       if (!config.vapiSecret) throw new HttpError(503, 'vapi_disabled');
-      if (!vapiSecretMatches(req.headers['x-vapi-secret'], config.vapiSecret)) throw new HttpError(401, 'unauthorized');
+      // Vapi sends the secret either as "x-vapi-secret" (server secret) or as a Bearer token (credential).
+      const bearer = String(req.headers.authorization ?? '').replace(/^Bearer\s+/i, '');
+      const secret = req.headers['x-vapi-secret'] ?? bearer;
+      if (!vapiSecretMatches(secret, config.vapiSecret)) throw new HttpError(401, 'unauthorized');
       return sendJson(res, 200, await vapi(await readJson(req)));
     }],
 
