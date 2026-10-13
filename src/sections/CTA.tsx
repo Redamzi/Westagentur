@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, Mail, Phone } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { BOOKING_PATHS, BOOKING_TEXT } from '../content/booking';
 import ContactForm from '../components/ContactForm';
-import { CONTACT } from '../seo/site';
+import ProtectedContact from '../components/ProtectedContact';
 import type { PageDef } from '../seo/pages';
 
 const CTA: React.FC<{ page: PageDef }> = ({ page }) => {
@@ -35,14 +35,10 @@ const CTA: React.FC<{ page: PageDef }> = ({ page }) => {
           <p className="text-sm font-display font-bold uppercase tracking-widest text-muted mb-3">{t('cta.phone_text')}</p>
           <ul className="space-y-1 mb-4">
             <li>
-              <a href={CONTACT.phoneHref} className="inline-flex items-center gap-3 py-2 text-2xl font-display font-bold text-primary hover:text-accent transition-colors">
-                <Phone aria-hidden="true" className="w-5 h-5 text-accent" /> {CONTACT.phone}
-              </a>
+              <ProtectedContact kind="phone" lang={page.lang} icon className="text-xl md:text-2xl font-display font-bold text-primary hover:text-accent transition-colors" />
             </li>
             <li>
-              <a href={`mailto:${CONTACT.email}`} className="inline-flex items-center gap-3 py-2 text-lg font-display text-primary hover:text-accent transition-colors">
-                <Mail aria-hidden="true" className="w-5 h-5 text-accent" /> {CONTACT.email}
-              </a>
+              <ProtectedContact kind="email" lang={page.lang} icon className="text-lg font-display text-primary hover:text-accent transition-colors" />
             </li>
           </ul>
           <p className="text-sm text-muted">{t('cta.callback')}</p>

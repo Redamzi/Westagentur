@@ -75,3 +75,20 @@ test('daily digest once per day after the configured hour', async () => {
   assert.equal(sent.length, 1);
   assert.match(sent[0].subject, /1 offene Anfragen/);
 });
+
+test('deletes enquiries without an order after 12 months, keeps orders', async () => {
+  const { db, scheduler } = setup('2027-12-01T10:00:00Z');
+  const old = db.insertLead({ name: 'Alt', email: 'a@example.de' });
+  db.raw.prepare("UPDATE leads SET created_at = '2026-10-01T00:00:00.000Z', status_changed_at = '2026-10-01T00:00:00.000Z' WHERE id = ?").run(old);
+  const bookingId = db.insertBooking({ token: 'x', lead_id: old, start_utc: '2026-10-05T08:00:00.000Z', end_utc: '2026-10-05T08:30:00.000Z', name: 'Alt', email: 'a@example.de' });
+  const won = db.insertLead({ name: 'Kunde', email: 'k@example.de' });
+  db.updateLead(won, { status: 'won' }, '2026-10-01T00:00:00.000Z');
+  const recent = db.insertLead({ name: 'Neu', email: 'n@example.de' });
+  db.raw.prepare("UPDATE leads SET created_at = '2027-11-01T00:00:00.000Z', status_changed_at = '2027-11-01T00:00:00.000Z' WHERE id = ?").run(recent);
+
+  await scheduler.retention();
+  assert.equal(db.getLead(old), undefined);
+  assert.equal(db.getBooking(bookingId), undefined);
+  assert.ok(db.getLead(won));
+  assert.ok(db.getLead(recent));
+});

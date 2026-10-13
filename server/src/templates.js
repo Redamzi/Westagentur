@@ -105,12 +105,14 @@ export const reviewRequest = (lead, reviewUrl) =>
         'thank you for working with us! If you are happy with the result, we would really appreciate a short review – it only takes a minute.',
         block(button(reviewUrl, 'Write a review'), reviewUrl),
         regards('en'),
+        'If you do not want to receive such emails, just reply briefly and we will remove you. No costs other than standard transmission costs apply.',
       ])
     : mail('Wie zufrieden waren Sie mit der Westagentur?', [
         greet('de', lead.name),
         'vielen Dank für die Zusammenarbeit! Wenn Sie mit dem Ergebnis zufrieden sind, würden wir uns sehr über eine kurze Bewertung freuen – das dauert nur eine Minute.',
         block(button(reviewUrl, 'Bewertung schreiben'), reviewUrl),
         regards('de'),
+        'Sie möchten solche E-Mails nicht erhalten? Eine kurze Antwort genügt, dann tragen wir Sie aus. Es entstehen keine anderen als die Übermittlungskosten nach den Basistarifen.',
       ]);
 
 // ---------------------------------------------------------------- bookings

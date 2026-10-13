@@ -128,9 +128,7 @@
     "title": "Bereit für den nächsten Schritt?",
     "sub": "Lassen Sie uns gemeinsam Ihre digitale Zukunft gestalten.",
     "desc": "Erhalten Sie in einem unverbindlichen Gespräch eine ehrliche Einschätzung und konkrete Vorschläge für Ihr Unternehmen.",
-    "button": "Jetzt kostenloses Beratungsgespräch vereinbaren",
     "phone_text": "Oder rufen Sie uns direkt an:",
-    "phone": "+49 152 27506958",
     "callback": "Wir melden uns in der Regel innerhalb von 24 Stunden zurück."
   },
   "footer": {
@@ -162,8 +160,8 @@
     "sending": "Wird gesendet …",
     "success_title": "Vielen Dank!",
     "success": "Ihre Anfrage ist angekommen. Sie erhalten gleich eine Bestätigung per E-Mail. Wir melden uns werktags innerhalb von 24 Stunden.",
-    "error": "Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder schreiben Sie direkt an",
-    "rate_limited": "Zu viele Anfragen in kurzer Zeit. Bitte versuchen Sie es später erneut oder schreiben Sie direkt an",
+    "error": "Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder schreiben Sie uns per E-Mail:",
+    "rate_limited": "Zu viele Anfragen in kurzer Zeit. Bitte versuchen Sie es später erneut oder schreiben Sie uns per E-Mail:",
     "errors": {
       "name": "Bitte geben Sie Ihren Namen an.",
       "email": "Bitte geben Sie eine gültige E-Mail-Adresse an.",

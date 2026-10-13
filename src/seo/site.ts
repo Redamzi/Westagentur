@@ -4,10 +4,17 @@ export const SITE_URL = 'https://westagentur.de';
 export const SITE_NAME = 'Westagentur';
 export const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
+// E-Mail and phone are only stored encoded (base64 of the reversed string) and are
+// revealed on click (see ProtectedContact), so crawlers and AI scrapers cannot read them.
+export const PROTECTED_CONTACT = {
+  email: 'ZWQucnV0bmVnYXRzZXdAbGlhbQ==',
+  phone: 'ODU5NjA1NzIgMjUxIDk0Kw==',
+};
+
+export const revealContact = (kind: keyof typeof PROTECTED_CONTACT) =>
+  [...atob(PROTECTED_CONTACT[kind])].reverse().join('');
+
 export const CONTACT = {
-  email: 'mail@westagentur.de',
-  phone: '+49 152 27506958',
-  phoneHref: 'tel:+4915227506958',
   street: 'Kielstraße 28',
   postalCode: '44145',
   city: 'Dortmund',

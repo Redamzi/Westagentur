@@ -3,7 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { legalPath } from '../seo/pages';
-import { CONTACT, type Lang } from '../seo/site';
+import type { Lang } from '../seo/site';
+import ProtectedContact from './ProtectedContact';
 import type { ServiceKey } from '../content/services';
 import { inputClass, labelClass } from './formStyles';
 
@@ -160,7 +161,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ lang, defaultService }) => {
       {(status === 'error' || status === 'rate_limited') && (
         <p role="alert" className="text-sm text-red-400">
           {t(status === 'error' ? 'form.error' : 'form.rate_limited')}{' '}
-          <a href={`mailto:${CONTACT.email}`} className="underline">{CONTACT.email}</a>.
+          <ProtectedContact kind="email" lang={lang} />
         </p>
       )}
 

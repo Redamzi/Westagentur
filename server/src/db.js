@@ -222,6 +222,15 @@ export const openDatabase = (file) => {
     bookingsNeedingReminder: (fromIso, toIso) =>
       q("SELECT * FROM bookings WHERE status = 'confirmed' AND reminder_sent = 0 AND start_utc > ? AND start_utc <= ?").all(fromIso, toIso),
 
+    /** Deletes enquiries without an order (and their bookings) last touched before cutoffIso. */
+    deleteStaleLeads(cutoffIso) {
+      return transaction(() => {
+        const stale = "SELECT id FROM leads WHERE status IN ('new', 'contacted', 'offer', 'lost') AND COALESCE(status_changed_at, created_at) < :cutoff";
+        q(`DELETE FROM bookings WHERE lead_id IN (${stale}) OR (lead_id IS NULL AND end_utc < :cutoff)`).run({ cutoff: cutoffIso });
+        return Number(q(`DELETE FROM leads WHERE id IN (${stale})`).run({ cutoff: cutoffIso }).changes);
+      });
+    },
+
     // Admin sessions
     insertSession: (tokenHash, expiresAt) => q('INSERT INTO sessions (token_hash, expires_at) VALUES (?, ?)').run(tokenHash, expiresAt),
     getSession: (tokenHash, now) => q('SELECT * FROM sessions WHERE token_hash = ? AND expires_at > ?').get(tokenHash, now),

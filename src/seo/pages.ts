@@ -29,8 +29,6 @@ const organization = {
   '@id': ORG_ID,
   name: SITE_NAME,
   url: SITE_URL + '/',
-  email: CONTACT.email,
-  telephone: CONTACT.phone,
   logo: `${SITE_URL}/logo.png`,
   image: OG_IMAGE,
   priceRange: '€€',

@@ -3,6 +3,7 @@ import { offerFollowUp, ownerDigest } from './templates.js';
 
 const DAY = 86_400_000;
 const FOLLOW_UP_DAYS = [2, 7];
+const RETENTION_DAYS = 365;
 
 /**
  * Recurring automations, run every few minutes:
@@ -63,8 +64,14 @@ export const createScheduler = ({ db, mailer, services, config, logger = console
     logger.info('[scheduler] daily digest sent');
   };
 
+  // Data retention as stated in the privacy policy (section "Speicherdauer").
+  const retention = async () => {
+    const deleted = db.deleteStaleLeads(new Date(now().getTime() - RETENTION_DAYS * DAY).toISOString());
+    if (deleted) logger.info(`[scheduler] deleted ${deleted} enquiries older than ${RETENTION_DAYS} days`);
+  };
+
   const tick = async () => {
-    for (const [name, job] of Object.entries({ reminders, followUps, digest })) {
+    for (const [name, job] of Object.entries({ reminders, followUps, digest, retention })) {
       try {
         await job();
       } catch (err) {
@@ -74,5 +81,5 @@ export const createScheduler = ({ db, mailer, services, config, logger = console
     db.deleteExpiredSessions(now().getTime());
   };
 
-  return { tick, reminders, followUps, digest };
+  return { tick, reminders, followUps, digest, retention };
 };

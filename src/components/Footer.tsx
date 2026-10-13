@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { SERVICES, SERVICE_KEYS } from '../content/services';
 import { legalPath } from '../seo/pages';
 import { CONTACT, HOME_PATH, type Lang } from '../seo/site';
+import ProtectedContact from './ProtectedContact';
 
 const linkClass = 'inline-block py-2.5 text-muted hover:text-accent font-sans transition-colors';
 
@@ -25,9 +26,9 @@ const Footer: React.FC<{ lang: Lang }> = ({ lang }) => {
             <address className="not-italic text-muted leading-relaxed mb-8">
               {CONTACT.street}, {CONTACT.postalCode} {CONTACT.city}
               <br />
-              <a href={CONTACT.phoneHref} className={linkClass}>{CONTACT.phone}</a>
-              {' · '}
-              <a href={`mailto:${CONTACT.email}`} className={linkClass}>{CONTACT.email}</a>
+              <ProtectedContact kind="phone" lang={lang} className="text-muted hover:text-accent transition-colors" />
+              <br />
+              <ProtectedContact kind="email" lang={lang} className="text-muted hover:text-accent transition-colors" />
             </address>
             <div className="flex flex-wrap gap-3 items-center">
                <span className="px-3 py-1 bg-background border border-border text-xs font-display uppercase tracking-widest text-muted">SSL Secured</span>

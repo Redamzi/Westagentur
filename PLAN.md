@@ -30,10 +30,9 @@
 8. **Vermarktung/Inhalte** – lokale Landingpages (Dortmund, Ruhrgebiet), Ratgeber/Blog, Fallstudien (MailScout, Direktverteilung, Voyanero), Lead-Magnet „Website- & Automatisierungs-Check“, Live-Demo „Sarah anrufen“, Google-Unternehmensprofil.
 
 ## Offene Punkte aus Schritt 3
-- Impressum enthält Platzhalter (Max Mustermann, HRB 12345, USt-ID DE 123 456 789, „Westagentur Digital Solutions GmbH“) – echte Angaben nötig.
-- Datenschutzerklärung ist unvollständig (u. a. Vapi/OpenAI, Server-Logs, Kontaktformular fehlen) – rechtlich prüfen lassen.
+- Impressum (Einzelunternehmen) neu – noch offen: Name des Inhabers und USt-ID in `src/content/legal.ts`.
+- Datenschutzerklärung neu (Hosting IONOS, Logs, Formular, Termine, Statistik, Vapi) – rechtlich prüfen lassen.
 - Fiktives Kundenzitat („Musterkunde GmbH“) entfernt – echte Kundenstimmen ergänzen.
-- Datenschutzerklärung muss Kontaktformular, Terminbuchung, cookielose Statistik und Vapi/OpenAI (Telefon & Browser-Demo) abdecken.
 - Angebots-PDF (optional aus Schritt 7) noch nicht umgesetzt.
 - Logo/OG-Bild sind generierte Platzhalter (`public/logo.png`, `public/og-image.png`).
 

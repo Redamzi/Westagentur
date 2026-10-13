@@ -128,9 +128,7 @@
     "title": "Ready for the next step?",
     "sub": "Let's shape your digital future together.",
     "desc": "Get an honest assessment and concrete suggestions for your business in a non-binding consultation.",
-    "button": "Schedule a free consultation now",
     "phone_text": "Or call us directly:",
-    "phone": "+49 152 27506958",
     "callback": "We usually get back to you within 24 hours."
   },
   "footer": {
@@ -162,8 +160,8 @@
     "sending": "Sending …",
     "success_title": "Thank you!",
     "success": "Your enquiry has arrived. You will receive a confirmation email shortly. We will get back to you within 24 hours on working days.",
-    "error": "Something went wrong. Please try again or write directly to",
-    "rate_limited": "Too many requests in a short time. Please try again later or write directly to",
+    "error": "Something went wrong. Please try again or email us:",
+    "rate_limited": "Too many requests in a short time. Please try again later or email us:",
     "errors": {
       "name": "Please enter your name.",
       "email": "Please enter a valid email address.",

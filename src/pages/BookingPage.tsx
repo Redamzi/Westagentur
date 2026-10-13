@@ -8,6 +8,7 @@ import { BOOKING_TEXT, formatAppointment } from '../content/booking';
 import { legalPath } from '../seo/pages';
 import type { ServiceKey } from '../content/services';
 import type { Lang } from '../seo/site';
+import ProtectedContact from '../components/ProtectedContact';
 
 type Field = 'name' | 'email' | 'phone' | 'consent';
 const SERVICE_OPTIONS: ServiceKey[] = ['webdesign', 'automation', 'telephony'];
@@ -181,7 +182,7 @@ const BookingPage: React.FC<{ lang: Lang }> = ({ lang }) => {
                     {fieldError('consent')}
                   </div>
 
-                  {status === 'error' && <p role="alert" className={errorClass}>{t('form.error')} mail@westagentur.de.</p>}
+                  {status === 'error' && <p role="alert" className={errorClass}>{t('form.error')} <ProtectedContact kind="email" lang={lang} /></p>}
 
                   <button type="submit" disabled={status === 'sending'} className="btn-primary w-full disabled:opacity-60">
                     {status === 'sending' ? text.sending : text.submit}
