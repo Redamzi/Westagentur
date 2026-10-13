@@ -34,9 +34,9 @@
 - Datenschutzerklärung neu (Hosting IONOS, Logs, Formular, Termine, Statistik, Vapi) – rechtlich prüfen lassen.
 - Fiktives Kundenzitat („Musterkunde GmbH“) entfernt – echte Kundenstimmen ergänzen.
 - Angebots-PDF (optional aus Schritt 7) noch nicht umgesetzt.
-- Logo/OG-Bild sind generierte Platzhalter (`public/logo.png`, `public/og-image.png`).
+- Logo „West-Prompt“ (Variante C) umgesetzt: `public/logo.svg`, `logo.png`, `logo-mail.png`, `favicon.svg`, `src/components/LogoMark.tsx`.
 
 ## Benötigt
 - SMTP-Daten (Host, Port, Benutzer, Passwort) – nur in `.env` auf dem Server.
-- Logo als SVG/PNG.
+
 - Zahlen/Ergebnisse für die Fallstudien.

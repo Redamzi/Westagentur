@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { SERVICES, SERVICE_KEYS } from '../content/services';
 import { HOME_PATH } from '../seo/site';
 import { BOOKING_PATHS, BOOKING_TEXT } from '../content/booking';
+import LogoMark from './LogoMark';
 import type { PageDef } from '../seo/pages';
 
 const Navbar: React.FC<{ page: PageDef }> = ({ page }) => {
@@ -45,8 +46,9 @@ const Navbar: React.FC<{ page: PageDef }> = ({ page }) => {
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <Link to={home} className="text-2xl font-display font-bold tracking-tight text-primary flex items-center gap-2 min-h-[44px]">
-          WEST<span className="text-accent italic font-normal">AGENTUR</span>
+        <Link to={home} aria-label="Westagentur – Startseite" className="text-2xl font-display font-bold tracking-tight text-primary flex items-center gap-3 min-h-[44px]">
+          <LogoMark className="w-9 h-9" />
+          <span>WEST<span className="text-accent italic font-normal">AGENTUR</span></span>
         </Link>
 
         {/* Desktop Nav */}

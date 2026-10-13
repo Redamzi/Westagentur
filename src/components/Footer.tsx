@@ -5,6 +5,7 @@ import { SERVICES, SERVICE_KEYS } from '../content/services';
 import { legalPath } from '../seo/pages';
 import { CONTACT, HOME_PATH, type Lang } from '../seo/site';
 import ProtectedContact from './ProtectedContact';
+import LogoMark from './LogoMark';
 
 const linkClass = 'inline-block py-2.5 text-muted hover:text-accent font-sans transition-colors';
 
@@ -17,8 +18,9 @@ const Footer: React.FC<{ lang: Lang }> = ({ lang }) => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12 mb-12 md:mb-16">
           <div className="col-span-1 md:col-span-2">
-            <Link to={home} className="text-3xl font-display font-bold tracking-tight text-primary mb-6 inline-block py-1">
-              WEST<span className="text-accent italic font-normal">AGENTUR</span>
+            <Link to={home} aria-label="Westagentur – Startseite" className="text-3xl font-display font-bold tracking-tight text-primary mb-6 inline-flex items-center gap-3 py-1">
+              <LogoMark className="w-10 h-10" />
+              <span>WEST<span className="text-accent italic font-normal">AGENTUR</span></span>
             </Link>
             <p className="text-muted font-sans text-lg max-w-sm mb-6">
               {t('hero.subheadline')}

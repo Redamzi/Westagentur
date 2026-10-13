@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { LogOut, Mail, Phone, RefreshCw } from 'lucide-react';
 import { errorClass, inputClass, labelClass } from '../components/formStyles';
 import { formatAppointment } from '../content/booking';
+import LogoMark from '../components/LogoMark';
 
 // ------------------------------------------------------------------ API
 
@@ -526,7 +527,8 @@ const AdminPage: React.FC = () => {
         {auth === 'in' && (
           <>
             <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-              <h1 className="text-2xl md:text-3xl font-display font-bold">
+              <h1 className="text-2xl md:text-3xl font-display font-bold flex items-center gap-3">
+                <LogoMark className="w-9 h-9" />
                 WEST<span className="text-accent italic font-normal">AGENTUR</span> Admin
               </h1>
               <button type="button" onClick={logout} className={smallBtn}><LogOut aria-hidden="true" className="w-4 h-4" />Abmelden</button>

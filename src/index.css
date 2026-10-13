@@ -11,6 +11,7 @@
     --c-muted: 82 82 82;
     --c-border: 228 228 231;
     --c-accent: 14 116 144;
+    --c-logo-dot: 0 229 255;
   }
 
   /* Dark accent sections (hero, AI assistant, CTA) */
@@ -21,6 +22,7 @@
     --c-muted: 163 163 163;
     --c-border: 38 38 38;
     --c-accent: 0 229 255;
+    --c-logo-dot: 14 116 144;
     color: rgb(var(--c-primary));
   }
 
