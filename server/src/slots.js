@@ -1,4 +1,5 @@
 import { addDays, localDate, weekdayOf, zonedToUtc } from './time.js';
+import { isHolidayNRW } from './holidays.js';
 
 const overlaps = (aStart, aEnd, bStart, bEnd) => aStart < bEnd && bStart < aEnd;
 
@@ -25,6 +26,7 @@ export const computeSlots = (db, { from, days, now = new Date() }) => {
 
   const result = [];
   for (let date = startDate; date < endDate; date = addDays(date, 1)) {
+    if (isHolidayNRW(date)) continue; // no appointments on public holidays
     const weekday = weekdayOf(date);
     const slots = [];
     for (const w of windows.filter((row) => row.weekday === weekday)) {
