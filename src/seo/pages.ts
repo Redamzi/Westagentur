@@ -72,12 +72,12 @@ const HOME_META: Record<Lang, { title: string; description: string }> = {
   de: {
     title: 'Webdesign & KI-Automatisierung für den Mittelstand | Westagentur',
     description:
-      'Websites, die Anfragen bringen – und KI, die sie automatisch bearbeitet. Webdesign, KI-Telefonie und Prozessautomatisierung aus Dortmund. Jetzt kostenlos beraten lassen.',
+      'Websites, die Anfragen bringen – und KI, die sie automatisch bearbeitet. Webdesign, KI-Telefonie und Prozessautomatisierung aus Hamm (NRW). Jetzt kostenlos beraten lassen.',
   },
   en: {
     title: 'Web Design & AI Automation for SMEs | Westagentur',
     description:
-      'Websites that generate enquiries – and AI that handles them automatically. Web design, AI telephony and process automation from Dortmund, Germany.',
+      'Websites that generate enquiries – and AI that handles them automatically. Web design, AI telephony and process automation from Hamm, Germany.',
   },
 };
 

@@ -115,23 +115,69 @@ export const LEGAL_CONTENT: Record<LegalKey, { title: string; updated?: string; 
   },
 
   tos: {
-    title: 'AGB',
+    title: 'Allgemeine Geschäftsbedingungen',
+    updated: 'Stand: Oktober 2026',
     sections: [
       {
         heading: '§ 1 Geltungsbereich',
-        body: 'Für die Geschäftsbeziehung zwischen der Westagentur und dem Kunden gelten ausschließlich die nachfolgenden Allgemeinen Geschäftsbedingungen in ihrer zum Zeitpunkt der Bestellung gültigen Fassung.',
+        body:
+          `Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge zwischen der Westagentur, Inhaber ${OWNER_NAME}, ${STREET.replace('\n', ', ')} (nachfolgend „Agentur“), und ihren Kunden über Leistungen in den Bereichen Webdesign, Webentwicklung, Suchmaschinenoptimierung, KI-Telefonie, Prozessautomatisierung, Hosting und Wartung.\n\nUnser Angebot richtet sich ausschließlich an Unternehmer im Sinne von § 14 BGB, juristische Personen des öffentlichen Rechts und öffentlich-rechtliche Sondervermögen. Abweichende Bedingungen des Kunden gelten nur, wenn die Agentur ihnen ausdrücklich in Textform zustimmt.`,
       },
       {
-        heading: '§ 2 Leistungsumfang',
-        body: 'Gegenstand des Vertrages ist die Erstellung von Websites, Suchmaschinenoptimierung und Prozessautomatisierung wie im jeweiligen Angebot individuell vereinbart.',
+        heading: '§ 2 Vertragsschluss',
+        body:
+          'Angebote der Agentur sind freibleibend und 30 Tage gültig, sofern nicht anders angegeben. Ein Vertrag kommt durch die Annahme des Angebots in Textform (z. B. per E-Mail) oder durch den Beginn der Leistungserbringung auf Wunsch des Kunden zustande. Maßgeblich für den Leistungsumfang ist das jeweilige Angebot.',
       },
       {
-        heading: '§ 3 Abnahme',
-        body: 'Nach Fertigstellung der Leistung ist der Kunde zur Abnahme verpflichtet, sofern die Leistung den vertraglichen Anforderungen entspricht.',
+        heading: '§ 3 Leistungen und Mitwirkung des Kunden',
+        body:
+          'Die Agentur erbringt die vereinbarten Leistungen nach dem Stand der Technik. Sie darf zur Leistungserbringung qualifizierte Subunternehmer und technische Dienstleister einsetzen.\n\nDer Kunde stellt alle für die Leistung erforderlichen Inhalte, Zugänge und Informationen (z. B. Texte, Bilder, Logos, Zugangsdaten) rechtzeitig und in geeigneter Form bereit. Er sichert zu, dass er zur Nutzung der überlassenen Inhalte berechtigt ist und diese keine Rechte Dritter verletzen. Verzögerungen durch fehlende Mitwirkung verlängern vereinbarte Fristen entsprechend; dadurch entstehender Mehraufwand kann gesondert berechnet werden.',
       },
       {
-        heading: '§ 4 Urheberrecht',
-        body: 'Sämtliche Nutzungsrechte an den erstellten Werken gehen erst nach vollständiger Bezahlung der vereinbarten Vergütung auf den Kunden über.',
+        heading: '§ 4 Änderungswünsche',
+        body: 'Änderungen und Erweiterungen des vereinbarten Leistungsumfangs bedürfen einer Vereinbarung in Textform. Mehraufwand wird nach Absprache bzw. nach dem vereinbarten Stundensatz berechnet. Im Angebot genannte Korrekturschleifen sind im Preis enthalten.',
+      },
+      {
+        heading: '§ 5 Abnahme',
+        body:
+          'Werkleistungen (z. B. Websites) werden nach Fertigstellung zur Abnahme bereitgestellt (§ 640 BGB). Der Kunde prüft die Leistung innerhalb von 14 Tagen und erklärt die Abnahme oder teilt wesentliche Mängel in Textform mit. Die Leistung gilt als abgenommen, wenn der Kunde innerhalb dieser Frist keine wesentlichen Mängel benennt oder die Leistung produktiv nutzt (z. B. Veröffentlichung der Website). Unwesentliche Mängel berechtigen nicht zur Verweigerung der Abnahme.',
+      },
+      {
+        heading: '§ 6 Vergütung und Zahlung',
+        body:
+          'Es gelten die im Angebot vereinbarten Preise zuzüglich der gesetzlichen Umsatzsteuer, soweit diese anfällt. Bei Projekten kann die Agentur angemessene Abschlagszahlungen verlangen (üblich: 50 % bei Auftrag, 50 % bei Abnahme). Rechnungen sind innerhalb von 14 Tagen ohne Abzug zahlbar. Laufende Leistungen (Hosting, Wartung, KI-Telefonie) werden monatlich oder jährlich im Voraus berechnet. Kosten externer Dienste (z. B. Domains, Telefonie- und KI-Nutzung) werden gesondert berechnet, sofern im Angebot nicht anders geregelt.',
+      },
+      {
+        heading: '§ 7 Nutzungsrechte',
+        body:
+          'Mit vollständiger Zahlung erhält der Kunde die zur vertragsgemäßen Nutzung erforderlichen, zeitlich und räumlich unbeschränkten einfachen Nutzungsrechte an den individuell für ihn erstellten Arbeitsergebnissen. Bis dahin ist die Nutzung nur widerruflich gestattet. Rechte an Open-Source-Komponenten, Bibliotheken und Werkzeugen der Agentur sowie an Leistungen Dritter richten sich nach deren Lizenzbedingungen. Die Agentur darf das Projekt als Referenz nennen, sofern der Kunde nicht widerspricht.',
+      },
+      {
+        heading: '§ 8 KI-gestützte Leistungen',
+        body:
+          'Bei KI-Telefonie und Automatisierungen setzt die Agentur Dienste Dritter (z. B. Sprach- und Sprachmodell-Anbieter) ein. KI-Systeme können fehlerhafte oder unvollständige Antworten erzeugen; eine bestimmte inhaltliche Richtigkeit einzelner KI-Ausgaben wird nicht geschuldet. Der Kunde ist als Betreiber für den rechtmäßigen Einsatz verantwortlich, insbesondere für die Information seiner Anrufer bzw. Nutzer, dass sie mit einem KI-System interagieren (Art. 50 KI-Verordnung), sowie für die datenschutzrechtliche Zulässigkeit. Die Agentur unterstützt ihn dabei.',
+      },
+      {
+        heading: '§ 9 Datenschutz und Auftragsverarbeitung',
+        body: 'Soweit die Agentur personenbezogene Daten im Auftrag des Kunden verarbeitet (z. B. bei Hosting, Kontaktformularen oder KI-Telefonie), schließen die Parteien einen Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO.',
+      },
+      {
+        heading: '§ 10 Gewährleistung',
+        body: 'Es gelten die gesetzlichen Mängelrechte mit der Maßgabe, dass die Agentur zunächst nach ihrer Wahl nachbessert oder neu leistet. Die Verjährungsfrist für Mängelansprüche beträgt ein Jahr ab Abnahme bzw. Leistung, außer bei Vorsatz, Arglist und in den Fällen des § 11 Satz 1.',
+      },
+      {
+        heading: '§ 11 Haftung',
+        body:
+          'Die Agentur haftet unbeschränkt bei Vorsatz und grober Fahrlässigkeit, für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit, nach dem Produkthaftungsgesetz sowie im Umfang einer übernommenen Garantie. Bei leicht fahrlässiger Verletzung wesentlicher Vertragspflichten (Pflichten, deren Erfüllung die ordnungsgemäße Durchführung des Vertrags erst ermöglicht und auf deren Einhaltung der Kunde regelmäßig vertrauen darf) ist die Haftung auf den vertragstypischen, vorhersehbaren Schaden begrenzt. Im Übrigen ist die Haftung für leichte Fahrlässigkeit ausgeschlossen. Für den Verlust von Daten haftet die Agentur nur, soweit dieser bei ordnungsgemäßer Datensicherung durch den Kunden nicht vermeidbar gewesen wäre.',
+      },
+      {
+        heading: '§ 12 Laufzeit von Dauerleistungen',
+        body: 'Hosting-, Wartungs- und KI-Telefonie-Verträge laufen, sofern nicht anders vereinbart, auf unbestimmte Zeit und können von beiden Seiten mit einer Frist von einem Monat zum Monatsende in Textform gekündigt werden. Das Recht zur außerordentlichen Kündigung bleibt unberührt.',
+      },
+      {
+        heading: '§ 13 Schlussbestimmungen',
+        body:
+          'Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts. Ist der Kunde Kaufmann, juristische Person des öffentlichen Rechts oder öffentlich-rechtliches Sondervermögen, ist Gerichtsstand Hamm. Sollten einzelne Bestimmungen unwirksam sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt; an ihre Stelle tritt die gesetzliche Regelung.',
       },
     ],
   },

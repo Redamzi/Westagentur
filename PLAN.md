@@ -27,10 +27,10 @@
 5. ✅ **Terminbuchung** – Verfügbarkeiten, freie Slots, Buchung, `.ics`-Einladung, Storno/Verschieben per Link.
 6. ✅ **Admin `/admin`** – Leads, Termine, Status-Pipeline, Verfügbarkeiten, Statistik (cookielos). Passwortgeschützt.
 7. ✅ **Automatisierung** – Vapi-Webhook `/api/vapi` (Lead + Termin), Follow-ups nach 2/7 Tagen, Terminerinnerung 24 h vorher, Bewertungsanfrage nach Projektabschluss, optional Angebots-PDF.
-8. **Vermarktung/Inhalte** – lokale Landingpages (Dortmund, Ruhrgebiet), Ratgeber/Blog, Fallstudien (MailScout, Direktverteilung, Voyanero), Lead-Magnet „Website- & Automatisierungs-Check“, Live-Demo „Sarah anrufen“, Google-Unternehmensprofil.
+8. **Vermarktung/Inhalte** – lokale Landingpages (Hamm, Dortmund, Ruhrgebiet), Ratgeber/Blog, Fallstudien (MailScout, Direktverteilung, Voyanero), Lead-Magnet „Website- & Automatisierungs-Check“, Live-Demo „Sarah anrufen“, Google-Unternehmensprofil.
 
 ## Offene Punkte aus Schritt 3
-- Impressum: Westagentur, Inhaber Argjend Krasniqi, Schildkamp 1, Hamm. USt-ID ergänzen, falls vorhanden. Website (Footer, Google-Daten, Mails) nennt noch Kielstraße 28, Dortmund.
+- Impressum: Westagentur, Inhaber Argjend Krasniqi, Schildkamp 1, Hamm. USt-ID ergänzen, falls vorhanden. Website komplett auf Hamm umgestellt.
 - Datenschutzerklärung neu (Hosting IONOS, Logs, Formular, Termine, Statistik, Vapi) – rechtlich prüfen lassen.
 - Fiktives Kundenzitat („Musterkunde GmbH“) entfernt – echte Kundenstimmen ergänzen.
 - Angebots-PDF (optional aus Schritt 7) noch nicht umgesetzt.

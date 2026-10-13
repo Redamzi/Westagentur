@@ -15,9 +15,9 @@ export const revealContact = (kind: keyof typeof PROTECTED_CONTACT) =>
   [...atob(PROTECTED_CONTACT[kind])].reverse().join('');
 
 export const CONTACT = {
-  street: 'Kielstraße 28',
-  postalCode: '44145',
-  city: 'Dortmund',
+  street: 'Schildkamp 1',
+  postalCode: '59063',
+  city: 'Hamm',
   country: 'DE',
 };
 

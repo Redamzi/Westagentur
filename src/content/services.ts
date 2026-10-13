@@ -59,7 +59,7 @@ export const SERVICES: Record<Lang, Record<ServiceKey, ServiceContent>> = {
     webdesign: {
       path: '/webdesign',
       navLabel: 'Webdesign',
-      title: 'Webdesign für den Mittelstand | Westagentur Dortmund',
+      title: 'Webdesign für den Mittelstand | Westagentur Hamm',
       description:
         'Schnelle, conversion-starke Websites für KMU – individuell entwickelt, SEO-optimiert und DSGVO-konform. Starter ab 1.500 €, Pro ab 3.200 €.',
       h1: 'Webdesign für den Mittelstand',

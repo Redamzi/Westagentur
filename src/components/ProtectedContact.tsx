@@ -15,8 +15,9 @@ interface ProtectedContactProps {
 }
 
 /**
- * Shows e-mail address or phone number only after a click. The value is not part
- * of the HTML or the rendered DOM before that, so crawlers and AI scrapers cannot read it.
+ * Contact details that crawlers and AI scrapers cannot read:
+ * - e-mail: visible via CSS generated content, mailto link built on click
+ * - phone: revealed on click (not in HTML or DOM before that)
  */
 const ProtectedContact: React.FC<ProtectedContactProps> = ({ kind, lang, className = '', icon = false }) => {
   const [value, setValue] = useState<string>();
@@ -27,6 +28,24 @@ const ProtectedContact: React.FC<ProtectedContactProps> = ({ kind, lang, classNa
   useEffect(() => {
     if (value) linkRef.current?.focus();
   }, [value]);
+
+  // E-mail is shown directly (via CSS, see .email-protected); the mailto link is only built on click.
+  if (kind === 'email') {
+    return (
+      <a
+        href="#"
+        onClick={(event) => {
+          event.preventDefault();
+          window.location.href = `mailto:${revealContact('email')}`;
+        }}
+        aria-label={lang === 'de' ? 'E-Mail an die Westagentur schreiben' : 'Email Westagentur'}
+        className={`inline-flex items-center gap-3 min-h-[44px] ${className}`}
+      >
+        {iconEl}
+        <span className="email-protected" />
+      </a>
+    );
+  }
 
   if (!value) {
     return (
