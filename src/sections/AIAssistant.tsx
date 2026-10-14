@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import type VapiClient from '@vapi-ai/web';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Loader2, MessageSquare, Mic, Phone, PhoneOff, Send } from 'lucide-react';
+import { Loader2, MessageSquare, Mic, Phone, PhoneOff } from 'lucide-react';
 import { legalPath } from '../seo/pages';
 import { useTranslation } from 'react-i18next';
 import SectionLabel from '../components/SectionLabel';
+import { ChatView, useToniChat } from '../components/toni/ToniChat';
+import ChatOverlay from '../components/toni/ChatOverlay';
 
 // Configuration
 const VAPI_PUBLIC_KEY = "0439aee3-ffe1-49c9-b7a4-f34a3f128c43";
 // Voice assistant (GPT Live). The website chat uses a separate text assistant (server: VAPI_ASSISTANT_ID).
 const VAPI_ASSISTANT_ID = "c8a4b33e-6f26-4ab8-adbe-f0c8cf8c4cba";
-
-type ChatMessage = { from: 'user' | 'toni' | 'error'; text: string };
 
 const MOBILE_QUERY = '(max-width: 1023px)';
 
@@ -37,12 +37,10 @@ const AIAssistant = () => {
   const de = i18n.language !== 'en';
 
   const [mode, setMode] = useState<'call' | 'chat'>('call');
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [draft, setDraft] = useState('');
-  const [sending, setSending] = useState(false);
-  const chatIdRef = useRef<string | undefined>(undefined);
-  const listRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const chat = useToniChat(de ? 'de' : 'en');
+  const sending = chat.sending;
+  // Smartphone: the chat opens as a full-screen app.
+  const [chatOpen, setChatOpen] = useState<false | 'typing' | 'reading'>(false);
 
   // Smartphone: while scrolling, the Toni card grows into a full-screen app (sticky stage).
   const sectionRef = useRef<HTMLElement>(null);
@@ -58,47 +56,18 @@ const AIAssistant = () => {
   const introOpacity = useTransform(scrollYProgress, [0.05, 0.3], [1, 0]);
   const introY = useTransform(scrollYProgress, [0.05, 0.3], [0, -60]);
 
-  useEffect(() => {
-    const list = listRef.current;
-    if (list) list.scrollTop = list.scrollHeight;
-  }, [messages, sending]);
-
-  const sendMessage = async (raw: string) => {
-    const input = raw.trim();
-    if (!input || sending) return;
-    setMessages((prev) => [...prev, { from: 'user', text: input }]);
-    setDraft('');
-    setSending(true);
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ input, chatId: chatIdRef.current }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.reply) throw new Error(data.error ?? `HTTP ${res.status}`);
-      chatIdRef.current = data.chatId;
-      setMessages((prev) => [...prev, { from: 'toni', text: data.reply }]);
-    } catch (err) {
-      const limited = String((err as Error).message).includes('rate_limited');
-      setMessages((prev) => [
-        ...prev,
-        {
-          from: 'error',
-          text: limited
-            ? de ? 'Sie haben viele Nachrichten gesendet. Bitte versuchen Sie es später erneut.' : 'You have sent many messages. Please try again later.'
-            : de ? 'Toni ist gerade nicht erreichbar. Bitte versuchen Sie es gleich noch einmal.' : 'Toni is not available right now. Please try again shortly.',
-        },
-      ]);
-    } finally {
-      setSending(false);
-      inputRef.current?.focus();
-    }
+  const openChat = (focus: boolean) => {
+    setMode('chat');
+    if (isMobile) setChatOpen(focus ? 'typing' : 'reading');
   };
+  const closeChat = useCallback(() => {
+    setChatOpen(false);
+    setMode('call');
+  }, []);
 
   const askExample = (example: string) => {
-    setMode('chat');
-    sendMessage(example.replace(/[„“”"]/g, ''));
+    openChat(false);
+    chat.send(example.replace(/[„“”"]/g, ''));
   };
 
   // The Vapi SDK is large, so it is only loaded when a call is started.
@@ -202,7 +171,7 @@ const AIAssistant = () => {
             type="button"
             role="tab"
             aria-selected={mode === key}
-            onClick={() => setMode(key)}
+            onClick={() => (key === 'chat' ? openChat(true) : setMode(key))}
             className={`min-h-[44px] flex items-center justify-center gap-2 font-display font-semibold transition-colors ${
               mode === key ? 'bg-accent text-background' : 'text-muted hover:text-primary'
             }`}
@@ -265,89 +234,7 @@ const AIAssistant = () => {
         </p>
         </>
       ) : (
-        <>
-          <div
-            ref={listRef}
-            aria-live="polite"
-            className={`${fill ? 'flex-1 min-h-0' : 'h-72'} overflow-y-auto overscroll-contain border border-border bg-background p-4 space-y-3 mb-4`}
-          >
-            <p className="max-w-[85%] px-4 py-3 bg-surface border border-border text-primary text-sm leading-relaxed">
-              {de ? 'Hallo, ich bin Toni. Was kann ich für Sie tun?' : 'Hi, I am Toni. How can I help you?'}
-            </p>
-            {!messages.length && (
-              <div className="flex flex-wrap justify-end gap-2">
-                {EXAMPLES.map((example) => (
-                  <button
-                    key={example}
-                    type="button"
-                    onClick={() => askExample(example)}
-                    className="px-3 py-2 border border-accent/60 text-accent text-sm hover:bg-accent hover:text-background transition-colors"
-                  >
-                    {example}
-                  </button>
-                ))}
-              </div>
-            )}
-            {messages.map((m, i) => (
-              <p
-                key={i}
-                className={`max-w-[85%] px-4 py-3 text-sm leading-relaxed whitespace-pre-line ${
-                  m.from === 'user'
-                    ? 'ml-auto bg-accent text-background'
-                    : m.from === 'error'
-                      ? 'border border-red-500/60 text-red-300'
-                      : 'bg-surface border border-border text-primary'
-                }`}
-              >
-                <span className="sr-only">{m.from === 'user' ? (de ? 'Sie: ' : 'You: ') : 'Toni: '}</span>
-                {m.text}
-              </p>
-            ))}
-            {sending && (
-              <p className="inline-flex items-center gap-2 px-4 py-3 bg-surface border border-border text-muted text-sm">
-                <Loader2 aria-hidden="true" className="w-4 h-4 animate-spin" />
-                {de ? 'Toni schreibt …' : 'Toni is typing …'}
-              </p>
-            )}
-          </div>
-
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              sendMessage(draft);
-            }}
-            className="flex gap-2"
-          >
-            <label htmlFor="toni-chat-input" className="sr-only">{de ? 'Nachricht an Toni' : 'Message to Toni'}</label>
-            <input
-              id="toni-chat-input"
-              ref={inputRef}
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              maxLength={1000}
-              autoComplete="off"
-              placeholder={de ? 'Ihre Nachricht …' : 'Your message …'}
-              className="flex-1 min-w-0 min-h-[56px] px-4 bg-background border border-border text-primary placeholder:text-muted focus:border-accent focus:outline-none"
-            />
-            <button
-              type="submit"
-              disabled={sending || !draft.trim()}
-              aria-label={de ? 'Senden' : 'Send'}
-              className="shrink-0 w-14 min-h-[56px] flex items-center justify-center bg-accent hover:bg-accent/85 disabled:opacity-50 text-background transition-colors"
-            >
-              <Send aria-hidden="true" className="w-5 h-5" />
-            </button>
-          </form>
-
-          <p className="mt-5 text-xs text-muted leading-relaxed">
-            {de
-              ? 'Nachrichten werden über Vapi und OpenAI (USA) verarbeitet. Bitte keine sensiblen Daten eingeben. '
-              : 'Messages are processed by Vapi and OpenAI (USA). Please do not enter sensitive data. '}
-            <Link to={legalPath('privacy')} className="underline underline-offset-2 hover:text-primary">
-              {de ? 'Datenschutz' : 'Privacy policy'}
-            </Link>
-          </p>
-        </>
+        <ChatView chat={chat} examples={EXAMPLES} fill={fill} />
       )}
     </>
   );
@@ -379,6 +266,7 @@ const AIAssistant = () => {
             {renderCard(true)}
           </motion.div>
         </div>
+        <ChatOverlay chat={chat} examples={EXAMPLES} open={chatOpen} onClose={closeChat} />
       </section>
     );
   }
@@ -440,6 +328,7 @@ const AIAssistant = () => {
           {renderCard(false)}
         </motion.div>
       </div>
+      <ChatOverlay chat={chat} examples={EXAMPLES} open={chatOpen} onClose={closeChat} />
     </section>
   );
 };
