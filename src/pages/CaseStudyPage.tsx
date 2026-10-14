@@ -26,7 +26,7 @@ const CaseStudyPage: React.FC<{ slug: string }> = ({ slug }) => {
               </ol>
             </nav>
             <SectionLabel>{ui.label} · {study.client}</SectionLabel>
-            <h1 className="heading-xl text-primary mb-8">Aus einem Arbeitstag Disposition werden wenige Minuten Kontrolle</h1>
+            <h1 className="heading-xl text-primary mb-8">{study.headline}</h1>
             <p className="text-lg md:text-xl text-muted max-w-2xl leading-relaxed mb-8">{study.teaser}</p>
             <ul className="flex flex-wrap gap-2">
               {study.tags.map((tag) => (
@@ -74,6 +74,20 @@ const CaseStudyPage: React.FC<{ slug: string }> = ({ slug }) => {
             </ul>
           </div>
 
+          {study.features && (
+            <div className="section-dark bg-background border border-border p-8 md:p-10">
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-primary mb-6">{study.features.title}</h2>
+              <ul className="space-y-4">
+                {study.features.items.map((item) => (
+                  <li key={item} className="flex gap-3 text-primary leading-relaxed">
+                    <Check aria-hidden="true" className="w-5 h-5 text-accent shrink-0 mt-1" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <div>
             <SectionLabel>03</SectionLabel>
             <h2 className="heading-section mb-6">{ui.result}</h2>
@@ -86,7 +100,7 @@ const CaseStudyPage: React.FC<{ slug: string }> = ({ slug }) => {
             <Link to={BOOKING_PATHS.de.book} className="btn-primary">
               {ui.cta} <ArrowRight aria-hidden="true" className="w-5 h-5" />
             </Link>
-            <Link to="/ki-automatisierung" className="btn-ghost">KI-Automatisierung</Link>
+            <Link to={study.service.path} className="btn-ghost">{study.service.label}</Link>
           </div>
         </div>
       </article>

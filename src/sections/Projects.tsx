@@ -17,7 +17,7 @@ const Projects = () => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language === 'en' ? 'en' : 'de';
   const items: ProjectItem[] = t('projects.items', { returnObjects: true });
-  const featured = t('projects.featured', { returnObjects: true }) as { label: string; title: string; desc: string; cta: string };
+  const featured = t('projects.featured', { returnObjects: true }) as { slug: string; label: string; title: string; desc: string; cta: string }[];
 
   return (
     <section id="projekte" className="relative section-padding bg-background border-b border-border overflow-hidden scroll-mt-16">
@@ -31,19 +31,24 @@ const Projects = () => {
           </h2>
         </div>
 
-        {/* Featured case study */}
-        <Link
-          to={CASE_STUDIES[0].path}
-          className="section-dark group block bg-background border border-border p-8 md:p-12 mb-8 hover:border-accent transition-colors"
-        >
-          <SectionLabel>{featured.label}</SectionLabel>
-          <h3 className="text-2xl md:text-4xl font-display font-bold text-primary mb-4 max-w-3xl leading-tight">{featured.title}</h3>
-          <p className="text-muted text-lg max-w-3xl leading-relaxed mb-8">{featured.desc}</p>
-          <span className="inline-flex items-center gap-2 font-display font-medium text-accent">
-            {featured.cta}
-            <ArrowRight aria-hidden="true" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </span>
-        </Link>
+        {/* Featured case studies */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {featured.map((item) => (
+            <Link
+              key={item.slug}
+              to={CASE_STUDIES.find((c) => c.slug === item.slug)!.path}
+              className="section-dark group flex flex-col bg-background border border-border p-8 md:p-10 hover:border-accent transition-colors"
+            >
+              <SectionLabel>{item.label}</SectionLabel>
+              <h3 className="text-2xl md:text-3xl font-display font-bold text-primary mb-4 leading-tight">{item.title}</h3>
+              <p className="text-muted text-lg leading-relaxed mb-8">{item.desc}</p>
+              <span className="mt-auto inline-flex items-center gap-2 font-display font-medium text-accent">
+                {item.cta}
+                <ArrowRight aria-hidden="true" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </Link>
+          ))}
+        </div>
 
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border">
           {items.map((project) => (
