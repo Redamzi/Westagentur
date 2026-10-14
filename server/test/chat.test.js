@@ -43,3 +43,14 @@ test('chat validates input and hides Vapi errors', async () => {
   assert.deepEqual(await res.json(), { ok: false, error: 'chat_failed' });
   assert.equal(vapi.calls[0].body.previousChatId, undefined);
 });
+
+test('chat reads text parts and logs empty replies', async () => {
+  const parts = fakeVapi({ id: 'c', output: [{ role: 'assistant', content: [{ type: 'text', text: 'Hallo!' }] }] });
+  app = await startApp({ env: { VAPI_API_KEY: 'k' }, fetchImpl: parts.fetchImpl });
+  assert.equal((await (await app.request('POST', '/api/chat', { input: 'Hi' })).json()).reply, 'Hallo!');
+  await app.stop();
+
+  const empty = fakeVapi({ id: 'c', output: [] });
+  app = await startApp({ env: { VAPI_API_KEY: 'k' }, fetchImpl: empty.fetchImpl });
+  assert.equal((await app.request('POST', '/api/chat', { input: 'Hi' })).status, 502);
+});

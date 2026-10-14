@@ -12,6 +12,23 @@ const VAPI_MAX_BODY_BYTES = 5_000_000;
 const VAPI_CHAT_URL = 'https://api.vapi.ai/chat';
 const CHAT_ID = /^[\w-]{1,100}$/;
 
+// Text of a message: a string or a list of parts like [{ type: 'text', text }].
+const messageText = (content) =>
+  typeof content === 'string'
+    ? content
+    : Array.isArray(content)
+      ? content.map((part) => (typeof part === 'string' ? part : part?.text ?? '')).join('')
+      : '';
+
+/** Assistant text from a Vapi chat response. */
+const chatReply = (chat) =>
+  (chat.output ?? chat.messages ?? [])
+    .filter((m) => (m.role === 'assistant' || m.role === 'bot') && !m.tool_calls?.length)
+    .map((m) => messageText(m.content ?? m.message).trim())
+    .filter(Boolean)
+    .slice(-1)
+    .join('');
+
 const PUBLIC_BOOKING_FIELDS = ['start_utc', 'end_utc', 'status', 'name', 'service', 'lang'];
 const publicBooking = (b) => Object.fromEntries(PUBLIC_BOOKING_FIELDS.map((k) => [k, b[k]]));
 
@@ -149,10 +166,11 @@ export const createApp = ({ db, services, config, limiters, logger = console, no
         throw new HttpError(502, 'chat_failed');
       }
       const chat = await response.json();
-      const reply = (chat.output ?? [])
-        .filter((m) => m.role === 'assistant' && typeof m.content === 'string' && m.content.trim())
-        .map((m) => m.content.trim())
-        .join('\n\n');
+      const reply = chatReply(chat);
+      if (!reply) {
+        logger.error(`[chat] Vapi sent no text reply: ${JSON.stringify(chat).slice(0, 1500)}`);
+        throw new HttpError(502, 'chat_failed');
+      }
       return sendJson(res, 200, { ok: true, chatId: chat.id, reply });
     }],
 
