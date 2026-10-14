@@ -9,7 +9,8 @@ import SectionLabel from '../components/SectionLabel';
 
 // Configuration
 const VAPI_PUBLIC_KEY = "0439aee3-ffe1-49c9-b7a4-f34a3f128c43";
-const VAPI_ASSISTANT_ID = "54f190b2-aeb9-4e8a-b4b6-6731b6db2601";
+// Voice assistant (GPT Live). The website chat uses a separate text assistant (server: VAPI_ASSISTANT_ID).
+const VAPI_ASSISTANT_ID = "c8a4b33e-6f26-4ab8-adbe-f0c8cf8c4cba";
 
 type ChatMessage = { from: 'user' | 'toni' | 'error'; text: string };
 
