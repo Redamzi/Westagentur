@@ -99,27 +99,24 @@ interface ChatViewProps {
   examples: string[];
   /** Full-screen variant: the message list takes all free space. */
   fill?: boolean;
-  autoFocus?: boolean;
+  /** Little space (keyboard open): hide the privacy note. */
+  compact?: boolean;
 }
 
 /** Message list, booking steps and input of the Toni chat. */
-export const ChatView: React.FC<ChatViewProps> = ({ chat, examples, fill = false, autoFocus = false }) => {
+export const ChatView: React.FC<ChatViewProps> = ({ chat, examples, fill = false, compact = false }) => {
   const { lang, items, sending } = chat;
   const de = lang === 'de';
   const [draft, setDraft] = useState('');
   const listRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const lastItem = items[items.length - 1];
 
-  useEffect(() => {
-    if (autoFocus) inputRef.current?.focus();
-  }, [autoFocus]);
-
-  // New text messages scroll to the bottom; the booking widget scrolls itself.
+  // New text messages (and a smaller list when the keyboard opens) scroll to the bottom;
+  // the booking widget scrolls itself.
   useEffect(() => {
     const list = listRef.current;
     if (list && lastItem?.from !== 'booking') list.scrollTo({ top: list.scrollHeight, behavior: 'smooth' });
-  }, [items.length, sending, lastItem?.from]);
+  }, [items.length, sending, lastItem?.from, compact]);
 
   const bookingOpen = items.some((item) => item.from === 'booking');
 
@@ -198,7 +195,6 @@ export const ChatView: React.FC<ChatViewProps> = ({ chat, examples, fill = false
         </label>
         <input
           id={fill ? 'toni-chat-input-full' : 'toni-chat-input'}
-          ref={inputRef}
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           maxLength={1000}
@@ -217,7 +213,7 @@ export const ChatView: React.FC<ChatViewProps> = ({ chat, examples, fill = false
         </button>
       </form>
 
-      <p className="mt-3 text-xs text-muted leading-relaxed">
+      <p className={`${compact ? 'sr-only' : ''} mt-3 text-xs text-muted leading-relaxed`}>
         {de
           ? 'Nachrichten werden über Vapi und OpenAI (USA) verarbeitet. Bitte keine sensiblen Daten eingeben. '
           : 'Messages are processed by Vapi and OpenAI (USA). Please do not enter sensitive data. '}
