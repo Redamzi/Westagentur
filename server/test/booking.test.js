@@ -95,3 +95,9 @@ test('blocked times are not offered', async () => {
   const slots = await (await app.request('GET', '/api/slots?from=2026-10-13&days=2')).json();
   assert.deepEqual(slots.days.map((d) => d.date), ['2026-10-14']);
 });
+
+test('bookings from the website chat are marked as chat', async () => {
+  assert.equal((await app.request('POST', '/api/bookings', booking({ via: 'chat' }))).status, 201);
+  assert.equal(app.db.getBooking(1).source, 'chat');
+  assert.equal(app.db.listLeads()[0].source, 'chat');
+});

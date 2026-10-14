@@ -77,11 +77,13 @@ export const createApp = ({ db, services, config, limiters, logger = console, no
 
     ['POST', '/api/bookings', async ({ req, res }) => {
       limit(limiters.booking, req);
-      const result = validateBooking(await readJson(req), now().getTime());
+      const body = await readJson(req);
+      const result = validateBooking(body, now().getTime());
       if (result.spam) return created(res);
       if (result.errors) return sendJson(res, 400, { ok: false, errors: result.errors });
       try {
-        const booking = await services.book(result.data);
+        // Bookings from the Toni chat on the website are shown as "KI-Chat".
+        const booking = await services.book(result.data, { source: body.via === 'chat' ? 'chat' : 'website' });
         return created(res, { booking: publicBooking(booking) });
       } catch (err) {
         if (err instanceof SlotTakenError) return sendJson(res, 409, { ok: false, error: 'slot_taken' });
