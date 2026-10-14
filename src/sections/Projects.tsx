@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
@@ -25,14 +24,11 @@ const Projects = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="mb-12 md:mb-16">
           <SectionLabel>{t('labels.projects')}</SectionLabel>
-          <motion.h2
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+          <h2
             className="heading-section"
           >
             {t('projects.title')}
-          </motion.h2>
+          </h2>
         </div>
 
         {/* Featured case study */}

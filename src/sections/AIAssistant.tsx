@@ -283,15 +283,12 @@ const AIAssistant = () => {
       <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         <div>
           <SectionLabel>{de ? 'Live-Demo' : 'Live demo'}</SectionLabel>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+          <h2
             className="heading-xl text-primary mb-6"
           >
             {de ? 'Sprechen Sie mit ' : 'Talk to '}
             <span className="text-accent italic font-normal">Toni</span>
-          </motion.h2>
+          </h2>
           <p className="text-muted text-lg md:text-xl max-w-xl leading-relaxed mb-8">
             {de
               ? 'Toni ist unser KI-Telefonassistent. Er beantwortet Fragen, kennt unsere Leistungen und vereinbart Termine – genau so könnte er auch für Ihr Unternehmen ans Telefon gehen.'
@@ -319,14 +316,11 @@ const AIAssistant = () => {
           </p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+        <div
           className="w-full max-w-md mx-auto lg:ml-auto bg-surface border border-border p-6 md:p-8 shadow-2xl shadow-black"
         >
           {renderCard(false)}
-        </motion.div>
+        </div>
       </div>
       <ChatOverlay chat={chat} examples={EXAMPLES} open={chatOpen} onClose={closeChat} />
     </section>

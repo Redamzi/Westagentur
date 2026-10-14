@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import SectionLabel from '../components/SectionLabel';
 
@@ -14,37 +13,30 @@ const About = () => {
         <div className="mb-12 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
           <SectionLabel>{t('labels.about')}</SectionLabel>
-          <motion.h2 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+          <h2
             className="heading-section"
           >
             {t('about.title')}
-          </motion.h2>
+          </h2>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16">
           {/* Text Content */}
           <div className="space-y-6 md:space-y-8 text-lg md:text-xl font-sans text-muted leading-relaxed">
-            <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <p>
               {t('about.p1')}
-            </motion.p>
-            <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
+            </p>
+            <p>
               {t('about.p2')}
-            </motion.p>
-            <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
+            </p>
+            <p>
               {t('about.p3')}
-            </motion.p>
+            </p>
           </div>
 
           {/* Advantages List */}
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
+          <div
             className="border-l border-border pl-6 md:pl-16 flex flex-col justify-center"
           >
             <h3 className="text-sm font-display text-accent uppercase tracking-widest mb-8">{t('about.advantages_title')}</h3>
@@ -56,7 +48,7 @@ const About = () => {
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
