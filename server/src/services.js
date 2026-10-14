@@ -90,7 +90,7 @@ export const createServices = ({ db, mailer, config, logger = console, now = () 
     const booking = db.transaction(() => {
       if (!isSlotFree(db, start, now())) throw new SlotTakenError();
       const leadId = db.insertLead({
-        source: source === 'phone' ? 'phone' : 'booking',
+        source: source === 'phone' || source === 'chat' ? source : 'booking',
         name: input.name,
         email: input.email ?? '',
         phone: input.phone,

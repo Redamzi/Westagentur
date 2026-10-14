@@ -17,6 +17,7 @@ const limiters = {
   booking: createRateLimiter(config.rateLimit),
   login: createRateLimiter({ limit: 5, windowMs: 15 * 60_000 }),
   track: createRateLimiter({ limit: 300, windowMs: 60 * 60_000 }),
+  chat: createRateLimiter({ limit: 60, windowMs: 60 * 60_000 }),
 };
 
 const server = http.createServer(createApp({ db, services, config, limiters }));
@@ -24,6 +25,7 @@ server.listen(config.port, config.host, () => {
   console.info(`[api] listening on http://${config.host}:${config.port}`);
   if (!config.adminPassword) console.warn('[admin] ADMIN_PASSWORD not set – admin area disabled');
   if (!config.vapiSecret) console.warn('[vapi] VAPI_WEBHOOK_SECRET not set – Vapi webhook disabled');
+  if (!config.vapiApiKey) console.warn('[chat] VAPI_API_KEY not set – website chat disabled');
 });
 
 mailer.verify()?.then(

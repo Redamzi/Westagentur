@@ -108,3 +108,16 @@ test('no empty summary heading is appended to a booked lead', async () => {
   const [lead] = app.db.listLeads();
   assert.ok(!/Gesprächszusammenfassung/.test(lead.message ?? ''));
 });
+
+test('tool calls from the website chat are booked as chat leads', async () => {
+  const booked = await (await vapi({
+    type: 'tool-calls',
+    chat: { id: 'chat-1' },
+    toolCallList: [{ id: 't1', function: { name: 'book_appointment', arguments: { start: '2026-10-13T07:00:00.000Z', name: 'Clara Chat', phone: '0231 12345' } } }],
+  })).json();
+  assert.match(booked.results[0].result, /Termin gebucht/);
+  assert.equal(app.db.getBooking(1).source, 'chat');
+  const [lead] = app.db.listLeads();
+  assert.equal(lead.source, 'chat');
+  assert.equal(lead.page, 'chat:chat-1');
+});

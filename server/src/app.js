@@ -9,6 +9,9 @@ import { isLocalDate } from './time.js';
 // Vapi end-of-call reports contain the whole transcript and can be several hundred KB.
 const VAPI_MAX_BODY_BYTES = 5_000_000;
 
+const VAPI_CHAT_URL = 'https://api.vapi.ai/chat';
+const CHAT_ID = /^[\w-]{1,100}$/;
+
 const PUBLIC_BOOKING_FIELDS = ['start_utc', 'end_utc', 'status', 'name', 'service', 'lang'];
 const publicBooking = (b) => Object.fromEntries(PUBLIC_BOOKING_FIELDS.map((k) => [k, b[k]]));
 
@@ -17,9 +20,9 @@ const UNTRACKED = /^\/(admin|termin\/verwalten|en\/appointment\/manage)(\/|$)/;
 
 /**
  * Creates the request handler. Dependencies are injected so the API can be tested in isolation.
- * limiters: { contact, booking, login, track }
+ * limiters: { contact, booking, login, track, chat }
  */
-export const createApp = ({ db, services, config, limiters, logger = console, now = () => new Date() }) => {
+export const createApp = ({ db, services, config, limiters, logger = console, now = () => new Date(), fetchImpl = globalThis.fetch }) => {
   const sessions = createSessions({ db, config, now: () => now().getTime() });
   const vapi = createVapiHandler({ db, services, logger, now });
 
@@ -118,6 +121,39 @@ export const createApp = ({ db, services, config, limiters, logger = console, no
       const secret = req.headers['x-vapi-secret'] ?? bearer;
       if (!vapiSecretMatches(secret, config.vapiSecret)) throw new HttpError(401, 'unauthorized');
       return sendJson(res, 200, await vapi(await readJson(req, VAPI_MAX_BODY_BYTES)));
+    }],
+
+    // Website chat with Toni: proxied so the private Vapi key stays on the server.
+    ['POST', '/api/chat', async ({ req, res }) => {
+      if (!config.vapiApiKey) throw new HttpError(503, 'chat_disabled');
+      limit(limiters.chat, req);
+      const body = await readJson(req);
+      const input = text(body.input, 1000);
+      if (!input) return sendJson(res, 400, { ok: false, errors: { input: 'required' } });
+      const chatId = typeof body.chatId === 'string' && CHAT_ID.test(body.chatId) ? body.chatId : undefined;
+
+      let response;
+      try {
+        response = await fetchImpl(VAPI_CHAT_URL, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${config.vapiApiKey}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ assistantId: config.vapiAssistantId, input, ...(chatId && { previousChatId: chatId }) }),
+          signal: AbortSignal.timeout(45_000),
+        });
+      } catch (err) {
+        logger.error('[chat] Vapi not reachable:', err.message);
+        throw new HttpError(502, 'chat_failed');
+      }
+      if (!response.ok) {
+        logger.error(`[chat] Vapi responded ${response.status}: ${(await response.text()).slice(0, 300)}`);
+        throw new HttpError(502, 'chat_failed');
+      }
+      const chat = await response.json();
+      const reply = (chat.output ?? [])
+        .filter((m) => m.role === 'assistant' && typeof m.content === 'string' && m.content.trim())
+        .map((m) => m.content.trim())
+        .join('\n\n');
+      return sendJson(res, 200, { ok: true, chatId: chat.id, reply });
     }],
 
     // ---------------------------------------------------------- admin

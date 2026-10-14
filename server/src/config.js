@@ -24,6 +24,9 @@ export const loadConfig = (env = process.env) => ({
   adminPassword: env.ADMIN_PASSWORD || '',
   secureCookies: bool(env.SECURE_COOKIES, true),
   vapiSecret: env.VAPI_WEBHOOK_SECRET || '',
+  // Private Vapi API key for the website chat (never sent to the browser).
+  vapiApiKey: env.VAPI_API_KEY || '',
+  vapiAssistantId: env.VAPI_ASSISTANT_ID || '54f190b2-aeb9-4e8a-b4b6-6731b6db2601',
   googleReviewUrl: env.GOOGLE_REVIEW_URL || '',
   digestHour: Number(env.DIGEST_HOUR ?? 7),
 });

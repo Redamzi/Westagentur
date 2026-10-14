@@ -53,7 +53,8 @@ export const createVapiHandler = ({ db, services, logger = console, now = () => 
     );
   };
 
-  const bookAppointment = async (args, call) => {
+  // call: the Vapi call (phone/browser) or the website chat the tool was used in.
+  const bookAppointment = async (args, call, source = 'phone') => {
     const phone = line(args.phone, 30) || line(call?.customer?.number, 30);
     const email = line(args.email, 200).toLowerCase();
     const name = line(args.name, 100);
@@ -69,10 +70,10 @@ export const createVapiHandler = ({ db, services, logger = console, now = () => 
           company: line(args.company, 120),
           service: SERVICES.includes(args.service) ? args.service : 'other',
           note: text(args.note, 2000),
-          page: call?.id ? `vapi:${call.id}` : 'vapi',
+          page: [source === 'chat' ? 'chat' : 'vapi', call?.id].filter(Boolean).join(':'),
           lang: 'de',
         },
-        { source: 'phone' }
+        { source }
       );
       const { timezone } = db.getSettings();
       return `Termin gebucht: ${formatDateTime(new Date(booking.start_utc), 'de', timezone)}.`;
@@ -136,7 +137,10 @@ export const createVapiHandler = ({ db, services, logger = console, now = () => 
         const name = call.function?.name;
         const fn = tools[name];
         logger.info(`[vapi] tool-call ${name} ${typeof call.function?.arguments === 'string' ? call.function.arguments : JSON.stringify(call.function?.arguments ?? {})}`);
-        const result = fn ? await fn(parseArgs(call.function.arguments), message.call) : `Unbekanntes Tool: ${name}`;
+        // Tools used in the website chat arrive with a "chat" instead of a "call".
+        const source = !message.call && message.chat ? 'chat' : 'phone';
+        const conversation = message.call ?? message.chat;
+        const result = fn ? await fn(parseArgs(call.function.arguments), conversation, source) : `Unbekanntes Tool: ${name}`;
         logger.info(`[vapi] tool-result ${name}: ${String(result).slice(0, 160)}`);
         results.push({ toolCallId: call.id, result });
       }

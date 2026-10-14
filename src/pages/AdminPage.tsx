@@ -98,7 +98,7 @@ const STATUS_LABELS: Record<string, string> = {
   completed: 'Abgeschlossen',
   lost: 'Verloren',
 };
-const SOURCE_LABELS: Record<string, string> = { contact_form: 'Kontaktformular', booking: 'Terminbuchung', phone: 'KI-Telefon' };
+const SOURCE_LABELS: Record<string, string> = { contact_form: 'Kontaktformular', booking: 'Terminbuchung', phone: 'KI-Telefon', chat: 'KI-Chat' };
 const SERVICE_LABELS: Record<string, string> = { webdesign: 'Webdesign', automation: 'KI-Automatisierung', telephony: 'KI-Telefonie', other: 'Sonstiges' };
 const WEEKDAYS = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
 const WEEK_ORDER = [1, 2, 3, 4, 5, 6, 0];
@@ -363,7 +363,7 @@ const Bookings: React.FC = () => {
               <div>
                 <p className="text-lg font-display font-semibold">{formatAppointment(b.start_utc, 'de')}</p>
                 <p className="text-sm text-muted">
-                  {b.status === 'cancelled' ? 'Abgesagt · ' : ''}{b.source === 'phone' ? 'über KI-Telefon' : 'über Website'} · {SERVICE_LABELS[b.service] ?? b.service}
+                  {b.status === 'cancelled' ? 'Abgesagt · ' : ''}{b.source === 'phone' ? 'über KI-Telefon' : b.source === 'chat' ? 'über KI-Chat' : 'über Website'} · {SERVICE_LABELS[b.service] ?? b.service}
                 </p>
                 <p className="mt-2">{b.name}{b.company ? ` · ${b.company}` : ''}</p>
                 <div className="flex flex-wrap gap-x-6 text-sm">
