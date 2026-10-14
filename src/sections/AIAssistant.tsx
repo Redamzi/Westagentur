@@ -40,7 +40,7 @@ const AIAssistant = () => {
   const chat = useToniChat(de ? 'de' : 'en');
   const sending = chat.sending;
   // Smartphone: the chat opens as a full-screen app.
-  const [chatOpen, setChatOpen] = useState<false | 'typing' | 'reading'>(false);
+  const [chatOpen, setChatOpen] = useState(false);
 
   // Smartphone: while scrolling, the Toni card grows into a full-screen app (sticky stage).
   const sectionRef = useRef<HTMLElement>(null);
@@ -56,9 +56,9 @@ const AIAssistant = () => {
   const introOpacity = useTransform(scrollYProgress, [0.05, 0.3], [1, 0]);
   const introY = useTransform(scrollYProgress, [0.05, 0.3], [0, -60]);
 
-  const openChat = (focus: boolean) => {
+  const openChat = () => {
     setMode('chat');
-    if (isMobile) setChatOpen(focus ? 'typing' : 'reading');
+    if (isMobile) setChatOpen(true);
   };
   const closeChat = useCallback(() => {
     setChatOpen(false);
@@ -66,7 +66,7 @@ const AIAssistant = () => {
   }, []);
 
   const askExample = (example: string) => {
-    openChat(false);
+    openChat();
     chat.send(example.replace(/[„“”"]/g, ''));
   };
 
@@ -171,7 +171,7 @@ const AIAssistant = () => {
             type="button"
             role="tab"
             aria-selected={mode === key}
-            onClick={() => (key === 'chat' ? openChat(true) : setMode(key))}
+            onClick={() => (key === 'chat' ? openChat() : setMode(key))}
             className={`min-h-[44px] flex items-center justify-center gap-2 font-display font-semibold transition-colors ${
               mode === key ? 'bg-accent text-background' : 'text-muted hover:text-primary'
             }`}
