@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import SectionLabel from '../components/SectionLabel';
 import { Link } from 'react-router-dom';
@@ -22,19 +21,13 @@ const Services = () => {
         <div className="mb-12 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
           <SectionLabel>{t('labels.services')}</SectionLabel>
-          <motion.h2 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+          <h2
             className="heading-section"
           >
             {t('services.title')}
-          </motion.h2>
+          </h2>
           </div>
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+          <div
             className="w-full md:w-1/3 h-[1px] bg-border"
           />
         </div>
@@ -42,12 +35,8 @@ const Services = () => {
         {/* Structural Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-border border border-border">
           {items.map((service, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
               className="card-swiss md:min-h-[320px] flex flex-col justify-between"
             >
               <div>
@@ -70,7 +59,7 @@ const Services = () => {
                   </Link>
                 )}
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

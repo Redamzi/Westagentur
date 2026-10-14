@@ -16,14 +16,11 @@ const FAQ = () => {
         <div className="mb-12 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
           <SectionLabel>{t('labels.faq')}</SectionLabel>
-          <motion.h2 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+          <h2
             className="heading-section"
           >
             {t('faq.title')}
-          </motion.h2>
+          </h2>
           </div>
         </div>
 
@@ -31,12 +28,8 @@ const FAQ = () => {
           {items.map((item, index) => {
             const isOpen = openIndex === index;
             return (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
                 className="border-b border-border transition-colors hover:bg-surface/50"
               >
                 <button
@@ -65,7 +58,7 @@ const FAQ = () => {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </motion.div>
+              </div>
             );
           })}
         </div>

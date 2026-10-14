@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -18,14 +17,11 @@ const CTA: React.FC<{ page: PageDef }> = ({ page }) => {
 
       <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
         <div>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+          <h2
             className="heading-xl text-primary mb-8"
           >
             {t('cta.title')}
-          </motion.h2>
+          </h2>
           <p className="text-xl md:text-2xl font-display font-medium text-primary mb-6">{t('cta.sub')}</p>
           <p className="text-lg text-muted mb-8 max-w-xl">{t('cta.desc')}</p>
           <Link to={BOOKING_PATHS[page.lang].book} className="btn-primary mb-10">
