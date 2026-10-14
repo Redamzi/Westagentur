@@ -109,12 +109,22 @@
         "tag": "Web design"
       }
     ],
-    "featured": {
-      "label": "Case study AI automation",
-      "title": "Mani Werbedienste GmbH: dispatch for ~1,000 distribution districts automated",
-      "desc": "A portal detects orders on its own, checks the documents and gives agencies, drivers and depots exactly their part. A full working day of dispatch becomes a few minutes of review.",
-      "cta": "Read case study (German)"
-    },
+    "featured": [
+      {
+        "slug": "mani-werbedienste",
+          "label": "Case study AI automation",
+          "title": "Mani Werbedienste GmbH: dispatch for ~1,000 distribution districts automated",
+          "desc": "A portal detects orders on its own, checks the documents and gives agencies, drivers and depots exactly their part. A full working day of dispatch becomes a few minutes of review.",
+          "cta": "Read case study (German)"
+      },
+      {
+        "slug": "direktverteilung",
+        "label": "Case study platform",
+        "title": "Direktverteilung.com: plan, book and track leaflet distribution live",
+        "desc": "A platform connects advertisers with vetted distribution agencies – area planning on a map, quotes at the push of a button, live GPS proof and secure payment.",
+        "cta": "Read case study (German)"
+      }
+    ],
     "visit": "Visit website",
     "next": {
       "tag": "Your project",

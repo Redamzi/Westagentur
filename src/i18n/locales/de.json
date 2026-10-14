@@ -109,12 +109,22 @@
         "tag": "Webdesign"
       }
     ],
-    "featured": {
-      "label": "Fallstudie KI-Automatisierung",
-      "title": "Mani Werbedienste GmbH: Disposition für ~1.000 Verteilbezirke automatisiert",
-      "desc": "Ein Portal erkennt Aufträge selbständig, prüft die Unterlagen und liefert Agenturen, Fahrern und Depots genau ihren Teil. Aus einem Arbeitstag Disposition werden wenige Minuten Kontrolle.",
-      "cta": "Fallstudie lesen"
-    },
+    "featured": [
+      {
+        "slug": "mani-werbedienste",
+          "label": "Fallstudie KI-Automatisierung",
+          "title": "Mani Werbedienste GmbH: Disposition für ~1.000 Verteilbezirke automatisiert",
+          "desc": "Ein Portal erkennt Aufträge selbständig, prüft die Unterlagen und liefert Agenturen, Fahrern und Depots genau ihren Teil. Aus einem Arbeitstag Disposition werden wenige Minuten Kontrolle.",
+          "cta": "Fallstudie lesen"
+      },
+      {
+        "slug": "direktverteilung",
+        "label": "Fallstudie Plattform",
+        "title": "Direktverteilung.com: Flyerverteilung planen, buchen und live nachweisen",
+        "desc": "Eine Plattform bringt Auftraggeber mit geprüften Verteilagenturen zusammen – Gebietsplanung per Karte, Angebote auf Knopfdruck, GPS-Live-Nachweis und sichere Abwicklung.",
+        "cta": "Fallstudie lesen"
+      }
+    ],
     "visit": "Website ansehen",
     "next": {
       "tag": "Ihr Projekt",
