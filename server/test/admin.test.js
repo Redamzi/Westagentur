@@ -77,3 +77,12 @@ test('stats summarise leads and page views', async () => {
   assert.equal(stats.leads, 1);
   assert.equal(stats.conversionRate, 0.5);
 });
+
+test('lead list includes the appointment of the lead', async () => {
+  const leadId = app.db.insertLead({ source: 'phone', name: 'Toni Test', email: '', service: 'webdesign', message: 'Neue Website' });
+  app.db.insertBooking({ token: 'tok', lead_id: leadId, start_utc: '2030-01-07T08:00:00.000Z', end_utc: '2030-01-07T08:30:00.000Z', name: 'Toni Test', email: '' });
+  const { cookie } = await login();
+  const { leads } = await (await app.request('GET', '/api/admin/leads', undefined, { Cookie: cookie })).json();
+  assert.equal(leads[0].booking_start, '2030-01-07T08:00:00.000Z');
+  assert.equal(leads[0].booking_status, 'confirmed');
+});

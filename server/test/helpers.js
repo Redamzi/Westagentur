@@ -8,7 +8,7 @@ import { loadConfig } from '../src/config.js';
 export const silent = { info() {}, warn() {}, error() {} };
 
 /** Starts the API on a random port with an in-memory DB and a recording mailer. */
-export const startApp = async ({ now = () => new Date(), env = {}, limit = 50 } = {}) => {
+export const startApp = async ({ now = () => new Date(), env = {}, limit = 50, fetchImpl } = {}) => {
   const config = loadConfig({ ADMIN_PASSWORD: 'geheim', SECURE_COOKIES: 'false', VAPI_WEBHOOK_SECRET: 'vapi-secret', ...env });
   const db = openDatabase(':memory:');
   const sent = [];
@@ -26,8 +26,9 @@ export const startApp = async ({ now = () => new Date(), env = {}, limit = 50 } 
     booking: createRateLimiter({ limit, windowMs: 60_000 }),
     login: createRateLimiter({ limit: 3, windowMs: 60_000 }),
     track: createRateLimiter({ limit: 1000, windowMs: 60_000 }),
+    chat: createRateLimiter({ limit, windowMs: 60_000 }),
   };
-  const server = http.createServer(createApp({ db, services, config, limiters, logger: silent, now }));
+  const server = http.createServer(createApp({ db, services, config, limiters, logger: silent, now, fetchImpl }));
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
   const base = `http://127.0.0.1:${server.address().port}`;
 

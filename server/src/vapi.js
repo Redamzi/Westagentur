@@ -22,6 +22,21 @@ const parseArgs = (args) => {
   }
 };
 
+const ROLE_LABELS = { user: 'Anrufer', assistant: 'Toni', bot: 'Toni' };
+
+/** Readable transcript from an end-of-call report (plain text or message list). */
+const callTranscript = (message) => {
+  const plain = message.artifact?.transcript ?? message.transcript;
+  if (typeof plain === 'string' && plain.trim()) {
+    return text(plain.replace(/^AI:/gm, 'Toni:').replace(/^User:/gm, 'Anrufer:'), 5000);
+  }
+  const messages = message.artifact?.messages ?? message.messages ?? [];
+  const lines = messages
+    .filter((m) => ROLE_LABELS[m.role] && typeof m.message === 'string' && m.message.trim())
+    .map((m) => `${ROLE_LABELS[m.role]}: ${m.message.trim()}`);
+  return text(lines.join('\n'), 5000);
+};
+
 /**
  * Handles Vapi server messages:
  * - "tool-calls": get_free_slots / book_appointment (booking during the call)
@@ -38,7 +53,8 @@ export const createVapiHandler = ({ db, services, logger = console, now = () => 
     );
   };
 
-  const bookAppointment = async (args, call) => {
+  // call: the Vapi call (phone/browser) or the website chat the tool was used in.
+  const bookAppointment = async (args, call, source = 'phone') => {
     const phone = line(args.phone, 30) || line(call?.customer?.number, 30);
     const email = line(args.email, 200).toLowerCase();
     const name = line(args.name, 100);
@@ -54,10 +70,10 @@ export const createVapiHandler = ({ db, services, logger = console, now = () => 
           company: line(args.company, 120),
           service: SERVICES.includes(args.service) ? args.service : 'other',
           note: text(args.note, 2000),
-          page: call?.id ? `vapi:${call.id}` : 'vapi',
+          page: [source === 'chat' ? 'chat' : 'vapi', call?.id].filter(Boolean).join(':'),
           lang: 'de',
         },
-        { source: 'phone' }
+        { source }
       );
       const { timezone } = db.getSettings();
       return `Termin gebucht: ${formatDateTime(new Date(booking.start_utc), 'de', timezone)}.`;
@@ -75,20 +91,26 @@ export const createVapiHandler = ({ db, services, logger = console, now = () => 
     const call = message.call ?? {};
     const data = message.analysis?.structuredData ?? {};
     const summary = text(message.analysis?.summary ?? message.summary, 5000);
+    const transcript = callTranscript(message);
+    // Some setups (e.g. GPT Live) send no summary – keep the transcript instead.
+    const report = summary
+      ? `Gesprächszusammenfassung:\n${summary}`
+      : transcript
+        ? `Gesprächsprotokoll:\n${transcript}`
+        : '';
     const page = call.id ? `vapi:${call.id}` : 'vapi';
 
-    // A booking during the call already created the lead – just add the summary.
+    // A booking during the call already created the lead – just add the report.
     const existing = call.id && db.raw.prepare('SELECT id FROM leads WHERE page = ?').get(page);
     if (existing) {
-      db.raw.prepare("UPDATE leads SET message = TRIM(COALESCE(message, '') || char(10) || char(10) || ?) WHERE id = ?").run(
-        `Gesprächszusammenfassung:\n${summary}`,
-        existing.id
-      );
+      if (report) {
+        db.raw.prepare("UPDATE leads SET message = TRIM(COALESCE(message, '') || char(10) || char(10) || ?) WHERE id = ?").run(report, existing.id);
+      }
       return;
     }
 
     const phone = line(call.customer?.number, 30);
-    if (!summary && !phone) return; // nothing useful (e.g. browser demo without content)
+    if (!report && !phone) return; // nothing useful (e.g. browser demo without content)
     const email = line(data.email, 200).toLowerCase();
     await services.createLead(
       {
@@ -98,7 +120,7 @@ export const createVapiHandler = ({ db, services, logger = console, now = () => 
         phone: isPhone(phone) ? phone : '',
         company: line(data.company, 120),
         service: SERVICES.includes(data.service) ? data.service : 'telephony',
-        message: summary || '(keine Zusammenfassung)',
+        message: report || '(kein Gesprächsinhalt übermittelt)',
         page,
         lang: 'de',
       },
@@ -115,7 +137,10 @@ export const createVapiHandler = ({ db, services, logger = console, now = () => 
         const name = call.function?.name;
         const fn = tools[name];
         logger.info(`[vapi] tool-call ${name} ${typeof call.function?.arguments === 'string' ? call.function.arguments : JSON.stringify(call.function?.arguments ?? {})}`);
-        const result = fn ? await fn(parseArgs(call.function.arguments), message.call) : `Unbekanntes Tool: ${name}`;
+        // Tools used in the website chat arrive with a "chat" instead of a "call".
+        const source = !message.call && message.chat ? 'chat' : 'phone';
+        const conversation = message.call ?? message.chat;
+        const result = fn ? await fn(parseArgs(call.function.arguments), conversation, source) : `Unbekanntes Tool: ${name}`;
         logger.info(`[vapi] tool-result ${name}: ${String(result).slice(0, 160)}`);
         results.push({ toolCallId: call.id, result });
       }

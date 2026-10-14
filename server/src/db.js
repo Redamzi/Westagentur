@@ -150,10 +150,15 @@ export const openDatabase = (file) => {
       q(`UPDATE leads SET ${kind === 'notify' ? 'notify_sent' : 'confirm_sent'} = 1 WHERE id = ?`).run(id);
     },
     getLead: (id) => q('SELECT * FROM leads WHERE id = ?').get(id),
+    /** Leads with their (latest) appointment, if any. */
     listLeads({ status } = {}) {
-      return status
-        ? q('SELECT * FROM leads WHERE status = ? ORDER BY created_at DESC LIMIT 500').all(status)
-        : q('SELECT * FROM leads ORDER BY created_at DESC LIMIT 500').all();
+      const sql = `
+        SELECT l.*, b.start_utc AS booking_start, b.status AS booking_status
+        FROM leads l
+        LEFT JOIN bookings b ON b.id = (SELECT MAX(id) FROM bookings WHERE lead_id = l.id)
+        ${status ? 'WHERE l.status = ?' : ''}
+        ORDER BY l.created_at DESC LIMIT 500`;
+      return status ? q(sql).all(status) : q(sql).all();
     },
     updateLead(id, { status, notes }, at = nowIso()) {
       const lead = q('SELECT * FROM leads WHERE id = ?').get(id);

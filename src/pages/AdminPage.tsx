@@ -39,6 +39,8 @@ interface Lead {
   message: string;
   page: string;
   notes: string | null;
+  booking_start: string | null;
+  booking_status: string | null;
 }
 
 interface Booking {
@@ -96,7 +98,7 @@ const STATUS_LABELS: Record<string, string> = {
   completed: 'Abgeschlossen',
   lost: 'Verloren',
 };
-const SOURCE_LABELS: Record<string, string> = { contact_form: 'Kontaktformular', booking: 'Terminbuchung', phone: 'KI-Telefon' };
+const SOURCE_LABELS: Record<string, string> = { contact_form: 'Kontaktformular', booking: 'Terminbuchung', phone: 'KI-Telefon', chat: 'KI-Chat' };
 const SERVICE_LABELS: Record<string, string> = { webdesign: 'Webdesign', automation: 'KI-Automatisierung', telephony: 'KI-Telefonie', other: 'Sonstiges' };
 const WEEKDAYS = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
 const WEEK_ORDER = [1, 2, 3, 4, 5, 6, 0];
@@ -264,7 +266,25 @@ const LeadCard: React.FC<{ lead: Lead; onChange: (lead: Lead) => void }> = ({ le
         {lead.email && <a href={`mailto:${lead.email}`} className="inline-flex items-center gap-2 py-2 text-accent"><Mail aria-hidden="true" className="w-4 h-4" />{lead.email}</a>}
         {lead.phone && <a href={`tel:${lead.phone.replace(/[^+\d]/g, '')}`} className="inline-flex items-center gap-2 py-2 text-accent"><Phone aria-hidden="true" className="w-4 h-4" />{lead.phone}</a>}
       </div>
-      {lead.message && <p className="text-sm text-muted whitespace-pre-line mb-4">{lead.message}</p>}
+      <dl className="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm mb-4 p-4 bg-background border border-border">
+        {lead.booking_start && (
+          <>
+            <dt className="font-display font-semibold text-primary">{lead.source === 'phone' || lead.source === 'booking' ? 'Rückruf-Termin' : 'Termin'}</dt>
+            <dd className={lead.booking_status === 'cancelled' ? 'text-muted line-through' : 'text-accent font-semibold'}>
+              {formatAppointment(lead.booking_start, 'de')}
+              {lead.booking_status === 'cancelled' ? ' (abgesagt)' : ''}
+            </dd>
+          </>
+        )}
+        <dt className="font-display font-semibold text-primary">Betreff</dt>
+        <dd className="text-primary">{SERVICE_LABELS[lead.service] ?? lead.service}</dd>
+        {lead.message && (
+          <>
+            <dt className="font-display font-semibold text-primary">Anliegen</dt>
+            <dd className="text-muted whitespace-pre-line">{lead.message}</dd>
+          </>
+        )}
+      </dl>
       <label htmlFor={`notes-${lead.id}`} className={labelClass}>Notizen</label>
       <textarea
         id={`notes-${lead.id}`}
@@ -302,7 +322,7 @@ const Leads: React.FC = () => {
       </p>
       {!leads ? <p className="text-muted">Lädt …</p> : !leads.length ? <p className="text-muted">Keine Anfragen.</p> : (
         leads.map((lead) => (
-          <LeadCard key={lead.id} lead={lead} onChange={(updated) => setLeads((all) => all?.map((l) => (l.id === updated.id ? updated : l)))} />
+          <LeadCard key={lead.id} lead={lead} onChange={(updated) => setLeads((all) => all?.map((l) => (l.id === updated.id ? { ...l, ...updated } : l)))} />
         ))
       )}
     </div>
@@ -343,7 +363,7 @@ const Bookings: React.FC = () => {
               <div>
                 <p className="text-lg font-display font-semibold">{formatAppointment(b.start_utc, 'de')}</p>
                 <p className="text-sm text-muted">
-                  {b.status === 'cancelled' ? 'Abgesagt · ' : ''}{b.source === 'phone' ? 'über KI-Telefon' : 'über Website'} · {SERVICE_LABELS[b.service] ?? b.service}
+                  {b.status === 'cancelled' ? 'Abgesagt · ' : ''}{b.source === 'phone' ? 'über KI-Telefon' : b.source === 'chat' ? 'über KI-Chat' : 'über Website'} · {SERVICE_LABELS[b.service] ?? b.service}
                 </p>
                 <p className="mt-2">{b.name}{b.company ? ` · ${b.company}` : ''}</p>
                 <div className="flex flex-wrap gap-x-6 text-sm">

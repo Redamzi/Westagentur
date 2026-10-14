@@ -5,7 +5,7 @@ export const SERVICE_LABELS = {
   en: { webdesign: 'Web design', automation: 'AI automation', telephony: 'AI telephony', other: 'Other' },
 };
 
-const SOURCE_LABELS = { contact_form: 'Kontaktformular', booking: 'Terminbuchung', phone: 'KI-Telefon' };
+const SOURCE_LABELS = { contact_form: 'Kontaktformular', booking: 'Terminbuchung', phone: 'KI-Telefon', chat: 'KI-Chat' };
 
 export const esc = (value) =>
   String(value ?? '')
@@ -196,7 +196,7 @@ export const bookingOwnerNotice = (booking, kind, { tz }) => {
     ['Telefon', booking.phone || '–'],
     ['Unternehmen', booking.company || '–'],
     ['Interesse', SERVICE_LABELS.de[booking.service] ?? booking.service],
-    ['Quelle', booking.source === 'phone' ? 'KI-Telefon' : 'Website'],
+    ['Quelle', SOURCE_LABELS[booking.source] ?? 'Website'],
   ];
   return mail(`${titles[kind]}: ${booking.name}, ${formatDateTime(new Date(booking.start_utc), 'de', tz)}`, [
     block(`<h1 style="font-size:20px;margin:0 0 8px">${titles[kind]} #${booking.id}</h1>${table(rows)}`, textTable(rows)),
