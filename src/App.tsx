@@ -1,18 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { MotionConfig } from 'framer-motion';
+import React, { Suspense, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import CTA from './sections/CTA';
 import Home from './pages/Home';
-import ServicePage from './pages/ServicePage';
-import LegalPage from './pages/LegalPage';
-import NotFound from './pages/NotFound';
-import BookingPage from './pages/BookingPage';
-import ManageBookingPage from './pages/ManageBookingPage';
-import AdminPage from './pages/AdminPage';
-import CaseStudyPage from './pages/CaseStudyPage';
+import { LazyPage } from './pages/lazyPages';
 import { findPage, notFoundPage, type PageDef } from './seo/pages';
 import { applyHeadTags } from './seo/head';
 import { langFromPath } from './seo/site';
@@ -25,17 +18,17 @@ const PageContent = ({ page }: { page: PageDef }) => {
     case 'home':
       return <Home />;
     case 'service':
-      return <ServicePage serviceKey={page.serviceKey!} lang={page.lang} />;
+      return <LazyPage kind="service" serviceKey={page.serviceKey!} lang={page.lang} />;
     case 'legal':
-      return <LegalPage legalKey={page.legalKey!} />;
+      return <LazyPage kind="legal" legalKey={page.legalKey!} />;
     case 'booking':
-      return <BookingPage lang={page.lang} />;
+      return <LazyPage kind="booking" lang={page.lang} />;
     case 'case':
-      return <CaseStudyPage slug={page.caseSlug!} />;
+      return <LazyPage kind="case" slug={page.caseSlug!} />;
     case 'manage':
-      return <ManageBookingPage lang={page.lang} />;
+      return <LazyPage kind="manage" lang={page.lang} />;
     default:
-      return <NotFound lang={page.lang} />;
+      return <LazyPage kind="notfound" lang={page.lang} />;
   }
 };
 
@@ -58,7 +51,7 @@ function App() {
   }, [page.path, page.lang]);
 
   // Scroll to the anchor after navigation, or to the top on a new page.
-  // Deferred two frames: framer-motion restores the old scroll position after measuring.
+  // Deferred two frames so the new page has rendered and laid out.
   useEffect(() => {
     const firstRender = isFirstRender.current;
     isFirstRender.current = false;
@@ -78,7 +71,9 @@ function App() {
   if (page.kind === 'admin') {
     return (
       <main className="bg-background text-primary">
-        <AdminPage />
+        <Suspense fallback={null}>
+          <LazyPage kind="admin" />
+        </Suspense>
       </main>
     );
   }
@@ -86,16 +81,16 @@ function App() {
   const showCta = page.kind !== 'booking' && page.kind !== 'manage';
 
   return (
-    <MotionConfig reducedMotion="user">
-      <div className="min-h-screen bg-background text-primary">
-        <Navbar page={page} />
-        <main>
+    <div className="min-h-screen bg-background text-primary">
+      <Navbar page={page} />
+      <main>
+        <Suspense fallback={<div className="min-h-screen" />}>
           <PageContent page={page} />
-        </main>
-        {showCta && <CTA page={page} />}
-        <Footer lang={page.lang} />
-      </div>
-    </MotionConfig>
+        </Suspense>
+      </main>
+      {showCta && <CTA page={page} />}
+      <Footer lang={page.lang} />
+    </div>
   );
 }
 

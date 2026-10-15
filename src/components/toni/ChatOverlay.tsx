@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, useReducedMotion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { ChatView, type ToniChatState } from './ToniChat';
 
@@ -32,7 +31,6 @@ const useVisualViewport = (active: boolean) => {
 /** Full-screen chat with Toni on smartphones; the page behind it is locked. */
 const ChatOverlay: React.FC<ChatOverlayProps> = ({ chat, examples, open, onClose }) => {
   const de = chat.lang === 'de';
-  const reduceMotion = useReducedMotion();
   const viewport = useVisualViewport(open);
 
   // Lock the page behind the chat and close with Escape.
@@ -56,15 +54,13 @@ const ChatOverlay: React.FC<ChatOverlayProps> = ({ chat, examples, open, onClose
   const keyboard = !!viewport && viewport.height < window.innerHeight * 0.8;
 
   return createPortal(
-    <motion.div
+    <div
       role="dialog"
       aria-modal="true"
       aria-label={de ? 'Chat mit Toni' : 'Chat with Toni'}
-      initial={reduceMotion ? false : { clipPath: 'inset(45% 16px 16px 16px round 28px)', opacity: 0.6 }}
-      animate={{ clipPath: 'inset(0% 0px 0px 0px round 0px)', opacity: 1 }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       // The dark backdrop covers the whole screen (also behind keyboard and browser bars) ...
-      className="section-dark fixed inset-0 z-[60] bg-background"
+      // chat-open: grows from the card to full screen (index.css)
+      className="chat-open section-dark fixed inset-0 z-[60] bg-background"
     >
       <div className="absolute inset-0 grid-bg opacity-20 pointer-events-none" />
       {/* ... while the chat itself only uses the area above the keyboard. */}
@@ -96,7 +92,7 @@ const ChatOverlay: React.FC<ChatOverlayProps> = ({ chat, examples, open, onClose
           <ChatView chat={chat} examples={examples} fill compact={keyboard} />
         </div>
       </div>
-    </motion.div>,
+    </div>,
     document.body
   );
 };
