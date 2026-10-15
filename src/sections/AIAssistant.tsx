@@ -1,12 +1,15 @@
-import React, { useCallback, useState, useEffect, useRef } from 'react';
+import React, { useCallback, useState, useEffect, useRef, Suspense, lazy } from 'react';
 import type VapiClient from '@vapi-ai/web';
 import { Link } from 'react-router-dom';
 import { Loader2, MessageSquare, Mic, Phone, PhoneOff } from 'lucide-react';
 import { legalPath } from '../seo/pages';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../i18n';
 import SectionLabel from '../components/SectionLabel';
-import { ChatView, useToniChat } from '../components/toni/ToniChat';
-import ChatOverlay from '../components/toni/ChatOverlay';
+import { useToniChat } from '../components/toni/useToniChat';
+
+// Chat UI is loaded when a visitor switches to "Schreiben" – not with the page.
+const ChatView = lazy(() => import('../components/toni/ToniChat').then((m) => ({ default: m.ChatView })));
+const ChatOverlay = lazy(() => import('../components/toni/ChatOverlay'));
 
 // Configuration
 const VAPI_PUBLIC_KEY = "0439aee3-ffe1-49c9-b7a4-f34a3f128c43";
@@ -259,7 +262,9 @@ const AIAssistant = () => {
         </p>
         </>
       ) : (
-        <ChatView chat={chat} examples={EXAMPLES} fill={fill} />
+        <Suspense fallback={<div className={fill ? 'flex-1' : 'h-96'} />}>
+          <ChatView chat={chat} examples={EXAMPLES} fill={fill} />
+        </Suspense>
       )}
     </>
   );
@@ -302,7 +307,11 @@ const AIAssistant = () => {
             {renderCard(true)}
           </div>
         </div>
-        <ChatOverlay chat={chat} examples={EXAMPLES} open={chatOpen} onClose={closeChat} />
+        {chatOpen && (
+          <Suspense fallback={null}>
+            <ChatOverlay chat={chat} examples={EXAMPLES} open onClose={closeChat} />
+          </Suspense>
+        )}
       </section>
     );
   }
@@ -358,7 +367,11 @@ const AIAssistant = () => {
           {renderCard(false)}
         </div>
       </div>
-      <ChatOverlay chat={chat} examples={EXAMPLES} open={chatOpen} onClose={closeChat} />
+      {chatOpen && (
+        <Suspense fallback={null}>
+          <ChatOverlay chat={chat} examples={EXAMPLES} open onClose={closeChat} />
+        </Suspense>
+      )}
     </section>
   );
 };

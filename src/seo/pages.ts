@@ -1,7 +1,10 @@
 import de from '../i18n/locales/de.json';
 import en from '../i18n/locales/en.json';
 import { SERVICES, SERVICE_KEYS, SERVICE_UI, type ServiceKey } from '../content/services';
-import { LEGAL_CONTENT, type LegalKey } from '../content/legal';
+import type { LegalKey } from '../content/legal';
+
+// Titles only – the legal texts themselves are loaded with the legal page.
+const LEGAL_TITLES: Record<LegalKey, string> = { imprint: 'Impressum', privacy: 'Datenschutzerklärung', tos: 'Allgemeine Geschäftsbedingungen' };
 import { BOOKING_PATHS, BOOKING_TEXT } from '../content/booking';
 import { CASE_STUDIES } from '../content/caseStudies';
 import { CONTACT, HOME_PATH, OG_IMAGE, SITE_NAME, SITE_URL, normalizePath, type Lang } from './site';
@@ -133,9 +136,9 @@ const legalPage = (key: LegalKey): PageDef => ({
   lang: 'de',
   kind: 'legal',
   legalKey: key,
-  title: `${LEGAL_CONTENT[key].title} | Westagentur`,
-  description: `${LEGAL_CONTENT[key].title} der Westagentur – Webdesign & KI-Automatisierung für den Mittelstand.`,
-  jsonLd: [organization, breadcrumb('de', LEGAL_CONTENT[key].title, LEGAL_PATHS[key])],
+  title: `${LEGAL_TITLES[key]} | Westagentur`,
+  description: `${LEGAL_TITLES[key]} der Westagentur – Webdesign & KI-Automatisierung für den Mittelstand.`,
+  jsonLd: [organization, breadcrumb('de', LEGAL_TITLES[key], LEGAL_PATHS[key])],
 });
 
 const bookingPage = (lang: Lang): PageDef => ({

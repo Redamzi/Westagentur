@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../i18n';
 import { SERVICES, SERVICE_KEYS } from '../content/services';
 import { legalPath } from '../seo/pages';
 import { CONTACT, HOME_PATH, type Lang } from '../seo/site';

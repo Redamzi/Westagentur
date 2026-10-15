@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, BrainCircuit, CalendarCheck, Database, Globe } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../i18n';
 import { Link } from 'react-router-dom';
 import { BOOKING_PATHS } from '../content/booking';
 

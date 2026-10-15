@@ -9,7 +9,14 @@ const SITE_URL = 'https://westagentur.de';
 
 const { render, PAGES, loadAllPages } = await import(pathToFileURL(path.join(root, 'dist-ssr/entry-server.js')).href);
 await loadAllPages();
-const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
+// Preload the fonts of the first screen, so the text does not jump when they arrive (layout shift).
+const PRELOAD_FONTS = ['space-grotesk-latin-700-normal', 'space-grotesk-latin-500-normal', 'space-grotesk-latin-400-normal', 'inter-latin-400-normal'];
+const assets = fs.readdirSync(path.join(dist, 'assets'));
+const fontPreloads = PRELOAD_FONTS.map((name) => assets.find((f) => f.startsWith(`${name}-`) && f.endsWith('.woff2')))
+  .filter(Boolean)
+  .map((f) => `<link rel="preload" href="/assets/${f}" as="font" type="font/woff2" crossorigin>`)
+  .join('\n    ');
+const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf8').replace('</head>', `  ${fontPreloads}\n  </head>`);
 
 const write = (url, file) => {
   const { html, head, lang } = render(url);

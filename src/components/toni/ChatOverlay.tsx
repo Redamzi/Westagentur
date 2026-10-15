@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
-import { ChatView, type ToniChatState } from './ToniChat';
+import { ChatView } from './ToniChat';
+import type { ToniChatState } from './useToniChat';
 
 interface ChatOverlayProps {
   chat: ToniChatState;

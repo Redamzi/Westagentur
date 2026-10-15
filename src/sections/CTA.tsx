@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../i18n';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { BOOKING_PATHS, BOOKING_TEXT } from '../content/booking';

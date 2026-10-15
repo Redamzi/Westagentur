@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowRight, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../i18n';
 import { SERVICES, SERVICE_KEYS } from '../content/services';
 import { HOME_PATH } from '../seo/site';
 import { BOOKING_PATHS, BOOKING_TEXT } from '../content/booking';
