@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowRight, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -102,31 +101,26 @@ const Navbar: React.FC<{ page: PageDef }> = ({ page }) => {
       </div>
 
       {/* Mobile Nav */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.nav
-            aria-label={lang === 'de' ? 'Mobile Navigation' : 'Mobile navigation'}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-border p-6 flex flex-col gap-2 lg:hidden"
-          >
-            {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className="text-lg font-display font-medium text-muted hover:text-primary py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <Link to={BOOKING_PATHS[lang].book} className="btn-primary w-full mt-4" onClick={() => setMobileMenuOpen(false)}>
-              {BOOKING_TEXT[lang].navLabel} <ArrowRight className="w-4 h-4" />
+      {mobileMenuOpen && (
+        <nav
+          aria-label={lang === 'de' ? 'Mobile Navigation' : 'Mobile navigation'}
+          className="reveal-in absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-border p-6 flex flex-col gap-2 lg:hidden"
+        >
+          {navLinks.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className="text-lg font-display font-medium text-muted hover:text-primary py-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {link.name}
             </Link>
-          </motion.nav>
-        )}
-      </AnimatePresence>
+          ))}
+          <Link to={BOOKING_PATHS[lang].book} className="btn-primary w-full mt-4" onClick={() => setMobileMenuOpen(false)}>
+            {BOOKING_TEXT[lang].navLabel} <ArrowRight className="w-4 h-4" />
+          </Link>
+        </nav>
+      )}
     </header>
   );
 };

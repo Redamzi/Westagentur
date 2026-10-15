@@ -7,7 +7,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
 const SITE_URL = 'https://westagentur.de';
 
-const { render, PAGES } = await import(pathToFileURL(path.join(root, 'dist-ssr/entry-server.js')).href);
+const { render, PAGES, loadAllPages } = await import(pathToFileURL(path.join(root, 'dist-ssr/entry-server.js')).href);
+await loadAllPages();
 const template = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
 
 const write = (url, file) => {

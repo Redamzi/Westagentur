@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import SectionLabel from '../components/SectionLabel';
 import { Plus, Minus } from 'lucide-react';
@@ -44,20 +43,11 @@ const FAQ = () => {
                     {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                   </div>
                 </button>
-                <AnimatePresence>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <div className="pb-6 md:pb-8 text-base md:text-lg text-muted font-sans max-w-4xl leading-relaxed">
-                        {item.a}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {isOpen && (
+                  <div className="reveal-in pb-6 md:pb-8 text-base md:text-lg text-muted font-sans max-w-4xl leading-relaxed">
+                    {item.a}
+                  </div>
+                )}
               </div>
             );
           })}

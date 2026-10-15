@@ -6,6 +6,7 @@ import i18n from './i18n';
 import { renderHeadTags } from './seo/head';
 
 export { PAGES } from './seo/pages';
+export { loadAllPages } from './pages/lazyPages';
 
 /** Renders one URL to HTML for the prerenderer (scripts/prerender.mjs). */
 export function render(url: string) {

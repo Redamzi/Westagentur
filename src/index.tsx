@@ -9,7 +9,8 @@ import '@fontsource/space-grotesk/400.css';
 import '@fontsource/space-grotesk/500.css';
 import '@fontsource/space-grotesk/600.css';
 import '@fontsource/space-grotesk/700.css';
-import App from './App';
+import App, { resolvePage } from './App';
+import { loadPage } from './pages/lazyPages';
 import i18n from './i18n';
 import { langFromPath } from './seo/site';
 import './index.css';
@@ -30,8 +31,20 @@ const app = (
   </React.StrictMode>
 );
 
-if (rootElement.firstElementChild) {
-  ReactDOM.hydrateRoot(rootElement, app);
-} else {
-  ReactDOM.createRoot(rootElement).render(app);
-}
+// Load the code of the current page first, so hydration can reuse the prerendered HTML directly.
+loadPage(resolvePage(window.location.pathname).kind).finally(() => {
+  if (rootElement.firstElementChild) {
+    ReactDOM.hydrateRoot(rootElement, app);
+  } else {
+    ReactDOM.createRoot(rootElement).render(app);
+  }
+});
+
+// Fetch the code of a page as soon as a link to it is touched or hovered.
+const prefetch = (event: Event) => {
+  const link = (event.target as Element | null)?.closest?.('a[href^="/"]');
+  if (link) loadPage(resolvePage(new URL((link as HTMLAnchorElement).href).pathname).kind);
+};
+document.addEventListener('pointerover', prefetch, { passive: true });
+document.addEventListener('touchstart', prefetch, { passive: true });
+document.addEventListener('focusin', prefetch);

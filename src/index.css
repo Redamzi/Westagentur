@@ -95,3 +95,45 @@
   background-image: linear-gradient(to right, rgb(var(--c-primary) / 0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgb(var(--c-primary) / 0.04) 1px, transparent 1px);
 }
+
+/* Hero workflow illustration (CSS only, see Hero.tsx) */
+@keyframes flow-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes flow-pulse {
+  0% { opacity: 0; transform: translateY(0); }
+  15% { opacity: 1; }
+  50%, 100% { opacity: 0; transform: translateY(var(--flow-distance)); }
+}
+.flow-in {
+  animation: flow-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.flow-pulse {
+  opacity: 0;
+  animation: flow-pulse 3.2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow-in, .flow-pulse { animation: none; }
+}
+
+/* Small enter animations (FAQ answers, mobile menu) */
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: none; }
+}
+.reveal-in {
+  animation: reveal-in 0.25s ease-out both;
+}
+
+/* Toni chat on phones: grows from the demo card to full screen */
+@keyframes chat-open {
+  from { clip-path: inset(45% 16px 16px 16px round 28px); opacity: 0.6; }
+  to { clip-path: inset(0 0 0 0 round 0); opacity: 1; }
+}
+.chat-open {
+  animation: chat-open 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-in, .chat-open { animation: none; }
+}

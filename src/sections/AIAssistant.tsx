@@ -1,6 +1,5 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import type VapiClient from '@vapi-ai/web';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Loader2, MessageSquare, Mic, Phone, PhoneOff } from 'lucide-react';
 import { legalPath } from '../seo/pages';
@@ -14,19 +13,51 @@ const VAPI_PUBLIC_KEY = "0439aee3-ffe1-49c9-b7a4-f34a3f128c43";
 // Voice assistant (GPT Live). The website chat uses a separate text assistant (server: VAPI_ASSISTANT_ID).
 const VAPI_ASSISTANT_ID = "c8a4b33e-6f26-4ab8-adbe-f0c8cf8c4cba";
 
-const MOBILE_QUERY = '(max-width: 1023px)';
-
-/** True below the lg breakpoint (false during prerendering). */
-const useIsMobile = () => {
-  const [mobile, setMobile] = useState(false);
+/** Whether a media query matches (false during prerendering). */
+const useMedia = (query: string) => {
+  const [matches, setMatches] = useState(false);
   useEffect(() => {
-    const query = window.matchMedia(MOBILE_QUERY);
-    const update = () => setMobile(query.matches);
+    const list = window.matchMedia(query);
+    const update = () => setMatches(list.matches);
     update();
-    query.addEventListener('change', update);
-    return () => query.removeEventListener('change', update);
-  }, []);
-  return mobile;
+    list.addEventListener('change', update);
+    return () => list.removeEventListener('change', update);
+  }, [query]);
+  return matches;
+};
+
+const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
+
+/**
+ * Scroll progress through a tall section (0 = top reaches the viewport top, 1 = bottom reaches the viewport bottom),
+ * written as CSS variables on the stage: --grow (card grows to full screen) and --intro (headline fades out).
+ */
+const useStageProgress = (section: React.RefObject<HTMLElement>, stage: React.RefObject<HTMLElement>, active: boolean) => {
+  useEffect(() => {
+    if (!active) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const el = section.current;
+      const target = stage.current;
+      if (!el || !target) return;
+      const rect = el.getBoundingClientRect();
+      const progress = clamp01(-rect.top / Math.max(1, rect.height - window.innerHeight));
+      target.style.setProperty('--grow', String(clamp01((progress - 0.05) / 0.4)));
+      target.style.setProperty('--intro', String(clamp01((progress - 0.05) / 0.25)));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, [section, stage, active]);
 };
 
 const AIAssistant = () => {
@@ -44,17 +75,11 @@ const AIAssistant = () => {
 
   // Smartphone: while scrolling, the Toni card grows into a full-screen app (sticky stage).
   const sectionRef = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
-  const isMobile = useIsMobile();
+  const reduceMotion = useMedia('(prefers-reduced-motion: reduce)');
+  const isMobile = useMedia('(max-width: 1023px)');
   const immersive = isMobile && !reduceMotion;
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
-  const grow = [0.05, 0.45];
-  const cardTop = useTransform(scrollYProgress, grow, ['58%', '0%']);
-  const cardSide = useTransform(scrollYProgress, grow, [16, 0]);
-  const cardRadius = useTransform(scrollYProgress, grow, [28, 0]);
-  const cardPadTop = useTransform(scrollYProgress, grow, [20, 88]); // clears the fixed header
-  const introOpacity = useTransform(scrollYProgress, [0.05, 0.3], [1, 0]);
-  const introY = useTransform(scrollYProgress, [0.05, 0.3], [0, -60]);
+  const stageRef = useRef<HTMLDivElement>(null);
+  useStageProgress(sectionRef, stageRef, immersive);
 
   const openChat = () => {
     setMode('chat');
@@ -242,11 +267,14 @@ const AIAssistant = () => {
   if (immersive) {
     return (
       <section ref={sectionRef} id="ki-assistent" className="section-dark relative h-[260vh] bg-background border-b border-border">
-        <div className="sticky top-0 h-[100dvh] overflow-hidden">
+        <div ref={stageRef} style={{ '--grow': 0, '--intro': 0 } as React.CSSProperties} className="sticky top-0 h-[100dvh] overflow-hidden">
           <div className="absolute inset-0 grid-bg opacity-20 pointer-events-none" />
           <div className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] rounded-full bg-accent/15 blur-[120px] pointer-events-none" />
 
-          <motion.div style={{ opacity: introOpacity, y: introY }} className="absolute inset-x-0 top-0 px-6 pt-24">
+          <div
+            style={{ opacity: 'calc(1 - var(--intro))', transform: 'translateY(calc(-60px * var(--intro)))' }}
+            className="absolute inset-x-0 top-0 px-6 pt-24"
+          >
             <SectionLabel>{de ? 'Live-Demo' : 'Live demo'}</SectionLabel>
             <h2 className="heading-xl text-primary mb-4">
               {de ? 'Sprechen Sie mit ' : 'Talk to '}
@@ -257,14 +285,22 @@ const AIAssistant = () => {
                 ? 'Unser KI-Assistent beantwortet Fragen und vereinbart Termine. Weiterscrollen und ausprobieren.'
                 : 'Our AI assistant answers questions and books appointments. Keep scrolling and try it.'}
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            style={{ top: cardTop, left: cardSide, right: cardSide, bottom: cardSide, borderRadius: cardRadius, paddingTop: cardPadTop }}
+          {/* Grows from a rounded card to the full screen; padding-top clears the fixed header. */}
+          <div
+            style={{
+              top: 'calc(58% * (1 - var(--grow)))',
+              left: 'calc(16px * (1 - var(--grow)))',
+              right: 'calc(16px * (1 - var(--grow)))',
+              bottom: 'calc(16px * (1 - var(--grow)))',
+              borderRadius: 'calc(28px * (1 - var(--grow)))',
+              paddingTop: 'calc(20px + 68px * var(--grow))',
+            }}
             className="absolute flex flex-col bg-surface border border-border px-5 pb-5 overflow-hidden shadow-2xl shadow-black"
           >
             {renderCard(true)}
-          </motion.div>
+          </div>
         </div>
         <ChatOverlay chat={chat} examples={EXAMPLES} open={chatOpen} onClose={closeChat} />
       </section>
