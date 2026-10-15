@@ -1,7 +1,34 @@
+# Suchmaschinen und KI-Suchdienste (Antworten mit Quellenangabe) sind willkommen.
 User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /termin/verwalten
 Disallow: /en/appointment/manage
+Disallow: /api/
+
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: DuckAssistBot
+Allow: /
+Disallow: /admin
+Disallow: /termin/verwalten
+Disallow: /en/appointment/manage
+Disallow: /api/
+
+# Kein Training von KI-Modellen mit unseren Inhalten (Vorbehalt nach § 44b Abs. 3 UrhG, siehe Impressum).
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+User-agent: Meta-ExternalAgent
+User-agent: Bytespider
+User-agent: Amazonbot
+User-agent: cohere-training-data-crawler
+Disallow: /
 
 Sitemap: https://westagentur.de/sitemap.xml

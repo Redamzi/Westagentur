@@ -41,4 +41,43 @@ fs.writeFileSync(
 );
 console.log(`sitemap.xml with ${urls.length} URLs`);
 
+// llms.txt: compact overview for AI search engines (https://llmstxt.org). No email or phone on purpose.
+const indexed = PAGES.filter((p) => !p.noindex && p.kind !== 'notfound');
+const list = (filter) =>
+  indexed
+    .filter(filter)
+    .map((p) => `- [${p.title.replace(/ \| Westagentur$/, '')}](${abs(p.path)}): ${p.description}`)
+    .join('\n');
+const llms = `# Westagentur
+
+> Westagentur aus Hamm (NRW) entwickelt Websites, KI-Automatisierungen und KI-Telefonassistenten für kleine und mittlere Unternehmen in Deutschland. Inhaber: Argjend Krasniqi. Alle Lösungen werden selbst entwickelt, ohne Baukasten.
+
+## Leistungen und Preise
+
+- Webdesign Starter: ab 1.500 € (professioneller Onepager oder kompakte Website)
+- Webdesign Pro: ab 3.200 € (mehrseitige Website mit individuellem Design, SEO-Struktur und Anbindung von Formularen oder Automatisierungen)
+- KI-Automatisierung: individueller Preis nach kostenlosem Prozess-Check
+- KI-Telefonie: KI-Assistent, der Anrufe annimmt, Fragen beantwortet und Termine bucht; Preis individuell
+- Erstgespräch: kostenlos, 30 Minuten per Telefon, online buchbar
+
+## Kontakt
+
+- Anfragen über das Kontaktformular auf ${SITE_URL}/ oder per Online-Terminbuchung: ${abs('/termin')}
+- Standort: Hamm, Nordrhein-Westfalen, Deutschland
+
+## Seiten (Deutsch)
+
+${list((p) => p.lang === 'de' && p.kind !== 'legal')}
+
+## Pages (English)
+
+${list((p) => p.lang === 'en' && p.kind !== 'legal')}
+
+## Rechtliches
+
+${list((p) => p.kind === 'legal')}
+`;
+fs.writeFileSync(path.join(dist, 'llms.txt'), llms);
+console.log('llms.txt written');
+
 fs.rmSync(path.join(root, 'dist-ssr'), { recursive: true, force: true });

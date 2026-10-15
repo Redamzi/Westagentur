@@ -36,7 +36,7 @@ export const LEGAL_CONTENT: Record<LegalKey, { title: string; updated?: string; 
       {
         heading: 'Urheberrecht',
         body:
-          'Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des Erstellers. Eine Nutzung der Inhalte für das Training von KI-Systemen oder automatisiertes Auslesen (Text- und Data-Mining) ist nicht gestattet; wir behalten uns diese Nutzung gemäß § 44b Abs. 3 UrhG ausdrücklich vor.',
+          'Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des Erstellers. Eine Nutzung der Inhalte für das Training von KI-Systemen (Text- und Data-Mining) ist nicht gestattet; wir behalten uns diese Nutzung gemäß § 44b Abs. 3 UrhG ausdrücklich vor (maschinenlesbar in unserer robots.txt). Gestattet ist das Erfassen durch Suchmaschinen und KI-Suchdienste, soweit sie auf unsere Seiten verweisen.',
       },
     ],
   },
