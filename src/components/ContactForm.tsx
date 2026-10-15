@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../i18n';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { legalPath } from '../seo/pages';
 import type { Lang } from '../seo/site';

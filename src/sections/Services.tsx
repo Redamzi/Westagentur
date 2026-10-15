@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../i18n';
 import SectionLabel from '../components/SectionLabel';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';

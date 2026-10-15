@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from './i18n';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import CTA from './sections/CTA';

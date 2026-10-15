@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../../i18n';
 import { ArrowLeft, CalendarCheck, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { formatAppointment, formatSlot } from '../../content/booking';
 import { legalPath } from '../../seo/pages';
